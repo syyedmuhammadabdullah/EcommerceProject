@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "SF-Pro-Text", sans-serif;
+}
+@font-face {
+  font-family: "SF-Pro-Text";
+  src: url("./fonts/SF-Pro-Text-Regular.otf");
+}
+@font-face {
+  font-family: "SF-Pro-Text";
+  src: url("./fonts/SF-Pro-Text-RegularItalic.otf");
+}
+@font-face {
+  font-family: "SF-Pro-Text";
+  src: url("./fonts/SF-Pro-Text-Semibold.otf");
+}
+@font-face {
+  font-family: "SF-Pro-Text";
+  src: url("./fonts/SF-Pro-Text-Light.otf");
+}
+h1{
+  font-size: 38px;
+  font-weight:600;
+}
+h2{
+  font-size: 30px;
+  font-weight:600;
+}
+h3{
+  font-size: 24px;
+  font-weight:600;
+}
+h4{
+  font-size: 20px;
+  font-weight:600;
+}
+h5{
+  font-size: 16px;
+  font-weight:600;
+}
+
+p,button{
+  font-size: 14px;
+  font-weight:400;
+}

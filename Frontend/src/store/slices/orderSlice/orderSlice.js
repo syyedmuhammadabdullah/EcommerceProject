@@ -1,0 +1,73 @@
+import {createSlice} from "@reduxjs/toolkit"
+import {createOrder,getOrders,trackOrder,deliveredOrder} from "../../../index"
+const initialState={
+    loading:false,
+    error:null,
+    orders:[],
+    trackedOrder:null,
+    deliveredOrder:[],
+    latestOrder:null
+}
+const orderSlice=createSlice({
+    name:"order",
+    initialState,
+    reducers:{
+        clearOrders(state){
+            state.orders=[]
+        }
+    },
+    extraReducers:(builder)=>{
+        builder
+        .addCase(createOrder.pending,(state)=>{
+            state.loading=true,
+            state.error=null
+        })
+        .addCase(createOrder.fulfilled,(state,action)=>{
+            state.loading=false,
+            state.orders=action.payload
+            state.latestOrder=true
+        })
+        .addCase(createOrder.rejected,(state,action)=>{
+            state.loading=false,
+            state.error=action.error.message
+        })
+        .addCase(getOrders.pending,(state)=>{
+            state.loading=true,
+            state.error=null
+        })
+        .addCase(getOrders.fulfilled,(state,action)=>{
+            state.loading=false,
+            state.orders=action.payload
+        })
+        .addCase(getOrders.rejected,(state,action)=>{
+            state.loading=false,
+            state.error=action.error.message
+        })
+        .addCase(trackOrder.pending,(state)=>{
+            state.loading=true,
+            state.error=null
+        })
+        .addCase(trackOrder.fulfilled,(state,action)=>{
+            state.loading=false,
+            state.trackedOrder=action?.payload
+        })
+        .addCase(trackOrder.rejected,(state,action)=>{
+            state.loading=false,
+            state.error=action.error.message
+        })
+        .addCase(deliveredOrder.pending,(state)=>{
+            state.loading=true,
+            state.error=null
+        })
+        .addCase(deliveredOrder.fulfilled,(state,action)=>{
+            state.loading=false,
+            state.deliveredOrder=action?.payload
+        })
+        .addCase(deliveredOrder.rejected,(state,action)=>{
+            state.loading=false,
+            state.error=action.error.message
+        })
+    }
+})
+export const {clearOrders}=orderSlice.actions
+export default orderSlice.reducer

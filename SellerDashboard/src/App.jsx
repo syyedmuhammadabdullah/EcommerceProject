@@ -1,28 +1,15 @@
-import { useEffect, useState } from 'react'
-import {PrimaryBtn, DefaultBtn, SearchBtn, Divider, InputBox} from "./index"
-import SidebarMenu from './components/SidebarMenu'
-import ProductForm from './components/Form'
-import axios from 'axios'
-
+import {createBrowserRouter, RouterProvider} from "react-router-dom"
+import { OrderHistoryPage } from './index'
 function App() {
-useEffect(() => {
-// axios.post('http://localhost:3001/api/v1/sellers/register')
-axios.post('http://localhost:3001/api/v1/sellers/login')
-  .then(response => {
-    console.log(response.data)
-  })
-  .catch(error => {
-    console.error(error)
-  })
-}, [])
-
-  const [count, setCount] = useState(0)
-
+  const router = createBrowserRouter([
+    {
+      path:"/",
+      element:<OrderHistoryPage />,
+      errorElement:<h1>error</h1>
+    }
+  ])
   return (
-    <>
-  <ProductForm/>
-     
-    </>
+   <RouterProvider router={router} />
   )
 }
 

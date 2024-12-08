@@ -8,7 +8,8 @@ const authMiddleware=asyncHandler(async(req,res,next)=>{
        
            if (!accessToken) {
             console.log("access token not found runs");
-               throw new apiError(401,"UnAuthorized request")
+            await refreshAccessToken(req,res)
+            return next()
            }
      const decodedToken=await jwt.verify(accessToken,process.env.ACCESS_TOKEN_SECRET_KEY,async function(error,decodedToken){
          if (error) {

@@ -1,10 +1,10 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
-import { OrderHistoryPage } from './index'
+import { OrderHistoryPage, ProductsPage, ProductForm } from './index'
 function App() {
   const router = createBrowserRouter([
     {
       path:"/",
-      element:<OrderHistoryPage />,
+      element:<ProductForm />,
       errorElement:<h1>error</h1>
     }
   ])

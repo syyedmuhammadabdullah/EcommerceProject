@@ -13,7 +13,7 @@ import ProductContainer from "./components/ProductContainer";
 import StarRating from "./components/StarRating";
 import BillingFormCard from "./components/BillingFormCard";
 import TrackOrder from "./components/TrackOrder";
-
+import ProductForm from "./components/ProductForm";
 //Home Components
 import PromoSectionOne from "./components/Home/PromoSectionOne";
 import PopularProducts from "./components/Home/PopularProducts";
@@ -21,10 +21,10 @@ import ProductWithCategory from "./components/Home/ProductWithCategory";
 
 // pages
 import OrderHistoryPage from "./pages/OrderHistoryPage";
-
+import ProductsPage from "./pages/ProductsPage";
 //redux store
 // Slices
 
 // store
 import store from "./store/store";
-export { PrimaryBtn, DefaultBtn, SearchBtn,Divider,OrderHistoryPage,InputBox,Footer,store,Input,Button,CheckBox,SelectMenu,ProductContainer,StarRating,BillingFormCard,TrackOrder,PromoSectionOne,PopularProducts,ProductWithCategory };
+export { PrimaryBtn, DefaultBtn, SearchBtn,Divider,ProductForm ,OrderHistoryPage,ProductsPage,InputBox,Footer,store,Input,Button,CheckBox,SelectMenu,ProductContainer,StarRating,BillingFormCard,TrackOrder,PromoSectionOne,PopularProducts,ProductWithCategory };

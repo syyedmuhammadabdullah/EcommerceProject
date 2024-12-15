@@ -22,9 +22,40 @@ import ProductWithCategory from "./components/Home/ProductWithCategory";
 // pages
 import OrderHistoryPage from "./pages/OrderHistoryPage";
 import ProductsPage from "./pages/ProductsPage";
+
+//hooks
+import useProductFormData from "./hooks/useProductFormData";
+
 //redux store
 // Slices
+import productFormReducer from "./store/productForm/productForm";
+import { updateProductFormData } from "./store/productForm/productForm";
 
 // store
 import store from "./store/store";
-export { PrimaryBtn, DefaultBtn, SearchBtn,Divider,ProductForm ,OrderHistoryPage,ProductsPage,InputBox,Footer,store,Input,Button,CheckBox,SelectMenu,ProductContainer,StarRating,BillingFormCard,TrackOrder,PromoSectionOne,PopularProducts,ProductWithCategory };
+export {
+  PrimaryBtn,
+  DefaultBtn,
+  productFormReducer,
+  useProductFormData,
+  updateProductFormData,
+  SearchBtn,
+  Divider,
+  ProductForm,
+  OrderHistoryPage,
+  ProductsPage,
+  InputBox,
+  Footer,
+  store,
+  Input,
+  Button,
+  CheckBox,
+  SelectMenu,
+  ProductContainer,
+  StarRating,
+  BillingFormCard,
+  TrackOrder,
+  PromoSectionOne,
+  PopularProducts,
+  ProductWithCategory,
+};

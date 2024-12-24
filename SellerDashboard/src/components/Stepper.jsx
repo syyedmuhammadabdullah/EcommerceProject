@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef,Fragment } from "react";
-const Stepper = ({ steps = [] }) => {
+const Stepper = ({ steps = [],handleSubmit }) => {
   const [activeStep, setActiveStep] = useState(1);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -144,13 +144,10 @@ const ActiveComponent = steps[activeStep - 1]?.component;
       >
         Previous
       </button>
-      <button
+     {steps.length!==activeStep && <button
         onClick={handleNextStep}
         className="btn bg-primary-base text-white px-4 py-2 rounded mt-4"
-        >
-        {activeStep === steps.length ? "Finish" : "Next"}
-     
-      </button>
+        >Next</button>}
         </div>
     </>
   );

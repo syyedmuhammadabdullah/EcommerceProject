@@ -36,13 +36,22 @@ const authMiddleware=asyncHandler(async(req,res,next)=>{
      console.log(decodedToken.sessionId,req.user?.sessions);
      
      const session= user.sessions.find(session=>session.sessionId===decodedToken.sessionId)
+     const sellerSession= user.sellerSessions.find(session=>session.sessionId===decodedToken.sessionId)
+     const adminSession= user.adminSessions.find(session=>session.sessionId===decodedToken.sessionId)
      console.log("session",session);
      (session)
-     if (!session) {
+     if (!session || !sellerSession || !adminSession) {
          throw new apiError(400,"session not found")
         
      }
-     session.lastActive=Date.now()
+
+     if (session) {
+         session.lastActive=Date.now()
+     }else if (sellerSession) {
+         sellerSession.lastActive=Date.now()        
+     }else if (adminSession) {
+         adminSession.lastActive=Date.now()        
+     }
      await user.save()
  
      req.user=user

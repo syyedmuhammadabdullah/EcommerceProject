@@ -1,8 +1,9 @@
 import {configureStore} from '@reduxjs/toolkit'
-import productFormReducer from '../store/productForm/productForm'
+import { productFormReducer,sellerSlice } from '../index'
 const store=configureStore({
     reducer:{
-        productForm:productFormReducer
+        productForm:productFormReducer,
+        seller:sellerSlice,
     }
 })
 

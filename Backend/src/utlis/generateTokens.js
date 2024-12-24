@@ -30,12 +30,29 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     );
     const user = await UserModel.findById(decodedToken.id);
 
-    const session= user.sessions.find(session=>session.sessionId===decodedToken.sessionId)
-    if (!session) {
-        throw new apiError(400,"access token not valid")
+    // const session= user.sessions.find(session=>session.sessionId===decodedToken.sessionId)
+    // if (!session) {
+    //     throw new apiError(400,"access token not valid")
        
-    }
-    session.lastActive=Date.now()
+    // }
+    // session.lastActive=Date.now()
+    const session= user.sessions.find(session=>session.sessionId===decodedToken.sessionId)
+     const sellerSession= user.sellerSessions.find(session=>session.sessionId===decodedToken.sessionId)
+     const adminSession= user.adminSessions.find(session=>session.sessionId===decodedToken.sessionId)
+     console.log("session",session);
+     (session)
+     if (!session || !sellerSession || !adminSession) {
+         throw new apiError(400,"session not found")
+        
+     }
+
+     if (session) {
+         session.lastActive=Date.now()
+     }else if (sellerSession) {
+         sellerSession.lastActive=Date.now()        
+     }else if (adminSession) {
+         adminSession.lastActive=Date.now()        
+     }
 
     const { accessToken, refreshToken } = await generateTokens({userId:user._id,role:decodedToken.role,sessionId:decodedToken.sessionId});
 

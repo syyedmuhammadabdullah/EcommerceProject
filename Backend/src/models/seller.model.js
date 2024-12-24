@@ -2,9 +2,10 @@ import mongoose,{Schema} from "mongoose";
 
 
 const SellerSchema = new Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true },
-    password: { type: String, required: true },
+    userId:{type:Schema.Types.ObjectId,ref:"UserModel",required:true},
+    name: { type: String, },
+    email: { type: String,  },
+    password: { type: String,},
     phoneNumber: { type: String },
     address: { type: String },
     avatar: { type: String },

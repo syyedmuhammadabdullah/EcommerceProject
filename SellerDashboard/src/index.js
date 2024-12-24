@@ -22,7 +22,11 @@ import ProductWithCategory from "./components/Home/ProductWithCategory";
 // pages
 import OrderHistoryPage from "./pages/OrderHistoryPage";
 import ProductsPage from "./pages/ProductsPage";
+import LoginPage from "./pages/loginPage";
+import RegisterPage from "./pages/RegisterPage";
 
+//layouts
+import MainLayout from "./layouts/MainLayout";
 //hooks
 import useProductFormData from "./hooks/useProductFormData";
 
@@ -30,6 +34,14 @@ import useProductFormData from "./hooks/useProductFormData";
 // Slices
 import productFormReducer from "./store/productForm/productForm";
 import { updateProductFormData } from "./store/productForm/productForm";
+
+//product Slice
+import productReducer from "./store/slices/productSlice/productSlice";
+import createProduct from "./store/Slices/ProductSlice/createProduct";
+
+//seller Slice
+import sellerSlice from "./store/Slices/SellerSlice/SellerSlice";
+import createSeller from "./store/Slices/SellerSlice/createSeller";
 
 // store
 import store from "./store/store";
@@ -39,6 +51,10 @@ export {
   productFormReducer,
   useProductFormData,
   updateProductFormData,
+  productReducer,
+  createSeller,
+  sellerSlice,
+  createProduct,
   SearchBtn,
   Divider,
   ProductForm,
@@ -58,4 +74,7 @@ export {
   PromoSectionOne,
   PopularProducts,
   ProductWithCategory,
+  LoginPage,
+  RegisterPage,
+  MainLayout,
 };

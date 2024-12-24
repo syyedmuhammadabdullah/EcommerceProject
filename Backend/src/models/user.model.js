@@ -61,6 +61,8 @@ const userSchema = new Schema(
             enum: ["Male", "Female","Other"],
         },
         sessions: [sessionSchema],
+        sellerSessions: [sessionSchema],
+        adminSessions: [sessionSchema],
         refreshToken: {
             type: String,
         },
@@ -80,6 +82,14 @@ const userSchema = new Schema(
             enum: ["user", "admin","seller"],
             default: "user",
         },
+        sellerId: {
+            type: Schema.Types.ObjectId,
+            ref: "SellerModel",
+        },
+        adminId: {
+            type: Schema.Types.ObjectId,
+            ref: "AdminModel",
+        }
     },
     { timestamps: true }
 );

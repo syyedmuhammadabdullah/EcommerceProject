@@ -24,6 +24,7 @@ import { ProductReviewModel } from "./models/productReview.model.js";
 import { ProductQuestionModel } from "./models/productQuestion.model.js";
 import {MainCategoryModel} from "./models/mainCategory.model.js"
 import {SubMainCategoryModel} from "./models/subMainCategory.model.js"
+import { SellerModel } from "./models/seller.model.js";
 //Controllers
 
 //UserControllers
@@ -51,6 +52,7 @@ import { createBasicProduct } from "./controllers/productControllers/createBasic
 import { getAllProducts } from "./controllers/productControllers/getAllProducts.controller.js";
 import { getOneProduct } from "./controllers/productControllers/getOneProduct.controller.js";
 import { productFilter } from "./controllers/productControllers/productFIlter.controller.js";
+import { createProduct } from "./controllers/productControllers/createProduct.controller.js";
 //AddressControllers
 import { createAddress } from "./controllers/addressControllers/createAddress.controller.js";
 import { deleteAddress } from "./controllers/addressControllers/deleteAddress.controller.js";
@@ -106,6 +108,9 @@ import { updateSubMainCategory } from "./controllers/categoryControllers/subMain
 //Sub Sub Category Controllers
 //Comming Soon
 
+//Seller Controllers
+import { createSeller } from "./controllers/sellerController/createSeller.controller.js";
+
 //Services
 import { geoNamesCountries, geoNamesStates, geoNamesCities, geoNamesTowns } from "./services/geoNamesService.js";
 
@@ -151,7 +156,8 @@ export {
     WishlistModel,
     OrderModel,
     MainCategoryModel,
-    SubMainCategoryModel
+    SubMainCategoryModel,
+    SellerModel
 }; // End of Model Exports
 
 //Controller Exports
@@ -176,8 +182,11 @@ export {
     updateUserBasicInfo,
 }; // End of User Controller Exports
 
+// Seller Controller Exports
+export { createSeller }; // End of Seller Controller Exports
+
 // Product Controller Exports
-export { createBasicProduct, getAllProducts, getOneProduct, productFilter }; // End of Product Controller Exports
+export { createBasicProduct, getAllProducts, getOneProduct, productFilter,createProduct }; // End of Product Controller Exports
 
 // Address Controller Exports
 export { createAddress, editAddress, deleteAddress, getAllAddress, getSingleAddress, changeDefaultAddress }; // End of Address Controller Exports

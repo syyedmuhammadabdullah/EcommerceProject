@@ -19,7 +19,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     }
      await deleteOnCloudinary(user.public_id)
     user.avatar = result.secure_url;
-    user.public_id = result.public_id
+    user.public_id = result.public_id;
     await user.save();
    res.status(200).json(new apiResponse(200, "Avatar updated successfully", user));
 });

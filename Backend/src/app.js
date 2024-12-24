@@ -2,9 +2,6 @@ import express, { Router } from "express"
 import cors from "cors"
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser"
-import { apiError, asyncHandler } from "./index.js"
-
-
 const app=express();
 // app.use(cors());
 app.use(cors({
@@ -12,7 +9,7 @@ app.use(cors({
     credentials:true,	
 }));
 app.use(express.json());
-dotenv.config({path:"./config.env"});
+dotenv.config({path:"./.env"});
 app.use(cookieParser());
 app.use(express.static("public"));
 app.use(express.urlencoded({extended:true}));
@@ -31,7 +28,6 @@ const errorHandler = (err, req, res, next) => {
     });
   };
   
-  export { errorHandler };
   
 
   

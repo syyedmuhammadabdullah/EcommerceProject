@@ -36,7 +36,7 @@ const productFormSlice = createSlice({
     dimensions: { length: 0, width: 0, height: 0 },
     weight: 0,
     variants: [],
-    seller: ""
+    seller: "",
   },
   reducers: {
     updateProductFormData: (state, action) => {

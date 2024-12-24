@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllProducts, getOneProduct,createBasicProduct, productFilter, asyncHandler, apiError } from "../index.js";
+import { getAllProducts, getOneProduct,createBasicProduct, productFilter, asyncHandler, apiError,createProduct,uploadMiddleware } from "../index.js";
 const productRouter = Router();
 
 productRouter.get(
@@ -17,7 +17,7 @@ productRouter.get(
 
 productRouter.get("/getProducts", getAllProducts)
 productRouter.get("/getOneProduct", getOneProduct)
-productRouter.post("/createProduct", createBasicProduct)
+productRouter.post("/createProduct",uploadMiddleware.any(), createProduct)
 productRouter.get("/productFilter", productFilter)
 
 export { productRouter }

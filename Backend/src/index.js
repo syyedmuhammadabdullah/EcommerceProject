@@ -4,6 +4,8 @@ import { apiError } from "./utlis/apiError.js";
 import { apiResponse } from "./utlis/apiResponse.js";
 import { uploadOnCloudinary, deleteOnCloudinary } from "./utlis/cloudinary.js";
 import { generateTokens, options, refreshAccessToken } from "./utlis/generateTokens.js";
+import { transformAttributes } from "./utlis/transformAttributes.js";
+
 
 //Constants
 import { dbName } from "./constant.js";
@@ -53,6 +55,9 @@ import { getAllProducts } from "./controllers/productControllers/getAllProducts.
 import { getOneProduct } from "./controllers/productControllers/getOneProduct.controller.js";
 import { productFilter } from "./controllers/productControllers/productFIlter.controller.js";
 import { createProduct } from "./controllers/productControllers/createProduct.controller.js";
+import { getAllSellerProducts } from "./controllers/productControllers/getAllSellerProducts.controller.js";
+import { updateProductDetails } from "./controllers/productControllers/updateProductDetails.controller.js";
+import { deleteProduct } from "./controllers/productControllers/deleteProduct.controller.js";
 //AddressControllers
 import { createAddress } from "./controllers/addressControllers/createAddress.controller.js";
 import { deleteAddress } from "./controllers/addressControllers/deleteAddress.controller.js";
@@ -110,6 +115,7 @@ import { updateSubMainCategory } from "./controllers/categoryControllers/subMain
 
 //Seller Controllers
 import { createSeller } from "./controllers/sellerController/createSeller.controller.js";
+import { loginSeller } from "./controllers/sellerController/loginSeller.controller.js";
 
 //Services
 import { geoNamesCountries, geoNamesStates, geoNamesCities, geoNamesTowns } from "./services/geoNamesService.js";
@@ -136,7 +142,7 @@ import { app } from "./app.js";
 // Exports
 
 // Utils Exports
-export { asyncHandler, apiError, apiResponse, uploadOnCloudinary, generateTokens, refreshAccessToken, options }; // End of Utils Exports
+export { asyncHandler, apiError, apiResponse, uploadOnCloudinary, generateTokens, refreshAccessToken, options,transformAttributes }; // End of Utils Exports
 
 // Constants Export
 export { dbName }; // End of Constants Export
@@ -183,10 +189,10 @@ export {
 }; // End of User Controller Exports
 
 // Seller Controller Exports
-export { createSeller }; // End of Seller Controller Exports
+export { createSeller, loginSeller }; // End of Seller Controller Exports
 
 // Product Controller Exports
-export { createBasicProduct, getAllProducts, getOneProduct, productFilter,createProduct }; // End of Product Controller Exports
+export { createBasicProduct, getAllProducts, getOneProduct, productFilter,createProduct,getAllSellerProducts,updateProductDetails, deleteProduct }; // End of Product Controller Exports
 
 // Address Controller Exports
 export { createAddress, editAddress, deleteAddress, getAllAddress, getSingleAddress, changeDefaultAddress }; // End of Address Controller Exports

@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, CheckBox, Input,  } from "../index";
+import { Button, CheckBox, Input, loginSeller,  } from "../index";
 import { useDispatch, useSelector } from "react-redux";
 import { TailSpin } from "react-loader-spinner";
 import { UAParser } from 'ua-parser-js';
@@ -22,9 +22,18 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { loading, seller, error } = useSelector(
+    (state) => state.seller
+  );
+useEffect(() => {
+  console.log(seller);
+  
+}, [seller]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    dispatch(loginSeller({ email, password,device:string }));
   };
   return (
     <>

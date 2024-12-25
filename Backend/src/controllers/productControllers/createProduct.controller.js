@@ -1,8 +1,7 @@
-import { apiError, apiResponse, asyncHandler, ProductModel, uploadOnCloudinary, deleteOnCloudinary } from "../../index.js";
-import { transformAttributes } from "../../utlis/transformAttributes.js";
+import { apiError, apiResponse, asyncHandler, ProductModel, uploadOnCloudinary, deleteOnCloudinary,transformAttributes } from "../../index.js";
 
 const createProduct = asyncHandler(async (req, res) => {
-console.log("create product runs");
+console.log("create product runs",req.seller._id);
 const transformedAttributes = transformAttributes(req.body);
 
 console.log("transformed attributes",transformedAttributes);
@@ -22,7 +21,7 @@ console.log("transformed attributes",transformedAttributes);
             image:mainImage.secure_url,
             imagePublic_id:mainImage?.public_id,
             additionalImages:additionalImages?.map(image => {return {url:image.secure_url,public_id:image.public_id}}),
-            seller:"67276e45f3fac939bf91c98c",
+            seller:req.seller._id,
             attributes:[...transformedAttributes]
 
         }

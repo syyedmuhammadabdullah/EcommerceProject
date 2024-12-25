@@ -20,26 +20,18 @@ const createSeller = asyncHandler(async (req, res) => {
     const existingUser = await UserModel.findOne({
         $or: [{ email }, { username }],
     });
+        if (existingUser) {
+            throw new apiError(409, "User already exists");
+        }
 
-  
-
-        let user = existingUser;
-
-        if (!user) {
-            console.log("User not found; creating a new user");
-            user = await UserModel.create({
+          const user = await UserModel.create({
                 fullName,
                 email,
                 password,
                 username,
                 role: ["seller"], // Ensure `role` is an array if you want to push to it later
             });
-        }else if(user.role.includes("seller")){
-            throw new apiError(409, "Seller already exists");
-        }
-         else {
-            user.role.push("seller");
-        }
+      
         const seller = await SellerModel.create({
             userId:user._id,
         })
@@ -55,7 +47,7 @@ const createSeller = asyncHandler(async (req, res) => {
         await user.save();
        
         
-        let loggedInSeller = await UserModel.findById(user._id).select("-password -refreshToken");
+        let loggedInSeller = await UserModel.findById(user._id).select("-password -refreshToken").populate("sellerId");
         req.seller = loggedInSeller;
         
         res.status(201)

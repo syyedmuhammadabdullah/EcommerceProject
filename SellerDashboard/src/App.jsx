@@ -18,6 +18,14 @@ function App() {
         {
           path:"register",
           element:<RegisterPage />
+        },
+        {
+          path:"create-product",
+          element:<ProductForm />
+        },
+        {
+          path:"edit-product",
+          element:<ProductForm />
         }
       ]
     }

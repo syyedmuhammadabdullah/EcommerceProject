@@ -22,7 +22,7 @@ const createUser = asyncHandler(async (req, res) => {
     });
 
     if (existingUser) {
-        throw new apiError(409, "User already exists");
+        throw new apiError(400, "User already exists");
     }
 
     const newUser = await UserModel.create({

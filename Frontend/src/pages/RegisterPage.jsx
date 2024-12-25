@@ -47,7 +47,7 @@ const RegisterPage = () => {
         password,
         fullName,
         username,
-        device
+        device: string,
       })
     );
   };

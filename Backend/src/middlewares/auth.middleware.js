@@ -7,7 +7,6 @@ const authMiddleware=asyncHandler(async(req,res,next)=>{
        
        
            if (!accessToken) {
-            console.log("access token not found runs");
             await refreshAccessToken(req,res)
             return next()
            }
@@ -25,7 +24,6 @@ const authMiddleware=asyncHandler(async(req,res,next)=>{
      if (!decodedToken) {
        return next()
      }
-     console.log("decoded token",decodedToken);
      
 
      const user=await UserModel.findById(decodedToken.id)
@@ -33,28 +31,29 @@ const authMiddleware=asyncHandler(async(req,res,next)=>{
      if (!user) {
          throw new apiError(400,"access token not valid")
      }
-     console.log(decodedToken.sessionId,req.user?.sessions);
      
      const session= user.sessions.find(session=>session.sessionId===decodedToken.sessionId)
      const sellerSession= user.sellerSessions.find(session=>session.sessionId===decodedToken.sessionId)
      const adminSession= user.adminSessions.find(session=>session.sessionId===decodedToken.sessionId)
-     console.log("session",session);
-     (session)
-     if (!session || !sellerSession || !adminSession) {
+     
+     if (!session && !sellerSession && !adminSession) {
          throw new apiError(400,"session not found")
         
      }
-
+   
      if (session) {
          session.lastActive=Date.now()
+         req.user=user
      }else if (sellerSession) {
-         sellerSession.lastActive=Date.now()        
+         sellerSession.lastActive=Date.now()
+         req.seller=user      
      }else if (adminSession) {
-         adminSession.lastActive=Date.now()        
+         adminSession.lastActive=Date.now() 
+         req.admin=user     
      }
      await user.save()
  
-     req.user=user
+
      req.role=decodedToken.role
      req.sessionId=decodedToken.sessionId
      next()

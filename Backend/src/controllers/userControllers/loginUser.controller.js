@@ -18,6 +18,10 @@ const loginUser = asyncHandler(async (req, res) => {
     if (!user) {
         throw new apiError(401, "Invalid credentials");
     }
+    if (!user.role.includes("user")) {
+        throw new apiError(401, "role not matched");
+        
+    }
 
     const isMatch = await user.passwordCheck(password);
     if (!isMatch) {

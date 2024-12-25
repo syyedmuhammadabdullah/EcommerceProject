@@ -1,7 +1,8 @@
 const transformAttributes = (body) => {
+    
     const attributes = [];
-    const names = body['attribute[][name]'];
-    const values = body['attribute[][value]'];
+    const names = body['attributes[][name]'];
+    const values = body['attributes[][value]'];
 
     // Handle both single value and array scenarios
     const namesArray = Array.isArray(names) ? names : [names];

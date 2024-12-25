@@ -38,10 +38,14 @@ import { updateProductFormData } from "./store/productForm/productForm";
 //product Slice
 import productReducer from "./store/slices/productSlice/productSlice";
 import createProduct from "./store/Slices/ProductSlice/createProduct";
+import getAllProducts from "./store/Slices/ProductSlice/getAllProducts";
+import updateProduct from "./store/Slices/ProductSlice/updateProduct";
+import deleteProduct from "./store/Slices/ProductSlice/deleteProduct";
 
 //seller Slice
-import sellerSlice from "./store/Slices/SellerSlice/SellerSlice";
+import sellerReducer from "./store/Slices/SellerSlice/SellerSlice";
 import createSeller from "./store/Slices/SellerSlice/createSeller";
+import loginSeller from "./store/Slices/SellerSlice/loginSeller";
 
 // store
 import store from "./store/store";
@@ -51,9 +55,13 @@ export {
   productFormReducer,
   useProductFormData,
   updateProductFormData,
+  deleteProduct,
+  updateProduct,
   productReducer,
   createSeller,
-  sellerSlice,
+  getAllProducts,
+  loginSeller,
+  sellerReducer,
   createProduct,
   SearchBtn,
   Divider,

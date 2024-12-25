@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {createSeller} from "../../../index"
+import {createSeller,loginSeller} from "../../../index"
 const initialState = {
     loading: false,
     error: null,
@@ -21,6 +21,18 @@ const sellerSlice = createSlice({
                 state.seller = action.payload;
             })
             .addCase(createSeller.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            }).
+            addCase(loginSeller.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(loginSeller.fulfilled, (state, action) => {
+                state.loading = false;
+                state.seller = action.payload;
+            })
+            .addCase(loginSeller.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });

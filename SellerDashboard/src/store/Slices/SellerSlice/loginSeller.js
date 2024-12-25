@@ -1,13 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const createSeller = createAsyncThunk(
-    "seller/createSeller",
-    async ({ sellerForm }, { rejectWithValue }) => {
+const loginSeller = createAsyncThunk(
+    "seller/loginSeller",
+    async (credentials, { rejectWithValue }) => {
         try {
             const { data } = await axios.post(
-                "http://localhost:3001/api/v1/sellers/createSeller",
-                sellerForm,
+                "http://localhost:3001/api/v1/sellers/loginSeller",
+                credentials,
                 {
                     withCredentials: true,
                 }
@@ -21,4 +21,4 @@ const createSeller = createAsyncThunk(
     }
 );
 
-export default createSeller;
+export default loginSeller;

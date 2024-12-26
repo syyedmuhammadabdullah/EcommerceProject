@@ -40,7 +40,7 @@ const LoginPage = () => {
             unitPrice: product?.discountPrice
               ? product?.discountPrice
               : product.unitPrice,
-            userId: user._id,
+            userId: user?._id,
           }));
         localStorage.removeItem("pendingProduct");
         navigate("/shoping-cart");

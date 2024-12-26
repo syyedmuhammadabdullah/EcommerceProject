@@ -43,9 +43,12 @@ const authMiddleware=asyncHandler(async(req,res,next)=>{
    
      if (session) {
          session.lastActive=Date.now()
+         console.log("user found",user);
+         
          req.user=user
      }else if (sellerSession) {
          sellerSession.lastActive=Date.now()
+         console.log("seller found",user);
          req.seller=user      
      }else if (adminSession) {
          adminSession.lastActive=Date.now() 

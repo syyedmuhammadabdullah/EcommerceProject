@@ -5,7 +5,7 @@ import {
   MinusSquareFilled,
   PlusSquareFilled,
 } from "@ant-design/icons";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Input,
@@ -20,35 +20,7 @@ import {
 import {  useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 const ProductDetailPage = () => {
-  let des = `<h2>Amazing Product</h2>
-<p><strong>Discover the ultimate in comfort and style!</strong> Our amazing product is designed to provide you with the best experience possible.</p>
 
-<h3>Key Features:</h3>
-<ul>
-  <li>High-quality materials for durability</li>
-  <li>Available in multiple colors and sizes</li>
-  <li>Elegant and modern design</li>
-  <li>Easy to use and maintain</li>
-</ul>
-
-<p>This product is perfect for anyone looking to enhance their lifestyle. Whether you're at home or on the go, you'll appreciate the thoughtful design and attention to detail.</p>
-
-<h3>Why Choose Us?</h3>
-<p>We stand out from the competition with our commitment to quality and customer satisfaction. Here's why you'll love our product:</p>
-<ol>
-  <li>Competitive pricing without compromising on quality</li>
-  <li>Free shipping on all orders</li>
-  <li>30-day money-back guarantee</li>
-  <li>Friendly customer support available 24/7</li>
-</ol>
-
-<p>Order now and take advantage of our <em>limited-time offer</em>! Don't miss out on the opportunity to own this exceptional product.</p>
-
-<h3>Product Image:</h3>
-<p><img src="https://via.placeholder.com/300" alt="Amazing Product" style="max-width:100%;" /></p>
-
-<p>For more information, please visit our <a href="https://www.example.com">website</a> or contact our support team.</p>
-`;
   const { productId } = useParams();
 
   const dispatch = useDispatch();
@@ -60,6 +32,18 @@ const ProductDetailPage = () => {
   const {wishlist}=useSelector(state=>state.wishlist)
   const [question, setQuestion] = React.useState("");
   const [quantity,setQuantity]=React.useState(1)
+  const [selectedImage,setSelectedImage]=useState("")
+  useEffect(() => {
+    dispatch(getProductDetails(productId));
+    dispatch(getProductQuestion(productId));
+    dispatch(getProductReviews(productId));
+  
+  }, []);
+  useEffect(() => {
+    if (product && product.additionalImages?.length > 0) {
+      setSelectedImage(product.additionalImages[0].url);
+    }
+  }, [product]);
   const handleAddToCart = () => {
     if (!isAuthenticated) {
       localStorage.setItem("pendingProduct", JSON.stringify(product));
@@ -88,7 +72,7 @@ const ProductDetailPage = () => {
     console.log("handle question runs");
     
     dispatch(
-      createProductQuestion({ productId, question})
+      createProductQuestion({ productId, question,sellerId:product.seller })
     );
     setQuestion("");
   };
@@ -100,11 +84,7 @@ const ProductDetailPage = () => {
    navigate("/checkout",{state:{product}})
   };
 
-  useEffect(() => {
-    dispatch(getProductDetails(productId));
-    dispatch(getProductQuestion(productId));
-    dispatch(getProductReviews(productId));
-  }, []);
+
   useEffect(() => {
     console.log(productQuestions);
     
@@ -112,6 +92,9 @@ const ProductDetailPage = () => {
     
 
   }, [productQuestions,productReviews]);
+  const handleImageClick=(url)=>{
+    setSelectedImage(url)
+  }
 
   return (
     <section className="flex justify-center">
@@ -120,13 +103,13 @@ const ProductDetailPage = () => {
           <div className="product  grid grid-cols-1 xl:grid-cols-[1fr_2fr_1fr]">
             <div className="productImg ">
               <div className="imgplaceholder w-full h-screen xl:h-[400px]">
-                <img className="w-full h-full" src={product.image} alt="" />
+                <img className="w-full h-full" src={selectedImage} alt="" />
               </div>
 
               <div className="slider hidden  overflow-x-scroll w-[400px] h-[70px] items-center px-xs xl:flex gap-sm no-scrollbar">
                 {product?.additionalImages?.map((image,i) => (
-                  <div key={i} className="img w-[60px] flex-shrink-0 h-[60px]">
-                    <img src={image.url} alt="" className="w-full h-full" />
+                  <div key={i} className="img w-[60px] flex-shrink-0 h-[60px] cursor-pointer">
+                    <img src={image.url} alt="" className="w-full h-full" onMouseEnter={() => handleImageClick(image.url)}/>
                   </div>
                 ))}
               </div>
@@ -138,12 +121,12 @@ const ProductDetailPage = () => {
               </div>
 
               <div>
-                <div className="rating py-p-md flex items-center gap-xxs">
+                <div className="rating py-p-md flex items-center gap-xs">
                   <div className="stars ">
-                    {<StarRating rating={product.rating} size={"text-lg"} />}
+                    {<StarRating rating={product.averageRating} size={"text-lg"} />}
                   </div>
 
-                  <div className="count">{product.rating}</div>
+                  <div className="count text-md">{product.averageRating}</div>
                 
                     {
                       wishlist?.item?.find((item)=>item?.productId?._id===product?._id)?._id?  <div
@@ -178,16 +161,16 @@ const ProductDetailPage = () => {
                 </div>
               </div>
 
-              {product?.attribute?.map((attribute,i) => (
+              {product?.attributes?.map((attribute,i) => (
                 <div key={i} className="varient flex flex-col  gap-xs py-p-md">
                   <div className="name_active flex gap-sm">
                     <div className="name">
-                      <p>{attribute.attributeName}</p>
+                      <p>{attribute.name}</p>
                     </div>
                   </div>
                   <div className="options rounded-md flex-wrap border-[#00000026] overflow-scroll no-scrollbar flex w-fit">
                     <div className="option w-[82px] sm:w-[120px] text-center border-[#00000026] border px-p-md py-p-xxs">
-                      {attribute.attributeValue}
+                      {attribute.value}
                     </div>
                   </div>
                 </div>
@@ -270,12 +253,12 @@ const ProductDetailPage = () => {
 
           <div className="productDes grid gap-xl p-md">
             <div className="title">
-              <h5>Product Details of Product Name</h5>
+              <h5>Product Details of {product.name}</h5>
             </div>
 
             <div className="details">
-              <div dangerouslySetInnerHTML={{ __html: des }}></div>
-              {product.description}
+              <div dangerouslySetInnerHTML={{ __html: product.description }}></div>
+        
             </div>
           </div>
 
@@ -287,13 +270,13 @@ const ProductDetailPage = () => {
             <div className="rating  bg-background-layout flex flex-col sm:flex-row gap-lg">
               <div className="overrallRating  p-p-md">
                 <div className="avg">
-                  <p className="text-xxl text-black">{product.rating} / 5</p>
+                  <p className="text-xxl text-black">{product.averageRating} / 5</p>
                 </div>
                 <div className="stars flex gap-xxs ">
-                  <StarRating rating={product.rating} size={"text-xxl"} />
+                  <StarRating rating={product.averageRating} size={"text-xxl"} />
                 </div>
                 <div className="totalReviews">
-                  <p>10 Reviews</p>
+                  <p>{product.ratingCount} Review(s)</p>
                 </div>
               </div>
               
@@ -304,7 +287,7 @@ const ProductDetailPage = () => {
                     <div className="bar w-[100px] h-[10px] bg-border-secondary relative ">
                       <div className="range absolute left-0 top-0 bg-primary-base h-full w-[10px]"></div>
                     </div>
-                    <p>{productReviews?.length&& productReviews[0]?.ratingsCount[4]?.count}</p>
+                    <p>{product.fiveStars}</p>
                   </div>
                 </div>
                 <div className="fourStars flex gap-xxs">
@@ -313,7 +296,7 @@ const ProductDetailPage = () => {
                     <div className="bar w-[100px] h-[10px] bg-border-secondary relative ">
                       <div className="range absolute left-0 top-0 bg-primary-base h-full w-[10px]"></div>
                     </div>
-                    <p>{productReviews?.length&& productReviews[0]?.ratingsCount[3]?.count}</p>
+                    <p>{product.fourStars}</p>
                   </div>
                 </div>
 
@@ -323,7 +306,7 @@ const ProductDetailPage = () => {
                     <div className="bar w-[100px] h-[10px] bg-border-secondary relative ">
                       <div className="range absolute left-0 top-0 bg-primary-base h-full w-[10px]"></div>
                     </div>
-                    <p>{productReviews?.length&& productReviews[0]?.ratingsCount[2]?.count}</p>
+                    <p>{product.threeStars}</p>
                   </div>
                 
                 </div>
@@ -334,7 +317,7 @@ const ProductDetailPage = () => {
                     <div className="bar w-[100px] h-[10px] bg-border-secondary relative ">
                       <div className="range absolute left-0 top-0 bg-primary-base h-full w-[10px]"></div>
                     </div>
-                    <p>{productReviews?.length&& productReviews[0]?.ratingsCount[1]?.count}</p>
+                    <p>{product.twoStars}</p>
                   </div>
                 </div>
 
@@ -344,7 +327,7 @@ const ProductDetailPage = () => {
                     <div className="bar w-[100px] h-[10px] bg-border-secondary relative ">
                       <div className="range absolute left-0 top-0 bg-primary-base h-full w-[10px]"></div>
                     </div>
-                    <p>{productReviews?.length&& productReviews[0]?.ratingsCount[0]?.count}</p>
+                    <p>{product.oneStars}</p>
                   </div>
                 </div>
               </div>
@@ -396,20 +379,12 @@ const ProductDetailPage = () => {
                   <div className="reviewText">
                     <p>{review.comment}</p>
                   </div>
-                  <div className="reviewImg flex flex-wrap gap-md">
+                  {/* <div className="reviewImg flex flex-wrap gap-md">
                     <div className="img">
                       <img src="https://via.placeholder.com/80x90" alt="" />
                     </div>
-                    <div className="img">
-                      <img src="https://via.placeholder.com/80x90" alt="" />
-                    </div>
-                    <div className="img">
-                      <img src="https://via.placeholder.com/80x90" alt="" />
-                    </div>
-                    <div className="img">
-                      <img src="https://via.placeholder.com/80x90" alt="" />
-                    </div>
-                  </div>
+                   
+                  </div> */}
                 </div>
               )): (
                 <div>
@@ -457,9 +432,9 @@ const ProductDetailPage = () => {
                     </div>
                     <div className="user">
                       <div className="name flex gap-xs ">
-                        <p className="text-text-default text-sm">Hassan</p>
+                        <p className="text-text-default text-sm">{question.userName}</p>
                         <p className="text-text-default text-sm">
-                          10 march 2024
+              {question.createdAt}
                         </p>
                       </div>
                     </div>

@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { DeliveredProcedureOutlined } from '@ant-design/icons'
 import { useParams } from 'react-router-dom'
-import { StarRating, trackOrder } from '../index'
+import { Button, StarRating, trackOrder,addProductReview } from '../index'
 
 const OrderDetailPage = () => {
     const dispatch=useDispatch()
     const {trackedOrder,error}=useSelector(state=>state.order)
     const {orderId}=useParams();
     const [starRating, setStarRating] = useState(0);
+    const [review,setReview]=useState('')
     const createdDate=trackedOrder && new Date(trackedOrder[0]?.createdAt)
+
     useEffect(() => {
 
         dispatch(trackOrder({trackingNumber:orderId}))
@@ -21,7 +23,16 @@ const OrderDetailPage = () => {
         console.log(index);
         setStarRating(index)
     }
-
+    const handleReviewSubmit=()=>{
+        const productId=trackedOrder[0].product.productId;
+        const reviewData={
+            productId,
+            comment:review,
+            rating:starRating
+        }
+        console.log(reviewData);
+    dispatch(addProductReview(reviewData))
+    }
   return (
     
    
@@ -104,7 +115,9 @@ const OrderDetailPage = () => {
                 <div className="reviewBox bg-yellow-100">
                     <h3>Review</h3>
                     <StarRating size="text-xl cursor-pointer" rating={starRating} onClick={handleClick}/>
-                    <textarea name="reveiw" cols="30" rows="4"  id="" placeholder='Write a review' maxLength={560} minLength={10} className='border-2 w-full h-[270px] resize-none border-b-border-primary outline-none rounded-md'></textarea>
+                    <textarea name="reveiw" cols="30" rows="4"  id="" placeholder='Write a review' value={review} onChange={(e)=>setReview(e.target.value)} maxLength={560} minLength={10} className='border-2 w-full h-[270px] resize-none border-b-border-primary outline-none rounded-md'></textarea>
+
+                    <Button text='Submit Review' className='bg-primary-base text-white rounded-md px-xl py-2' onClick={handleReviewSubmit}/>
                 </div>
 
             </div>

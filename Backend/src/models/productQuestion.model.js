@@ -12,7 +12,7 @@ const ProductQuestionSchema=new Schema({
         ref:"UserModel",
         required:true,
     },
-    userFullName:{
+    userName:{
         type:String
     },
     storeName:{

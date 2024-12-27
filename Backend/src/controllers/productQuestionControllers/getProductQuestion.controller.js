@@ -5,6 +5,7 @@ const getProductQuestion=asyncHandler(async(req,res)=>{
     console.log("get product question runs", req.query);
     
     const productQuestions=await ProductQuestionModel.find({productId:req.query.productId})
+    .populate({path:"userId",select:"fullName -_id"})
     .sort({createdAt:-1}).skip(0).limit(10)
     console.log("product questions",productQuestions);
     

@@ -12,12 +12,6 @@ const ProductQuestionSchema=new Schema({
         ref:"UserModel",
         required:true,
     },
-    userName:{
-        type:String
-    },
-    storeName:{
-        type:String
-    },
     sellerId:{
         type:Schema.Types.ObjectId,
         ref:"SellerModel",

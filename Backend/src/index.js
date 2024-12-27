@@ -117,6 +117,7 @@ import { updateSubMainCategory } from "./controllers/categoryControllers/subMain
 import { createSeller } from "./controllers/sellerController/createSeller.controller.js";
 import { loginSeller } from "./controllers/sellerController/loginSeller.controller.js";
 import { updateSellerDetails } from "./controllers/sellerController/updateSellerDetails.controller.js";
+import { getSellerProductsQuestion } from "./controllers/sellerController/getSellerProductsQuestion.js";
 
 //Services
 import { geoNamesCountries, geoNamesStates, geoNamesCities, geoNamesTowns } from "./services/geoNamesService.js";
@@ -190,7 +191,7 @@ export {
 }; // End of User Controller Exports
 
 // Seller Controller Exports
-export { createSeller, loginSeller,updateSellerDetails }; // End of Seller Controller Exports
+export { createSeller, loginSeller,updateSellerDetails, getSellerProductsQuestion }; // End of Seller Controller Exports
 
 // Product Controller Exports
 export { createBasicProduct, getAllProducts, getOneProduct, productFilter,createProduct,getAllSellerProducts,updateProductDetails, deleteProduct }; // End of Product Controller Exports

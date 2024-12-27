@@ -40,7 +40,7 @@ const ProductDetailPage = () => {
   
   }, []);
   useEffect(() => {
-    console.log();
+    console.log(product?.seller?._id);
     if (product && product.additionalImages?.length > 0) {
       setSelectedImage(product.additionalImages[0].url);
     }
@@ -74,7 +74,7 @@ const ProductDetailPage = () => {
     console.log("handle question runs");
     
     dispatch(
-      createProductQuestion({ productId, question,sellerId:product.seller })
+      createProductQuestion({ productId, question,sellerId:product?.seller?._id })
     );
     setQuestion("");
   };
@@ -90,7 +90,9 @@ const ProductDetailPage = () => {
   useEffect(() => {
     console.log(productQuestions);
     
-    console.log(productReviews);
+    // console.log(productReviews);
+    console.log();
+    
     
 
   }, [productQuestions,productReviews]);
@@ -434,7 +436,7 @@ const ProductDetailPage = () => {
                     </div>
                     <div className="user">
                       <div className="name flex gap-xs ">
-                        <p className="text-text-default text-sm">{question.userName}</p>
+                        <p className="text-text-default text-sm">{question.userId.fullName}</p>
                         <p className="text-text-default text-sm">
               {question.createdAt}
                         </p>
@@ -452,7 +454,7 @@ const ProductDetailPage = () => {
                       
                     <div className="seller">
                       <div className="name flex gap-xs ">
-                        <p className="text-text-default text-sm">Ali</p>
+                        <p className="text-text-default text-sm">{product?.seller?.storeDetails?.storeName}</p>
                         <p className="text-text-default text-sm">
                           10 march 2024
                         </p>

@@ -43,6 +43,14 @@ import getAllProducts from "./store/Slices/ProductSlice/getAllProducts";
 import updateProduct from "./store/Slices/ProductSlice/updateProduct";
 import deleteProduct from "./store/Slices/ProductSlice/deleteProduct";
 
+//productQuestion Slice
+import productQuestionReducer from "./store/Slices/ProductQuestionSlice/productQuestionSlice";
+// import createProductQuestion from "./store/Slices/ProductQuestionSlice/createProductQuestion";
+import getProductsQuestion from "./store/Slices/ProductQuestionSlice/getProductsQuestion";
+import giveAnswerToQuestion from "./store/Slices/ProductQuestionSlice/giveAnswerToQuestion";
+// import updateProductQuestion from "./store/Slices/ProductQuestionSlice/updateProductQuestion";
+// import deleteProductQuestion from "./store/Slices/ProductQuestionSlice/deleteProductQuestion";
+
 //seller Slice
 import sellerReducer from "./store/Slices/SellerSlice/SellerSlice";
 import createSeller from "./store/Slices/SellerSlice/createSeller";
@@ -58,6 +66,9 @@ export {
   updateProductFormData,
   deleteProduct,
   updateProduct,
+  productQuestionReducer,
+  getProductsQuestion,
+  giveAnswerToQuestion,
   productReducer,
   createSeller,
   getAllProducts,

@@ -2,7 +2,7 @@ import {asyncHandler,apiError,apiResponse,ProductQuestionModel} from "../../inde
 
 const createProductQuestion=asyncHandler(async(req,res)=>{
     const {productId,question,sellerId}=req.body;
-    console.log(productId,question);
+    console.log(req.body);
     
     if(!productId || !question || !sellerId){
         throw new apiError(400,"All fields are required")

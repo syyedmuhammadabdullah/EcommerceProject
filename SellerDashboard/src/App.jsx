@@ -1,5 +1,5 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
-import { OrderHistoryPage, ProductsPage, ProductForm,LoginPage, RegisterPage,MainLayout } from './index'
+import { OrderHistoryPage, ProductsPage, ProductForm,LoginPage, RegisterPage,MainLayout,ProductQuestionsPage } from './index'
 function App() {
   const router = createBrowserRouter([
     {
@@ -26,6 +26,14 @@ function App() {
         {
           path:"edit-product",
           element:<ProductForm />
+        },
+        {
+          path:"order-history",
+          element:<OrderHistoryPage />
+        },
+        {
+          path:"product-questions",
+          element:<ProductQuestionsPage />
         }
       ]
     }

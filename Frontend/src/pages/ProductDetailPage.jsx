@@ -40,9 +40,11 @@ const ProductDetailPage = () => {
   
   }, []);
   useEffect(() => {
+    console.log();
     if (product && product.additionalImages?.length > 0) {
       setSelectedImage(product.additionalImages[0].url);
     }
+    
   }, [product]);
   const handleAddToCart = () => {
     if (!isAuthenticated) {
@@ -233,7 +235,7 @@ const ProductDetailPage = () => {
               <div className="storeDetails grid p-p-md gap-md grid-cols-2">
                 <div className="storename">
                   <p>Sold by</p>
-                  <h5>{product.seller}</h5>
+                  <h5>{product?.seller?.storeDetails?.storeName}</h5>
                 </div>
                 <div className="chatnow text-right">
                   <Button

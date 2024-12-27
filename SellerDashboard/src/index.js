@@ -24,6 +24,7 @@ import OrderHistoryPage from "./pages/OrderHistoryPage";
 import ProductsPage from "./pages/ProductsPage";
 import LoginPage from "./pages/loginPage";
 import RegisterPage from "./pages/RegisterPage";
+import ProductQuestionsPage from "./pages/ProductQuestionsPage";
 
 //layouts
 import MainLayout from "./layouts/MainLayout";
@@ -67,6 +68,7 @@ export {
   Divider,
   ProductForm,
   OrderHistoryPage,
+  ProductQuestionsPage,
   ProductsPage,
   InputBox,
   Footer,

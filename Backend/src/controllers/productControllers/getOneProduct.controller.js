@@ -4,7 +4,7 @@ import { apiError, apiResponse, asyncHandler, ProductModel } from "../../index.j
 const getOneProduct = asyncHandler(async (req, res) => {
     console.log("get product runs",req.query);
     
-    const product = await ProductModel.findById(req.query.productId);
+    const product = await ProductModel.findById(req.query.productId).populate({path:"seller",select:"storeDetails -_id"});
     if (!product) {
         throw new apiError(404, "Product not found");
     }

@@ -1,7 +1,7 @@
 import { apiError, apiResponse, asyncHandler, ProductModel, uploadOnCloudinary, deleteOnCloudinary,transformAttributes } from "../../index.js";
 
 const createProduct = asyncHandler(async (req, res) => {
-console.log("create product runs",req.seller._id);
+console.log("create product runs",req.seller.sellerId);
 const transformedAttributes = transformAttributes(req.body);
 
 console.log("transformed attributes",transformedAttributes);
@@ -21,7 +21,7 @@ console.log("transformed attributes",transformedAttributes);
             image:mainImage.secure_url,
             imagePublic_id:mainImage?.public_id,
             additionalImages:additionalImages?.map(image => {return {url:image.secure_url,public_id:image.public_id}}),
-            seller:req.seller._id,
+            seller:req.seller.sellerId,
             attributes:[...transformedAttributes]
 
         }

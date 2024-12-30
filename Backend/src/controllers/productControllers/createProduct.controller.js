@@ -18,6 +18,7 @@ console.log("transformed attributes",transformedAttributes);
         const additionalImages=uploadedImages?.slice(1);
         const productData={
             ...req.body,
+            totalStock:req.body.currentStock,
             image:mainImage.secure_url,
             imagePublic_id:mainImage?.public_id,
             additionalImages:additionalImages?.map(image => {return {url:image.secure_url,public_id:image.public_id}}),

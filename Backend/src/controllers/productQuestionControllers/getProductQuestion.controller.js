@@ -6,7 +6,7 @@ const getProductQuestion=asyncHandler(async(req,res)=>{
     
     const productQuestions=await ProductQuestionModel.find({productId:req.query.productId})
     .populate({path:"userId",select:"fullName -_id"})
-    .sort({createdAt:-1}).skip(0).limit(10)
+    .sort({createdAt:-1}).skip(0).limit(3)
     console.log("product questions",productQuestions);
     
     res.status(200).json(new apiResponse(200,"Product questions fetched successfully",productQuestions))

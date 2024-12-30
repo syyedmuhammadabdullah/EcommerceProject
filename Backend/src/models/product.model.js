@@ -127,6 +127,11 @@ const ProductSchema = new Schema({
         width: { type: Number },
         height: { type: Number }
     },
+    status: {
+        type: String,
+        enum: ["active", "inactive", "suspended","draft"],
+        default: "active"
+    },
     weight: {
         type: Number
     },

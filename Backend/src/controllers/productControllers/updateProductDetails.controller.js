@@ -20,7 +20,7 @@ const updateProductDetails = asyncHandler(async (req, res) => {
     const productId=req.body._id;
     const attributes=transformAttributes(req.body)
     console.log("update product runs",attributes);
-const productDetails={...req.body,attributes}
+const productDetails={...req.body,totalStock: req.body.currentStock,attributes}
 
 if (!productId) {
     throw new apiError(400, "Product ID is required");

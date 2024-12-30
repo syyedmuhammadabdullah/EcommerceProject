@@ -14,6 +14,7 @@ const generateTokens = async ({userId,role,sessionId}) => {
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
     const inComingRefreshToken = req.cookies.refreshToken;
+    
 
     if (!inComingRefreshToken) {
         throw new apiError(400, "refresh Token not found");
@@ -29,19 +30,11 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
         }
     );
     const user = await UserModel.findById(decodedToken.id);
-
-    // const session= user.sessions.find(session=>session.sessionId===decodedToken.sessionId)
-    // if (!session) {
-    //     throw new apiError(400,"access token not valid")
-       
-    // }
-    // session.lastActive=Date.now()
     const session= user.sessions.find(session=>session.sessionId===decodedToken.sessionId)
      const sellerSession= user.sellerSessions.find(session=>session.sessionId===decodedToken.sessionId)
      const adminSession= user.adminSessions.find(session=>session.sessionId===decodedToken.sessionId)
-     console.log("session",session);
-     (session)
-     if (!session || !sellerSession || !adminSession) {
+     
+     if (!session && !sellerSession && !adminSession) {
          throw new apiError(400,"session not found")
         
      }
@@ -50,7 +43,9 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
         session.lastActive=Date.now()
         req.user=user
     }else if (sellerSession) {
-        sellerSession.lastActive=Date.now()  
+        sellerSession.lastActive=Date.now()
+        console.log("seller found",user);
+          
         req.seller=user      
     }else if (adminSession) {
         adminSession.lastActive=Date.now()   

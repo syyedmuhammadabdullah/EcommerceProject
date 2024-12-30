@@ -28,7 +28,7 @@ const handleDelete=(id)=>{
 }
   return (
     <section className="flex justify-center">
-      <div className="container lg:gap-xxl bg-white grid gap-xl px-p-md lg:p-p-xxl">
+      <div className="container max-w-screen-xl lg:gap-xxl bg-white grid gap-xl px-p-md lg:p-p-xxl">
         <div className="top-menu flex justify-between items-end">
         <div className="title ">
           <h4>Products</h4>
@@ -72,43 +72,71 @@ const handleDelete=(id)=>{
         <div className="content w-full overflow-scroll no-scrollbar">
 
        
-        <div className="data w-full grid gap-lg overflow-scroll no-scrollbar">
+        <div className="data w-full grid overflow-scroll no-scrollbar">
+          <div className="head grid grid-cols-[48px_389px_389px_137px_179px_111px] h-[54px] items-center bg-[#00000005]">
+           <div className="id border pl-[10px] w-[48px] flex items-center border-[#0000000f] h-full" >ID</div>
+           <div className="name border pl-[10px] w-[389px] flex items-center border-[#0000000f] h-full" >Product Name</div>
+           <div className="stock border pl-[10px] w-[389px] flex items-center border-[#0000000f] h-full" >In Stock</div>
+           <div className="price border pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >Price</div>
+           <div className="price border pl-[10px] w-[179px] flex items-center border-[#0000000f] h-full" >Status</div>
+           <div className="action border pl-[10px] w-[111px] flex items-center border-[#0000000f] h-full" >Action</div>
+          </div>
+          {
+            products?.map((product,index)=>(
+              <div key={product._id} className="body grid grid-cols-[48px_389px_389px_137px_179px_111px] items-center  h-[72px]  ">
+              <div className="id border pl-[10px] w-[48px] flex items-center border-[#0000000f] h-full" >{index+1}</div>
+               <div className="name border text-text-secondary gap-xs text-sm pl-[10px] w-[389px] flex items-center border-[#0000000f] h-full" >
+               <div className="img w-[40px] h-[40px]">
+               <img src={product.image} alt=""  className="w-full h-full"/>
+               </div>
+               <div className="name">
+                <p>{product.name.length>40?product.name.slice(0,40)+"...":product.name}</p>
+               <p>in {product.category}</p>
+               </div>
+                </div>
+               <div className="stock border pl-[10px] w-[389px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >
+               <div className="bar w-[128px] h-[10px] rounded-md overflow-hidden bg-border-secondary relative ">
+                          <div className={`range absolute left-0 top-0 bg-primary-base h-full`} style={{width:`${product.currentStock/product.totalStock*100}%`}}></div>
+                        </div>
+                          <p>{product.currentStock} in Stock</p>
+               </div>
+               <div className="price border pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >{product.price}</div>
+               <div className="price border pl-[10px] w-[179px] flex items-center border-[#0000000f] h-full" >{product.status}</div>
+               <div className="action border pl-[10px] w-[111px] flex items-center border-[#0000000f] h-full" >Action</div>
+                 
+              </div>
+            ))
+          }
+          {
+            products?.map((product,index)=>(
+              <div key={product._id} className="body grid grid-cols-[48px_389px_389px_137px_179px_111px] items-center  h-[72px]  ">
+              <div className="id border pl-[10px] w-[48px] flex items-center border-[#0000000f] h-full" >{index+1}</div>
+               <div className="name border text-text-secondary gap-xs text-sm pl-[10px] w-[389px] flex items-center border-[#0000000f] h-full" >
+               <div className="img w-[40px] h-[40px]">
+               <img src={product.image} alt=""  className="w-full h-full"/>
+               </div>
+               <div className="name">
+                <p>{product.name.length>40?product.name.slice(0,40)+"...":product.name}</p>
+               <p>in {product.category}</p>
+               </div>
+                </div>
+               <div className="stock border pl-[10px] w-[389px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >
+               <div className="bar w-[128px] h-[10px] rounded-md overflow-hidden bg-border-secondary relative ">
+                          <div className={`range absolute left-0 top-0 bg-primary-base h-full`} style={{width:`${product.currentStock/product.totalStock*100}%`}}></div>
+                        </div>
+                          <p>{product.currentStock} in Stock</p>
+               </div>
+               <div className="price border pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >{product.price}</div>
+               <div className="price border pl-[10px] w-[179px] flex items-center border-[#0000000f] h-full" >{product.status}</div>
+               <div className="action border pl-[10px] w-[111px] flex items-center border-[#0000000f] h-full" >Action</div>
+                 
+              </div>
+            ))
+          }
+       
+        
           
-          <table className="w-[1200px] xl:w-full border-collapse  border-spacing-4 overflow-x-scroll xl:overflow-visible no-scrollbar">
-            {/* Table Header */}
-            <thead className="heading bg-gray-200">
-              <tr className="h-[60px] ">
-                <th>Order ID</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Rating</th>
-                <th>Category</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-
-            {/* Table Body */}
-            <tbody className="ProductContainer text-center">
-              {
-                products?.length === 0 ? <tr ><td className="mt-5" colSpan={7}>No products found</td></tr> :
-                products?.map((product) => (
-                  <tr className="Product h-[60px] border-b-2" key={product._id}>
-                  <td >{product._id.slice(0, 8)}</td>
-                  <td width={"200px"}>{product.name.slice(0, 58)}	{product.name.length>58 && "..."}</td>
-                  <td>${product.price}</td>
-                  <td>{product.currentStock}</td>
-                  <td>{product.averageRating}</td>
-                  <td>{product.category}</td>
-                  <td >
-                   <Button children="Edit" onClick={() => handleEdit("","",product)} className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm mr-2 text-white" />
-                   <Button children="Delete" onClick={() => handleDelete(product._id)} className="bg-error-base w-fit px-p-md py-p-xxs rounded-sm text-white" />
-                  </td>
-                </tr>
-                ))
-              }
-            </tbody>
-          </table>
+         
         </div>
         {/* Pagination */}
         {products?.length === 0 ? "" :

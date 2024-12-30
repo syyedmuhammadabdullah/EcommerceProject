@@ -311,7 +311,7 @@ useEffect(()=>{
 ?.flatMap((item) => item?.products || [])
 ?.slice(0, 5)?.map((product) => (
                                 <div className="product border-b-2 grid gap-xs grid-cols-4 lg:grid-cols-5 py-p-xs"key={product._id} >
-                <div className="name py-sm px-xs">{product.name}</div>
+                <div className="name py-sm px-xs">{product.name.length > 37 ? product.name.slice(0, 37) + "..." : product.name}</div>
                 <div className="price py-sm px-xs">
                   $ <span>{product.price}</span>
                 </div>

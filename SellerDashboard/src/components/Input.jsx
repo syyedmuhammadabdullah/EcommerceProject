@@ -5,7 +5,7 @@ const Input =forwardRef(({
   name = "",
   value = "",
   onChange = () => {},
-  
+  isLeftIcon = false,
   divClassName = "",
   inputClassName = "",
   icon = null,
@@ -18,7 +18,7 @@ const Input =forwardRef(({
    
 
     <div className={`p-2 border rounded-md border-border-primary placeholder:text-text-placeholder text-text-default flex gap-[10px] ${divClassName}`}>
-    {icon}
+    {isLeftIcon && icon}
     <input
       type={type}
       name={name}
@@ -30,6 +30,7 @@ const Input =forwardRef(({
       ref={ref}
       
       />
+      {!isLeftIcon && icon}
       {name==="password"&& passwordIcon}
       
       </div>

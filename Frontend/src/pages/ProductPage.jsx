@@ -13,8 +13,10 @@ useEffect(()=>{
 
   axios.get(`http://localhost:3001/api/v1/products/getProducts?page=${pageNum}&limit=${limit}`)
   .then(res=>{
-
+    console.log(res.data.data);
+    
     setData(res.data.data)
+
   })
   .catch(err=>{
     console.log(err)
@@ -28,7 +30,7 @@ useEffect(()=>{
 
       {data ? data?.map((item,i)=>(
 
-<ProductContainer onClick={()=>navigat(`/product/${item._id}` , { state: { product: item } })} key={item._id} id={item._id} name={item.name} discountedPrice={item.discountPrice} originalPrice={item.price} img={item.image} />
+<ProductContainer onClick={()=>navigat(`/product/${item._id}` , { state: { product: item } })} key={item._id} id={item._id} name={item.name} discountedPrice={item.discountPrice} originalPrice={item.price} img={item.image} rating={item.averageRating} />
 )):<p>Loading</p>
 
 }

@@ -119,6 +119,10 @@ import { loginSeller } from "./controllers/sellerController/loginSeller.controll
 import { updateSellerDetails } from "./controllers/sellerController/updateSellerDetails.controller.js";
 import { getSellerProductsQuestion } from "./controllers/sellerController/getSellerProductsQuestion.js";
 
+
+//Customer Controllers
+import { getAllSellerCustomers } from "./controllers/customerControllers/getAllSellerCustomers.js";
+
 //Services
 import { geoNamesCountries, geoNamesStates, geoNamesCities, geoNamesTowns } from "./services/geoNamesService.js";
 
@@ -135,11 +139,13 @@ import { paymentRouter } from "./routes/payment.routes.js";
 import { productReviewRouter } from "./routes/productReview.routes.js";
 import { productQuestionRouter } from "./routes/productQuestion.routes.js";
 import { mainCategoryRouter, subMainCategoryRouter } from "./routes/category.routes.js";
+import { customerRouter } from "./routes/customer.route.js";
 
 
 //Others
 import { connectDB } from "./db/connectDB.js";
 import { app } from "./app.js";
+import e from "express";
 
 // Exports
 
@@ -193,6 +199,9 @@ export {
 // Seller Controller Exports
 export { createSeller, loginSeller,updateSellerDetails, getSellerProductsQuestion }; // End of Seller Controller Exports
 
+//Customer Controller Exports
+export { getAllSellerCustomers };
+
 // Product Controller Exports
 export { createBasicProduct, getAllProducts, getOneProduct, productFilter,createProduct,getAllSellerProducts,updateProductDetails, deleteProduct }; // End of Product Controller Exports
 
@@ -245,6 +254,7 @@ export {
     wishlistRouter,
     mainCategoryRouter,
     subMainCategoryRouter,
+    customerRouter
 }; // End of Route Exports
 
 // Service Exports

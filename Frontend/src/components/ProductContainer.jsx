@@ -31,11 +31,11 @@ onClick=()=>{}
         <StarFilled className='text-yellow-300'/>
         <StarFilled className='text-yellow-300'/> */}
         </div>
-        <div className="total">{rating?rating:20}</div>
+        <div className="total">{rating?rating:0}</div>
        </div>
-       <div className="p-Name"><p>{name? name:"Product Name tuyt hfhjfyj hjfyjr hjrfuyjruy hjfdyjreyu yhjdty"} </p></div>
+       <div className="p-Name"><p>{name? name?.length> 70 ? name.slice(0,70)+"...":name:"Product Name tuyt hfhjfyj hjfyjr hjrfuyjruy hjfdyjreyu yhjdty"} </p></div>
 
-       <div className="p-Price flex gap-xxs">
+       <div className="p-Price flex mt-xs gap-xxs">
         <div className="discounted-Price">Rs {discountedPrice?discountedPrice:100}</div>
         <div className="Original-Price line-through text-icon-default">Rs {originalPrice?originalPrice:120}</div>
        

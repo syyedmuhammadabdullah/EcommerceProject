@@ -5,7 +5,7 @@ const updateSellerDetails=asyncHandler(async(req,res)=>{
     const sellerDetails=req.body;
     const seller=await SellerModel.findById(sellerId);
     if(!seller){
-        throw new apiError(res,"Seller not found",404);
+        throw new apiError(404,"Seller not found",);
     }
     const updatedSeller=await SellerModel.findByIdAndUpdate(sellerId,sellerDetails,{new:true});
     res.status(200).json(new apiResponse(200,"Seller details updated",updatedSeller));

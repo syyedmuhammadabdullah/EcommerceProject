@@ -1,11 +1,12 @@
 import {configureStore} from '@reduxjs/toolkit'
-import { productFormReducer,sellerReducer,productReducer,productQuestionReducer } from '../index'
+import { productFormReducer,sellerReducer,productReducer,productQuestionReducer,customerReducer } from '../index'
 const store=configureStore({
     reducer:{
         productForm:productFormReducer,
         seller:sellerReducer,
         product:productReducer,
-        productsQuestion:productQuestionReducer
+        productsQuestion:productQuestionReducer,
+        customer:customerReducer
     }
 })
 

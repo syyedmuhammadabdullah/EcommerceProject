@@ -65,7 +65,7 @@ const handleDecreaseQuantity=(item)=>{
       
       
       
-      <div className="name"><p>{item.name}</p></div>
+      <div className="name"><p>{item.name.length> 70 ? item.name.slice(0,70)+"...":item.name}</p></div>
       <div className="quantity flex">
         <div className="increment" onClick={()=>handleIncreaseQuantity(item)}><PlusOutlined /></div>
         <div className="quantity">{item.quantity}</div>

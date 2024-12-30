@@ -88,7 +88,7 @@ const ProductQuestionsPage = () => {
            <div className="p-details w-[360px] bg-red-50 flex gap-xs">
                <div className="img w-[70px] "><img src={product?.productId?.image} alt="img" /></div>
                <div className="name">
-               <p>{product?.productId?.name}</p>
+               <p>{product?.productId?.name.length>70 ? product?.productId?.name.slice(0,70)+"..." : product?.productId?.name}</p>
                </div>
            </div>
            </td>

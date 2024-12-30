@@ -33,6 +33,7 @@ const ProductDetailPage = () => {
   const [question, setQuestion] = React.useState("");
   const [quantity,setQuantity]=React.useState(1)
   const [selectedImage,setSelectedImage]=useState("")
+  const [magnifiedImage,setMagnifiedImage]=useState("")
   useEffect(() => {
     dispatch(getProductDetails(productId));
     dispatch(getProductQuestion(productId));
@@ -99,6 +100,11 @@ const ProductDetailPage = () => {
   const handleImageClick=(url)=>{
     setSelectedImage(url)
   }
+  const handleImageHover=(url)=>{
+    console.log(url);
+    setMagnifiedImage(url)
+    
+  }
 
   return (
     <section className="flex justify-center">
@@ -106,8 +112,11 @@ const ProductDetailPage = () => {
         <div className="container  flex-col gap-xxl py-p-lg">
           <div className="product  grid grid-cols-1 xl:grid-cols-[1fr_2fr_1fr]">
             <div className="productImg ">
-              <div className="imgplaceholder w-full h-screen xl:h-[400px]">
-                <img className="w-full h-full" src={selectedImage} alt="" />
+              <div className={`imgHover ${magnifiedImage===""?"hidden":""} z-10 left-[450px] absolute w-[600px] h-[400px]`}>
+                <img src={magnifiedImage} className="w-full h-full"  alt="" />
+              </div>
+              <div className="imgplaceholder cursor-grab w-full h-screen xl:h-[400px]">
+                <img className="w-full h-full" src={selectedImage} alt=""  onMouseLeave={() => setMagnifiedImage("")} onMouseEnter={(e) => handleImageHover(e.target.src)}/>
               </div>
 
               <div className="slider hidden  overflow-x-scroll w-[400px] h-[70px] items-center px-xs xl:flex gap-sm no-scrollbar">
@@ -289,7 +298,7 @@ const ProductDetailPage = () => {
                   <StarRating rating={5} size={"text-lg"} />
                   <div className="count flex gap-xs items-center">
                     <div className="bar w-[100px] h-[10px] bg-border-secondary relative ">
-                      <div className="range absolute left-0 top-0 bg-primary-base h-full w-[10px]"></div>
+                      <div className={`range absolute left-0 top-0 bg-primary-base h-full`} style={{width:`${(product?.fiveStars/product?.ratingCount)*100}%`}}></div>
                     </div>
                     <p>{product.fiveStars}</p>
                   </div>
@@ -298,7 +307,7 @@ const ProductDetailPage = () => {
                   <StarRating rating={4} size={"text-lg"} length={4} />
                   <div className="count flex gap-xs items-center">
                     <div className="bar w-[100px] h-[10px] bg-border-secondary relative ">
-                      <div className="range absolute left-0 top-0 bg-primary-base h-full w-[10px]"></div>
+                      <div className={`range absolute left-0 top-0 bg-primary-base h-full `} style={{width:`${(product?.fourStars/product?.ratingCount)*100}%`}}></div>
                     </div>
                     <p>{product.fourStars}</p>
                   </div>
@@ -308,7 +317,7 @@ const ProductDetailPage = () => {
                   <StarRating rating={3} size={"text-lg"} length={3} />
                   <div className="count flex gap-xs items-center">
                     <div className="bar w-[100px] h-[10px] bg-border-secondary relative ">
-                      <div className="range absolute left-0 top-0 bg-primary-base h-full w-[10px]"></div>
+                      <div className={`range absolute left-0 top-0 bg-primary-base h-full `} style={{width:`${(product?.threeStars/product?.ratingCount)*100}%`}}></div>
                     </div>
                     <p>{product.threeStars}</p>
                   </div>
@@ -319,7 +328,7 @@ const ProductDetailPage = () => {
                   <StarRating rating={2} size={"text-lg"} length={2} />
                   <div className="count flex gap-xs items-center">
                     <div className="bar w-[100px] h-[10px] bg-border-secondary relative ">
-                      <div className="range absolute left-0 top-0 bg-primary-base h-full w-[10px]"></div>
+                      <div className={`range absolute left-0 top-0 bg-primary-base h-full `} style={{width:`${(product?.twoStars/product?.ratingCount)*100}%`}}></div>
                     </div>
                     <p>{product.twoStars}</p>
                   </div>
@@ -329,7 +338,7 @@ const ProductDetailPage = () => {
                   <StarRating rating={1} size={"text-lg"} length={1} />
                   <div className="count flex gap-xs items-center">
                     <div className="bar w-[100px] h-[10px] bg-border-secondary relative ">
-                      <div className="range absolute left-0 top-0 bg-primary-base h-full w-[10px]"></div>
+                      <div className={`range absolute left-0 top-0 bg-primary-base h-full`} style={{width:`${(product?.oneStars/product?.ratingCount)*100}%`}}></div>
                     </div>
                     <p>{product.oneStars}</p>
                   </div>

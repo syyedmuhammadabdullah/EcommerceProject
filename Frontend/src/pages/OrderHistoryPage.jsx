@@ -50,7 +50,7 @@ const OrderHistoryPage = () => {
                                 {
                                 order?.orders?.map((product) =>(
                                         <div className="product border-b-2 grid gap-xs grid-cols-4 lg:grid-cols-5 py-p-xs">
-                                    <div className="name py-sm px-xs">{product?.products.name}</div>
+                                    <div className="name py-sm px-xs">{product?.products.name.length>37?product?.products.name.slice(0,37)+"...":product?.products.name}</div>
                                 <div className="price py-sm px-xs">$ <span>{product?.products.price}</span></div>
                                 <div className="amount py-sm px-xs">{product?.products.quantity}</div>
                                 <div className="status py-sm px-xs" >{product?.products?.tracking?.status}</div>

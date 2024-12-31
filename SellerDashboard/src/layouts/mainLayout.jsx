@@ -5,7 +5,7 @@ const mainLayout = () => {
 
   return (
     <>
-        <div className='layout max-w-screen-xl lg:h-screen lg:overflow-hidden flex flex-col lg:flex-row'>
+        <div className='layout max-w-screen-2xl lg:h-screen lg:overflow-hidden flex flex-col lg:flex-row'>
       <div className="navbar hidden lg:block lg:sticky top-0 left-0">
     <SidebarMenu/>
       </div>

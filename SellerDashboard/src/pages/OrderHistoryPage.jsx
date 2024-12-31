@@ -2,9 +2,16 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Input from "../components/Input";
 import { SearchOutlined } from "@ant-design/icons";
-import { Button } from "../index";
+import { Button,getSellerOrders } from "../index";
+import { useSelector,useDispatch } from "react-redux";
 
 const OrderHistoryPage = () => {
+  const { orders,totalOrders } = useSelector((state) => state.order);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log("orders", orders);
+    dispatch(getSellerOrders());
+  }, []);
   return (
     <section className="flex justify-center">
       <div className="container lg:gap-xxl bg-white grid gap-xl px-p-md lg:p-p-xxl">
@@ -41,70 +48,39 @@ const OrderHistoryPage = () => {
         </div>
         <div className="content w-full overflow-scroll no-scrollbar">
 
-       
-        <div className="data w-full grid gap-lg overflow-scroll no-scrollbar">
-          <table className="w-[1200px] xl:w-full border-collapse  border-spacing-4 overflow-x-scroll xl:overflow-visible no-scrollbar">
-            {/* Table Header */}
-            <thead className="heading bg-gray-200">
-              <tr className="h-[60px] ">
-                <th>Order ID</th>
-                <th>Date</th>
-                <th>Price</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Customer</th>
-                <th>Details</th>
-              </tr>
-            </thead>
-
-            {/* Table Body */}
-            <tbody className="ProductContainer text-center">
-              <tr className="Product h-[60px] border-b-2">
-                <td>1</td>
-                <td>2023-06-01</td>
-                <td>$100</td>
-                <td>1</td>
-                <td>Shipped</td>
-                <td>John Doe</td>
-                <td>
-                  <Link to="#">Track Order</Link>
-                </td>
-              </tr>
-              <tr className="Product h-[60px] border-b-2">
-                <td>1</td>
-                <td>2023-06-01</td>
-                <td>$100</td>
-                <td>1</td>
-                <td>Shipped</td>
-                <td>John Doe</td>
-                <td>
-                  <Link to="#">Track Order</Link>
-                </td>
-              </tr>
-              <tr className="Product h-[60px] border-b-2">
-                <td>1</td>
-                <td>2023-06-01</td>
-                <td>$100</td>
-                <td>1</td>
-                <td>Shipped</td>
-                <td>John Doe</td>
-                <td>
-                  <Link to="#">Track Order</Link>
-                </td>
-              </tr>
-              <tr className="Product h-[60px] border-b-2">
-                <td>1</td>
-                <td>2023-06-01</td>
-                <td>$100</td>
-                <td>1</td>
-                <td>Shipped</td>
-                <td>John Doe</td>
-                <td>
-                  <Link to="#">Track Order</Link>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div className="data w-full grid overflow-scroll no-scrollbar">
+        <div className="head grid grid-cols-[48px_389px_137px_137px_137px_137px] h-[54px] items-center bg-[#00000005]">
+           <div className="id border pl-[10px] w-[48px] flex items-center border-[#0000000f] h-full" >No.</div>
+           <div className="name border pl-[10px] w-[389px] flex items-center border-[#0000000f] h-full" >Customer Name</div>
+           <div className="stock border pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >No. of products</div>
+           <div className="price border pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >Total Amount</div>
+           <div className="price border pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >Order Status</div>
+           <div className="action border pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >Action</div>
+          </div>
+          {orders?.length && orders?.map((order,index) => (
+    
+              <div key={order.productId} className="body grid grid-cols-[48px_389px_137px_137px_137px_137px] items-center  h-[72px]  ">
+              <div className="id border pl-[10px] w-[48px] flex items-center border-[#0000000f] h-full" >{index+1}.</div>
+               <div className="name border text-text-secondary gap-xs pl-[10px] w-[389px] flex items-center border-[#0000000f] h-full" >
+                {order?.userId?.fullName}
+                </div>
+               <div className="stock border pl-[10px] w-[137px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >
+               <p>{order.totalItems}</p>
+               </div>
+               <div className="price border pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >{order?.totalPrice}</div>
+               <div className="price border pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >{order?.status}</div>
+               <div className="action border pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >
+               <Link to={`/order-details/${order._id}`}>
+                <Button
+                  children="View Order"
+                  className="option  text-black text-center border-[#00000026] border px-p-md py-p-xxs" />
+                </Link>
+               </div>
+                 
+              </div>
+               
+          ))}
+          
         </div>
         <div className="pagination flex gap-xs">
           <span>1</span>

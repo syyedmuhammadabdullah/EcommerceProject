@@ -67,7 +67,7 @@ const CheckOutPage = () => {
           billingAddress: selectedBillingInfo,
           cartProducts:product? [product]: cartItems?.items,
           paymentMethod: "cod",
-          sellerId: "677146098f9cbdc3ab11cbc8",
+          sellerId: "6772da4240b2b6703a5d5d7b",
           paymentStatus: "pending",
         })
       );

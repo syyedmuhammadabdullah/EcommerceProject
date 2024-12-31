@@ -26,6 +26,7 @@ import LoginPage from "./pages/loginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProductQuestionsPage from "./pages/ProductQuestionsPage";
 import CustomersPage from "./pages/CustomersPage";
+import OrderDetailPage from "./pages/OrderDetailPage";
 
 //layouts
 import MainLayout from "./layouts/MainLayout";
@@ -60,7 +61,10 @@ import loginSeller from "./store/Slices/SellerSlice/loginSeller";
 //customer Slice
 import customerReducer from "./store/Slices/CustomerSlice/CustomerSlice";
 import getAllSellerCustomers from "./store/Slices/CustomerSlice/getAllSellerCustomers";
-
+//order Slice
+import orderReducer from "./store/Slices/OrderSlice/OrderSlice";
+import getSellerOrders from "./store/Slices/orderSlice/getSellerOrders";
+import getOneSellerOrder from "./store/Slices/orderSlice/getOneSellerOrder";
 // store
 import store from "./store/store";
 export {
@@ -76,6 +80,9 @@ export {
   giveAnswerToQuestion,
   customerReducer,
   getAllSellerCustomers,
+  orderReducer,
+  getSellerOrders,
+  getOneSellerOrder,
   productReducer,
   createSeller,
   getAllProducts,
@@ -88,6 +95,7 @@ export {
   OrderHistoryPage,
   ProductQuestionsPage,
   CustomersPage,
+  OrderDetailPage,
   ProductsPage,
   InputBox,
   Footer,

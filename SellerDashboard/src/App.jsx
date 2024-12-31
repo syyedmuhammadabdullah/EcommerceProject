@@ -8,6 +8,7 @@ import {
   MainLayout,
   ProductQuestionsPage,
   CustomersPage,
+  OrderDetailPage,
 } from "./index";
 function App() {
   const router = createBrowserRouter([
@@ -39,6 +40,10 @@ function App() {
         {
           path: "order-history",
           element: <OrderHistoryPage />,
+        },
+        {
+          path:"order-details/:orderId",
+          element:<OrderDetailPage/>
         },
         {
           path: "product-questions",

@@ -1,12 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const getAllProducts = createAsyncThunk(
-    "product/getAllProducts",
+
+const getSellerOrders = createAsyncThunk(
+    "order/getSellerOrders",
     async (_, { rejectWithValue }) => {
         try {
             const { data } = await axios.get(
-                "http://localhost:3001/api/v1/products/getAllSellerProducts",
+                "http://localhost:3001/api/v1/orders/getSellerOrders",
                 
                 {
                     withCredentials: true,
@@ -20,4 +21,4 @@ const getAllProducts = createAsyncThunk(
         }
     }
 );
-export default getAllProducts
+export default getSellerOrders

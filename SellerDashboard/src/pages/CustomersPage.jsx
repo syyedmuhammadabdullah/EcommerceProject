@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { PhoneOutlined, SearchOutlined } from '@ant-design/icons'
+import { MailOutlined, PhoneOutlined, SearchOutlined } from '@ant-design/icons'
 import { Button, Input,getAllSellerCustomers } from '../index'
 import { useSelector, useDispatch } from 'react-redux'
 const CustomersPage = () => {
@@ -30,20 +30,20 @@ const CustomersPage = () => {
 <div className="mainCutomerContainer min-h-[80%]  grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-sm px-sm ">
 
 {customers?.map((customer)=>(
-  <div className="cutomer rounded-md border-border-primary border h-[161px] sm:h-[139px] min-w-[332px] " key={customer._id}>
+  <div className="cutomer rounded-md border-border-primary border h-[161px] sm:h-[139px] min-w-[332px] " key={customer.customerInfo._id}>
   <div className="details flex gap-lg p-lg">
     <div className="profile rounded-full w-[32px] h-[32px]">
-      <img src={customer.customerDetails.avatar} alt=""  className='w-full h-full rounded-full'/>
+      <img src={customer.customerInfo?.avatar} alt=""  className='w-full h-full rounded-full'/>
     </div>
     <div className="data ">
-      <h4>{customer.customerDetails.fullName}</h4>
+      <h4>{customer.customerInfo.fullName}</h4>
       <p className='text-text-secondary mt-xs '>Customer</p>
     </div>
 
   </div>
 <div className="contact flex justify-evenly">
 <div className="message ">
-  <p><span className='mr-xs'><PhoneOutlined/></span> Message</p>
+  <p><span className='mr-xs'><MailOutlined/></span> Message</p>
 </div>
 <div className="call ">
 
@@ -53,54 +53,7 @@ const CustomersPage = () => {
 
 </div>
 ))}
-{customers?.map((customer)=>(
-  <div className="cutomer rounded-md border-border-primary border h-[161px] sm:h-[139px] min-w-[332px] " key={customer._id}>
-  <div className="details flex gap-lg p-lg">
-    <div className="profile rounded-full w-[32px] h-[32px]">
-      <img src={customer.customerDetails.avatar} alt=""  className='w-full h-full rounded-full'/>
-    </div>
-    <div className="data ">
-      <h4>{customer.customerDetails.fullName}</h4>
-      <p className='text-text-secondary mt-xs '>Customer</p>
-    </div>
 
-  </div>
-<div className="contact flex justify-evenly">
-<div className="message ">
-  <p><span className='mr-xs'><PhoneOutlined/></span> Message</p>
-</div>
-<div className="call ">
-
-  <p><span className='mr-xs'><PhoneOutlined/></span> Call</p>
-</div>
-</div>
-
-</div>
-))}
-{customers?.map((customer)=>(
-  <div className="cutomer rounded-md border-border-primary border h-[161px] sm:h-[139px] min-w-[332px] " key={customer._id}>
-  <div className="details flex gap-lg p-lg">
-    <div className="profile rounded-full w-[32px] h-[32px]">
-      <img src={customer.customerDetails.avatar} alt=""  className='w-full h-full rounded-full'/>
-    </div>
-    <div className="data ">
-      <h4>{customer.customerDetails.fullName}</h4>
-      <p className='text-text-secondary mt-xs '>Customer</p>
-    </div>
-
-  </div>
-<div className="contact flex justify-evenly">
-<div className="message ">
-  <p><span className='mr-xs'><PhoneOutlined/></span> Message</p>
-</div>
-<div className="call ">
-
-  <p><span className='mr-xs'><PhoneOutlined/></span> Call</p>
-</div>
-</div>
-
-</div>
-))}
 <div className="cutomer rounded-md border-border-primary border h-[139px] min-w-[332px] ">
     <div className="details flex gap-lg p-lg">
       <div className="profile rounded-full w-[32px] h-[32px]">

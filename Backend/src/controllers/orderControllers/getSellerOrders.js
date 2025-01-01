@@ -1,14 +1,52 @@
 import {apiError,asyncHandler,apiResponse,OrderModel} from "../../index.js";
 
 const getSellerOrders=asyncHandler(async(req,res)=>{
-    console.log("get seller orders runs",req.seller.sellerId);
-
-    const totalOrders = await OrderModel.countDocuments({ sellerId: req.seller.sellerId });
-      const total = totalOrders || 0;
-      console.log("total orders",total);
+    console.log("get seller orders runs",req.query);
+    let query={
+        sellerId:req.seller.sellerId,
+    };
+    if (req.query.filter && req.query.filter !== "all" && req.query.filter !== "undefined" && req.query.filter !== "null") {
+      console.log("filter", req.query.filter);
+      query.status = req.query.filter;  // Apply the filter to your query
+  }
+    console.log("query",query);
     
-    const orders=await OrderModel.find({ sellerId: req.seller.sellerId })
-    .populate({path:"userId",select:"fullName -_id"}).skip(0).limit(10);
+
+    const totalOrders = await OrderModel.countDocuments(query);
+      const total = totalOrders || 0;
+    
+      const orders = await OrderModel.aggregate([
+        { $match: query }, // Match seller's orders
+        {
+          $lookup: {
+            from: "usermodels", // Replace with your UserModel collection name
+            localField: "userId",
+            foreignField: "_id",
+            as: "userId",
+          },
+        },
+        { $unwind: "$userId" }, // Flatten the userInfo array
+        {
+          $match: {
+            "userId.fullName": { $regex: req.query.search, $options: "i" }, // Case-insensitive name search
+          },
+        },
+        {
+          $project: {
+            status: 1,
+            "userId.fullName": 1,
+            "userId._id": 1,
+            "totalItems":1,
+            "totalPrice":1
+          }, // Project only needed fields
+        },
+        { $skip: 0 }, // Add pagination logic here if needed
+        { $limit: 10 },
+      ]);    
+      
+
+    // const orders=await OrderModel.find(query)
+    // .populate({path:"userId",select:"fullName -_id"}).skip(0).limit(10);
     if (!orders) {
         throw new apiError(404,"Orders not found");
     }

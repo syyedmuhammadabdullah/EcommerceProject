@@ -23,6 +23,7 @@ const SellerSchema = new Schema({
         state: { type: String, default: null },
         postalCode: { type: String, default: null },
         country: { type: String, default: null },
+        phone: { type: String, default: null },
       },
       bankDetails: {
         bankName: { type: String, default: null },

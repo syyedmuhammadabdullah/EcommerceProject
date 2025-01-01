@@ -11,6 +11,7 @@ const Input =forwardRef(({
   icon = null,
   id,
   passwordIcon=null,
+  onKeyDown=()=>{},
   ...props
 }, ref) => {
   
@@ -24,6 +25,7 @@ const Input =forwardRef(({
       name={name}
       value={value}
       onChange={onChange}
+      onKeyDown={onKeyDown}
       className={` outline-none text-base w-full ${inputClassName} bg-transparent`}
       {...props}
       id={name? name : id}

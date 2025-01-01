@@ -9,6 +9,7 @@ import {
   ProductQuestionsPage,
   CustomersPage,
   OrderDetailPage,
+  OrderInvoicePage,
 } from "./index";
 function App() {
   const router = createBrowserRouter([
@@ -44,6 +45,10 @@ function App() {
         {
           path:"order-details/:orderId",
           element:<OrderDetailPage/>
+        },
+        {
+          path:"order-invoice/:orderId",
+          element:<OrderInvoicePage/>
         },
         {
           path: "product-questions",

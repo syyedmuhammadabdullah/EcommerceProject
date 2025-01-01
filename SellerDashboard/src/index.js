@@ -27,6 +27,7 @@ import RegisterPage from "./pages/RegisterPage";
 import ProductQuestionsPage from "./pages/ProductQuestionsPage";
 import CustomersPage from "./pages/CustomersPage";
 import OrderDetailPage from "./pages/OrderDetailPage";
+import OrderInvoicePage from "./pages/OrderInvoicePage";
 
 //layouts
 import MainLayout from "./layouts/MainLayout";
@@ -97,6 +98,7 @@ export {
   CustomersPage,
   OrderDetailPage,
   ProductsPage,
+  OrderInvoicePage,
   InputBox,
   Footer,
   store,

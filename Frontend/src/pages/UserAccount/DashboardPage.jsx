@@ -305,7 +305,7 @@ useEffect(()=>{
               <div className="name py-sm px-xs">Status</div>
               <div className="name py-sm px-xs">Detail</div>
             </div>
-            <div className="productContainer ">
+            {/* <div className="productContainer ">
             {orders && [...(orders[0]?.orders || [])]
   ?.sort((b, a) => new Date(a?.createdAt) - new Date(b?.createdAt))
 ?.flatMap((item) => item?.products || [])
@@ -325,7 +325,7 @@ useEffect(()=>{
                ))}
             
 
-                </div>
+                </div> */}
           </div>)
           : (<div>Currently you have No Orders</div>)
           }

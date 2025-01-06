@@ -32,6 +32,9 @@ const getSellerOrders=asyncHandler(async(req,res)=>{
           },
         },
         {
+          $sort:{orderDate:-1},
+        },
+        {
           $project: {
             status: 1,
             "userId.fullName": 1,
@@ -42,11 +45,7 @@ const getSellerOrders=asyncHandler(async(req,res)=>{
         },
         { $skip: 0 }, // Add pagination logic here if needed
         { $limit: 10 },
-      ]);    
-      
-
-    // const orders=await OrderModel.find(query)
-    // .populate({path:"userId",select:"fullName -_id"}).skip(0).limit(10);
+      ]);
     if (!orders) {
         throw new apiError(404,"Orders not found");
     }

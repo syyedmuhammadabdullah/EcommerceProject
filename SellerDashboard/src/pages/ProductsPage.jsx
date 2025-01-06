@@ -28,7 +28,7 @@ const handleDelete=(id)=>{
 }
   return (
     <section className="flex justify-center">
-      <div className="container max-w-screen-xl lg:gap-xxl bg-white grid gap-xl px-p-md lg:p-p-xxl">
+      <div className="container max-w-screen-xl lg:gap-xxl  grid gap-xl px-p-md lg:p-p-xxl">
         <div className="top-menu flex justify-between items-end">
         <div className="title ">
           <h4>Products</h4>

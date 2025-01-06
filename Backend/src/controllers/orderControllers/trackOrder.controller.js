@@ -8,27 +8,7 @@ const trackOrder=asyncHandler(async(req,res)=>{
 
     if (trackingNumber) {
 
-      const   order=await OrderModel.
-      aggregate([
-        {
-          $match: { "products.tracking.trackingNumber": trackingNumber }
-        },
-        {$project:{
-           createdAt:1,
-           updatedAt:1,
-            product:{
-                $arrayElemAt:[
-                    {
-                        $filter:{
-                            input:"$products",
-                            as:"product",
-                            cond:{ $eq:["$$product.tracking.trackingNumber",trackingNumber] }                            
-                        }
-                    },0
-                ]
-            }
-        }}
-      ])
+      const   order=await OrderModel.find({trackingNumber})
 
 
 

@@ -9,7 +9,7 @@ const OrderHistoryPage = () => {
   const { orders,totalOrders } = useSelector((state) => state.order);
   const dispatch = useDispatch();
   const [selectedFilter, setSelectedFilter] =useState("all");
-  const filters = ["All", "Completed", "Rejected", "Returned",, "Failed", "Shipped", "Pending"];
+  const filters = ["All", "Delivered", "Rejected", "Returned",, "Failed", "Shipped", "Pending"];
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
@@ -53,7 +53,7 @@ useEffect(() => {
   };
   return (
     <section className="flex justify-center">
-      <div className="container lg:gap-xxl bg-white grid gap-xl px-p-md lg:p-p-xxl">
+      <div className="container lg:gap-xxl bg-white dark:bg-black grid gap-xl px-p-md lg:p-p-xxl">
         <div className="title">
           <h4>Orders</h4>
           <p>manage your recent orders and invoices</p>
@@ -104,10 +104,6 @@ useEffect(() => {
             </div>
          ))}
 
-
-
-
-          
         </div>
         <div className="pagination flex gap-xs">
           <span>1</span>

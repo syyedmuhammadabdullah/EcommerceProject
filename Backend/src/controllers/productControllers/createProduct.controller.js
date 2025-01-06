@@ -4,8 +4,6 @@ const createProduct = asyncHandler(async (req, res) => {
 console.log("create product runs",req.seller.sellerId);
 const transformedAttributes = transformAttributes(req.body);
 
-console.log("transformed attributes",transformedAttributes);
-
 
     const images = req.files;
 

@@ -10,6 +10,7 @@ import {
   CustomersPage,
   OrderDetailPage,
   OrderInvoicePage,
+  DashboardPage
 } from "./index";
 function App() {
   const router = createBrowserRouter([
@@ -20,7 +21,11 @@ function App() {
       children: [
         {
           path: "/",
-          element: <h1>Home</h1>,
+          element:<DashboardPage/>,
+        },
+        {
+          path: "dashboard",
+          element:<DashboardPage/>,
         },
         {
           path: "login",

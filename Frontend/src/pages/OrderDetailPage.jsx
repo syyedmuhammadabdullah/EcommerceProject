@@ -15,7 +15,7 @@ const OrderDetailPage = () => {
     useEffect(() => {
 
         dispatch(trackOrder({trackingNumber:orderId}))
-        console.log(trackedOrder);
+        console.log("the tracked order is ",trackedOrder);
 
     
     }, [orderId]);
@@ -24,7 +24,7 @@ const OrderDetailPage = () => {
         setStarRating(index)
     }
     const handleReviewSubmit=()=>{
-        const productId=trackedOrder[0].product.productId;
+        const productId=trackedOrder[0].products[0].productId;
         const reviewData={
             productId,
             comment:review,

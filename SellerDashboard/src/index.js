@@ -28,7 +28,7 @@ import ProductQuestionsPage from "./pages/ProductQuestionsPage";
 import CustomersPage from "./pages/CustomersPage";
 import OrderDetailPage from "./pages/OrderDetailPage";
 import OrderInvoicePage from "./pages/OrderInvoicePage";
-
+import DashboardPage from "./pages/DashboardPage";
 //layouts
 import MainLayout from "./layouts/MainLayout";
 //hooks
@@ -66,6 +66,7 @@ import getAllSellerCustomers from "./store/Slices/CustomerSlice/getAllSellerCust
 import orderReducer from "./store/Slices/OrderSlice/OrderSlice";
 import getSellerOrders from "./store/Slices/orderSlice/getSellerOrders";
 import getOneSellerOrder from "./store/Slices/orderSlice/getOneSellerOrder";
+import getSellerOrdersDetail from "./store/Slices/orderSlice/getSellerOrdersDetail";
 // store
 import store from "./store/store";
 export {
@@ -82,6 +83,7 @@ export {
   customerReducer,
   getAllSellerCustomers,
   orderReducer,
+  getSellerOrdersDetail,
   getSellerOrders,
   getOneSellerOrder,
   productReducer,
@@ -94,6 +96,7 @@ export {
   Divider,
   ProductForm,
   OrderHistoryPage,
+  DashboardPage,
   ProductQuestionsPage,
   CustomersPage,
   OrderDetailPage,

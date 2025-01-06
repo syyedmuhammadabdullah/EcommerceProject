@@ -84,6 +84,7 @@ import { trackOrder } from "./controllers/orderControllers/trackOrder.controller
 import { deliveredOrder } from "./controllers/orderControllers/deliveredOrder.controller.js";
 import { getSellerOrders } from "./controllers/orderControllers/getSellerOrders.js";
 import { getOneSellerOrder } from "./controllers/orderControllers/getOneSellerOrder.controller.js";
+import { getSellerOrdersDetail } from "./controllers/orderControllers/getSellerOrdersDetail.js";
 //Payment Controllers
 //Stripe
 import { createStripePayment } from "./controllers/paymentControllers/createStripePayment.controller.js";
@@ -217,7 +218,7 @@ export { addItemToCart, getUserCart, removeItemFromCart, updateCartItem }; // En
 export { addItemToWishlist, removeItemFromWishlist, getWishlist }; // End of Wishlist Controller Exports
 
 //Order Controller Exports
-export { createOrder, getOrders, trackOrder, deliveredOrder, getSellerOrders, getOneSellerOrder }; // End of Order Controller Exports
+export { createOrder, getOrders, trackOrder, deliveredOrder, getSellerOrders, getOneSellerOrder,getSellerOrdersDetail }; // End of Order Controller Exports
 
 //Category Controller Exports
 export { createMainCategory, getMainCategory, deleteMainCategory, updateMainCategory, createSubMainCategory, getSubMainCategory, deleteSubMainCategory, updateSubMainCategory };

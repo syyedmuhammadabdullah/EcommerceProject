@@ -54,7 +54,7 @@ const OrderHistoryPage = () => {
                                 <div className="price py-sm px-xs">$ <span>{product?.products.price}</span></div>
                                 <div className="amount py-sm px-xs">{product?.products.quantity}</div>
                                 <div className="status py-sm px-xs" >{product?.products?.tracking?.status}</div>
-                                <div className="details py-sm px-xs text-primary-base"><Link to={`/user-account/order-detail/${product?.products.tracking?.trackingNumber}`} >Track Order</Link></div>    
+                                <div className="details py-sm px-xs text-primary-base"><Link to={`/user-account/order-detail/${product?.trackingNumber}`} >Track Order</Link></div>    
                                 </div>
                                  ))
                                 }

@@ -34,7 +34,9 @@ const ProductSchema = new Schema({
     currentStock: {
         type: Number
     },
-
+   totalStock: {
+        type: Number
+    },
     brand: {
         type: String,
         required: true

@@ -15,7 +15,7 @@ const SidebarMenu = () => {
       {name:"Product questions",icon:<DashboardOutlined/>,link:"/product-questions"},
       {name:"Categories",icon:<DashboardOutlined/>,link:"/categories"},
       {name:"Returns",icon:<DashboardOutlined/>,link:"/returns"},
-      {name:"Discounts",icon:<DashboardOutlined/>,link:"/discounts"},
+      {name:"Wallet",icon:<DashboardOutlined/>,link:"/wallet"},
 
       {name:"Shipping",icon:<DashboardOutlined/>,link:"/shipping"},
       {name:"Inventory",icon:<DashboardOutlined/>,link:"/inventory"},

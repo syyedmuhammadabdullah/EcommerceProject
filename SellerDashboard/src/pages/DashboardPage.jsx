@@ -7,7 +7,7 @@ import { useSelector,useDispatch } from 'react-redux'
 
 const DashboardPage = () => {
     const dispatch=useDispatch()
-    const {orderstats}=useSelector(state=>state.order)
+    const {orderstats,loading}=useSelector(state=>state.order)
     const chartRef=useRef(null)
 
 
@@ -80,7 +80,8 @@ const DashboardPage = () => {
             <h4>Dashboard</h4>
         </div>
         
-        <div className="content w-full">
+        {loading?<div className="loader"></div>:
+          <div className="content w-full">
 
             <div className="stats  items-center grid pt-lg gap-lg grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
 
@@ -188,7 +189,7 @@ const DashboardPage = () => {
 
             </div>
 
-        </div>
+        </div>}
 
        </div>
     </section>

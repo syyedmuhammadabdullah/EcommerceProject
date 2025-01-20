@@ -9,7 +9,7 @@ const mainLayout = () => {
       <div className="navbar hidden lg:block lg:sticky  top-0 left-0">
     <SidebarMenu/>
       </div>
-      <div className="content w-full bg-background-layout overflow-y-auto">
+      <div className="content w-full min-h-screen bg-background-layout overflow-y-auto">
     <Outlet/>
 
       </div>

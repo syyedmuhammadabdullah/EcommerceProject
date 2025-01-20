@@ -29,6 +29,7 @@ import CustomersPage from "./pages/CustomersPage";
 import OrderDetailPage from "./pages/OrderDetailPage";
 import OrderInvoicePage from "./pages/OrderInvoicePage";
 import DashboardPage from "./pages/DashboardPage";
+import WalletPage from "./pages/WalletPage";
 //layouts
 import MainLayout from "./layouts/MainLayout";
 //hooks
@@ -96,6 +97,7 @@ export {
   Divider,
   ProductForm,
   OrderHistoryPage,
+  WalletPage,
   DashboardPage,
   ProductQuestionsPage,
   CustomersPage,

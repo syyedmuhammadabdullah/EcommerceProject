@@ -10,7 +10,8 @@ import {
   CustomersPage,
   OrderDetailPage,
   OrderInvoicePage,
-  DashboardPage
+  DashboardPage,
+  WalletPage,
 } from "./index";
 function App() {
   const router = createBrowserRouter([
@@ -67,6 +68,9 @@ function App() {
           path: "customers",
           element: <CustomersPage />,
         },
+        {
+          path: "wallet",
+          element: <WalletPage />,}
       ],
     },
   ]);

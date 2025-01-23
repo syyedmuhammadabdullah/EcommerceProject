@@ -30,6 +30,9 @@ import OrderDetailPage from "./pages/OrderDetailPage";
 import OrderInvoicePage from "./pages/OrderInvoicePage";
 import DashboardPage from "./pages/DashboardPage";
 import WalletPage from "./pages/WalletPage";
+import WithdrawPage from "./pages/WithdrawPage";
+import CouponPage from "./pages/CouponPage";
+import ProfilePage from "./pages/ProfilePage";
 //layouts
 import MainLayout from "./layouts/MainLayout";
 //hooks
@@ -97,13 +100,16 @@ export {
   Divider,
   ProductForm,
   OrderHistoryPage,
+  WithdrawPage,
   WalletPage,
   DashboardPage,
   ProductQuestionsPage,
+  CouponPage,
   CustomersPage,
   OrderDetailPage,
   ProductsPage,
   OrderInvoicePage,
+  ProfilePage,
   InputBox,
   Footer,
   store,

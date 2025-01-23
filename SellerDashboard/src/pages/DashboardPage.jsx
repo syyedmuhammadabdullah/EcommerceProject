@@ -33,7 +33,7 @@ const DashboardPage = () => {
       useEffect(()=>{
        
 
-          const ctx = chartRef?.current.getContext('2d');
+          const ctx = chartRef?.current?.getContext('2d');
         new Chart(ctx,{
             type: 'bar',
             data: {
@@ -80,7 +80,7 @@ const DashboardPage = () => {
             <h4>Dashboard</h4>
         </div>
         
-        {loading?<div className="loader"></div>:
+        {loading?<div className="loader"> loading</div>:
           <div className="content w-full">
 
             <div className="stats  items-center grid pt-lg gap-lg grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">

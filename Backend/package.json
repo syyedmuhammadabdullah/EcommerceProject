@@ -4,7 +4,7 @@
   "main": "script.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon -r dotenv/config  --experimental-json-modules src/script.js "
+    "dev": "nodemon -r dotenv/config  --experimental-json-modules src/script.js "
   },
   "keywords": [],
   "author": "",

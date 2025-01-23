@@ -36,7 +36,6 @@ const SellerSchema = new Schema({
         storeDescription: { type: String, default: null },
         storeLogo: { type: String, default: null },
         storeBanner: { type: String, default: null },
-        storeSlug: { type: String, default: null,  },
       },
       verification: {
         isVerified: { type: Boolean, default: false },

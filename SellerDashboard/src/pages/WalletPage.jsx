@@ -1,5 +1,7 @@
-import { MoneyCollectOutlined } from '@ant-design/icons'
+import { MoneyCollectOutlined ,BankOutlined,WalletOutlined} from '@ant-design/icons'
 import React from 'react'
+import { Link } from 'react-router-dom'
+import {Button} from '../index'
 
 const WalletPage = () => {
   return (
@@ -21,7 +23,7 @@ const WalletPage = () => {
                 </div>
 
                 <div className="icon">
-                    <MoneyCollectOutlined className='text-xxxl' />
+                    <BankOutlined className='text-xxxl' />
                 </div>
             </div>
             <div className="totalAmount bg-white border border-border-primary rounded-md h-[160px] flex justify-around items-center ">
@@ -41,20 +43,72 @@ const WalletPage = () => {
                 </div>
 
                 <div className="icon">
-                    <MoneyCollectOutlined className='text-xxxl' />
+                    <WalletOutlined className='text-xxxl' />
                 </div>
             </div>
            
             </div>
            
-           <div className="history grid grid-cols-1 lg:grid-cols-2 ">
+           <div className="history grid grid-cols-1 gap-xl lg:grid-cols-2 py-p-lg xl:py-p-xxl">
 
-           <div className="withdrawalHistory">
+           <div className="withdrawalHistory border border-border-primary rounded-md bg-white ">
 
+            <div className="withdraw border-b border-border-primary py-p-md px-p-lg">
+            <p className='text-lg'>Withdrawal History</p>
+            </div>
+            <div className="withdraw-list py-p-md px-p-md">
+
+            <div className="data w-full grid overflow-scroll no-scrollbar">
+        
+        <div className="head h-[54px] grid grid-cols-[137px_minmax(137px,_1fr)_minmax(137px,_1fr)] items-center bg-[#00000005]">
+       <div className="id border pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >Transaction ID</div>
+       <div className="name border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Amount</div>
+       <div className="stock border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Date</div>
+      </div>
+     {
+        <div key={""} className="body grid grid-cols-[137px_minmax(137px,_1fr)_minmax(137px,_1fr)] items-center  h-[72px]  ">
+        <div className="id border text-text-secondary pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >{34867}</div>
+         <div className="Amount border text-text-secondary gap-xs pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >
+          {"RS 100"}
+          </div>
+         <div className="date border text-text-secondary pl-[10px] min-w-[137px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >{"11/11/2022"}</div>
+           
+        </div>
+     }
+
+            </div>
+            
+            </div>
+           
            </div>
 
-           <div className="refundedHistory">
+           <div className="refundedHistory border border-border-primary rounded-md bg-white">
+           <div className="refund border-b border-border-primary py-p-md px-p-lg">
+            <p className='text-lg'>Refund History</p>
+            </div>
+            <div className="refund-list py-p-md px-p-md">
 
+<div className="data w-full grid overflow-scroll no-scrollbar">
+
+<div className="head h-[54px] grid grid-cols-[137px_minmax(137px,_1fr)_minmax(137px,_1fr)] items-center bg-[#00000005]">
+<div className="id border pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >Transaction ID</div>
+<div className="name border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Amount</div>
+<div className="stock border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Date</div>
+</div>
+{
+<div key={""} className="body grid grid-cols-[137px_minmax(137px,_1fr)_minmax(137px,_1fr)] items-center  h-[72px]  ">
+<div className="id border text-text-secondary pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >{34867}</div>
+<div className="Amount border text-text-secondary gap-xs pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >
+{"RS 100"}
+</div>
+<div className="date border text-text-secondary pl-[10px] min-w-[137px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >{"11/11/2022"}</div>
+
+</div>
+}
+
+</div>
+
+</div>
            </div>
            </div>
            

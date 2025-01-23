@@ -13,8 +13,8 @@ const SidebarMenu = () => {
       {name:"Orders",icon:<DashboardOutlined/>,link:"/order-history"},
       {name:"Products",icon:<DashboardOutlined/>,link:"/products"},
       {name:"Product questions",icon:<DashboardOutlined/>,link:"/product-questions"},
-      {name:"Categories",icon:<DashboardOutlined/>,link:"/categories"},
-      {name:"Returns",icon:<DashboardOutlined/>,link:"/returns"},
+      {name:"Withdrawals",icon:<DashboardOutlined/>,link:"/withdrawals"},
+      {name:"Coupons",icon:<DashboardOutlined/>,link:"/coupons"},
       {name:"Wallet",icon:<DashboardOutlined/>,link:"/wallet"},
 
       {name:"Shipping",icon:<DashboardOutlined/>,link:"/shipping"},

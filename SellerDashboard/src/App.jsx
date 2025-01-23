@@ -12,6 +12,9 @@ import {
   OrderInvoicePage,
   DashboardPage,
   WalletPage,
+  WithdrawPage,
+  CouponPage,
+  ProfilePage,
 } from "./index";
 function App() {
   const router = createBrowserRouter([
@@ -70,7 +73,20 @@ function App() {
         },
         {
           path: "wallet",
-          element: <WalletPage />,}
+          element: <WalletPage />,
+        },
+        {
+          path: "withdrawals",
+          element: <WithdrawPage />,
+        },
+        {
+          path: "coupons",
+          element: <CouponPage />,
+        },
+        {
+          path: "settings",
+          element: <ProfilePage />,
+        }
       ],
     },
   ]);

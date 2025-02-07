@@ -16,6 +16,14 @@ const SellerSchema = new Schema({
         type: String,
         default: null,
       },
+      businessEmail: {
+        type: String,
+        default: null,
+      },
+     cnic:{
+        type:String,
+        default:null
+     },
       businessAddress: {
         addressLine1: { type: String, default: null },
         addressLine2: { type: String, default: null },

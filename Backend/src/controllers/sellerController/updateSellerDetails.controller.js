@@ -1,7 +1,9 @@
 import {apiError,apiResponse,asyncHandler,SellerModel} from '../../index.js';
 
 const updateSellerDetails=asyncHandler(async(req,res)=>{
-    const {sellerId}=req.body;
+    console.log("update seller details runs" ,req.body,req.params);
+    
+    const {sellerId}=req.params;
     const sellerDetails=req.body;
     const seller=await SellerModel.findById(sellerId);
     if(!seller){

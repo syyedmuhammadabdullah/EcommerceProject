@@ -25,17 +25,10 @@ const transformedAttributes = transformAttributes(req.body);
 
         }
   
-        try {
-            
+       
             const product = await ProductModel.create(productData);
-            console.log("product created",product);
             
     
-        } catch (error) {
-            console.log("error creating product",error);
-            
-            
-        }
         if (!product) {
             const pendingPromises = uploadedImages?.map(image => deleteOnCloudinary(image.public_id));
            const deletedImages= await Promise.all(pendingPromises);

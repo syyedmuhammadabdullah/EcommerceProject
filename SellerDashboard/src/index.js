@@ -62,6 +62,7 @@ import giveAnswerToQuestion from "./store/Slices/ProductQuestionSlice/giveAnswer
 import sellerReducer from "./store/Slices/SellerSlice/SellerSlice";
 import createSeller from "./store/Slices/SellerSlice/createSeller";
 import loginSeller from "./store/Slices/SellerSlice/loginSeller";
+import updateSeller from "./store/Slices/SellerSlice/updateSeller";
 
 //customer Slice
 import customerReducer from "./store/Slices/CustomerSlice/CustomerSlice";
@@ -94,6 +95,7 @@ export {
   createSeller,
   getAllProducts,
   loginSeller,
+  updateSeller,
   sellerReducer,
   createProduct,
   SearchBtn,

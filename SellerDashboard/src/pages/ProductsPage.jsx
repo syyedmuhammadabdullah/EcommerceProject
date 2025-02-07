@@ -106,36 +106,7 @@ const handleDelete=(id)=>{
                  
               </div>
             ))
-          }
-          {
-            products?.map((product,index)=>(
-              <div key={product._id} className="body grid grid-cols-[48px_389px_389px_137px_179px_111px] items-center  h-[72px]  ">
-              <div className="id border pl-[10px] w-[48px] flex items-center border-[#0000000f] h-full" >{index+1}</div>
-               <div className="name border text-text-secondary gap-xs text-sm pl-[10px] w-[389px] flex items-center border-[#0000000f] h-full" >
-               <div className="img w-[40px] h-[40px]">
-               <img src={product.image} alt=""  className="w-full h-full"/>
-               </div>
-               <div className="name">
-                <p>{product.name.length>40?product.name.slice(0,40)+"...":product.name}</p>
-               <p>in {product.category}</p>
-               </div>
-                </div>
-               <div className="stock border pl-[10px] w-[389px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >
-               <div className="bar w-[128px] h-[10px] rounded-md overflow-hidden bg-border-secondary relative ">
-                          <div className={`range absolute left-0 top-0 bg-primary-base h-full`} style={{width:`${product.currentStock/product.totalStock*100}%`}}></div>
-                        </div>
-                          <p>{product.currentStock} in Stock</p>
-               </div>
-               <div className="price border pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >{product.price}</div>
-               <div className="price border pl-[10px] w-[179px] flex items-center border-[#0000000f] h-full" >{product.status}</div>
-               <div className="action border pl-[10px] w-[111px] flex items-center border-[#0000000f] h-full" >Action</div>
-                 
-              </div>
-            ))
-          }
-       
-        
-          
+          }    
          
         </div>
         {/* Pagination */}

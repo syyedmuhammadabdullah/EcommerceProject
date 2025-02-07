@@ -20,7 +20,7 @@ const productFilter=asyncHandler(async(req,res)=>{
   ];
 }
     if (minPrice || maxPrice) match.price = { ...(minPrice && { $gte: +minPrice }), ...(maxPrice && { $lte: +maxPrice }) };
-    if (rating) match.rating = { $gte: +rating };
+    if (rating>0) match.rating = { $gte: +rating };
     if (inStock) match.stock = { $gt: 0 };
     if (Object.keys(match).length) {
       pipeline.push({ $match: match });

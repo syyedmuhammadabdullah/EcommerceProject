@@ -8,7 +8,7 @@ const SettingLayout = () => {
       <div className="navbar lg:sticky top-0 left-0">
     <VerticleNavbar/>
       </div>
-      <div className="content w-full overflow-y-auto">
+      <div className="content bg-background-layout min-h-screen w-full overflow-y-auto">
     <Outlet/>
 
       </div>

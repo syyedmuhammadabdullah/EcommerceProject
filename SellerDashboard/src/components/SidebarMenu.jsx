@@ -12,16 +12,11 @@ const SidebarMenu = () => {
       {name:"Dashboard",icon:<DashboardOutlined/> ,link:"/dashboard"},
       {name:"Orders",icon:<DashboardOutlined/>,link:"/order-history"},
       {name:"Products",icon:<DashboardOutlined/>,link:"/products"},
+      {name:"Customers",icon:<DashboardOutlined/>,link:"/customers"},
       {name:"Product questions",icon:<DashboardOutlined/>,link:"/product-questions"},
       {name:"Withdrawals",icon:<DashboardOutlined/>,link:"/withdrawals"},
       {name:"Coupons",icon:<DashboardOutlined/>,link:"/coupons"},
       {name:"Wallet",icon:<DashboardOutlined/>,link:"/wallet"},
-
-      {name:"Shipping",icon:<DashboardOutlined/>,link:"/shipping"},
-      {name:"Inventory",icon:<DashboardOutlined/>,link:"/inventory"},
-      {name:"Reports",icon:<DashboardOutlined/>,link:"/reports"},
-      {name:"Customers",icon:<DashboardOutlined/>,link:"/customers"},
-      {name:"Analytics",icon:<DashboardOutlined/>,link:"/analytics"},
       {name:"Settings",icon:<DashboardOutlined/>,link:"/settings"},
 
    ]

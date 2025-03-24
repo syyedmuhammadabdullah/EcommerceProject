@@ -1,7 +1,7 @@
 import { apiError, apiResponse, asyncHandler, ProductModel, uploadOnCloudinary, deleteOnCloudinary,transformAttributes } from "../../index.js";
 
 const createProduct = asyncHandler(async (req, res) => {
-console.log("create product runs",req.seller.sellerId);
+console.log("create product runs",req.seller);
 const transformedAttributes = transformAttributes(req.body);
 
 

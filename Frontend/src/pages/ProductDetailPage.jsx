@@ -41,7 +41,7 @@ const ProductDetailPage = () => {
   
   }, []);
   useEffect(() => {
-    console.log(product?.seller?._id);
+    console.log("product?.seller?._id ", product?.seller?._id);
     if (product && product.additionalImages?.length > 0) {
       setSelectedImage(product.additionalImages[0].url);
     }
@@ -60,6 +60,7 @@ const ProductDetailPage = () => {
           ? product?.discountPrice
           : product.unitPrice,
         userId: user._id,
+        sellerId: product?.seller?._id,
       })
     )
   };

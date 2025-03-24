@@ -29,7 +29,7 @@ const loginSeller = asyncHandler(async (req, res) => {
     const { accessToken, refreshToken } = await generateTokens({userId:seller._id,role:"seller",sessionId:sessionId});
     const newSession={
         sessionId:sessionId,
-        device: device,
+        device: device || "unknown",
         ip:ip,}
     
     seller.sellerSessions.push(newSession);

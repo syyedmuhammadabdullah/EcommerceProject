@@ -23,8 +23,8 @@ const CouponPage = () => {
             <div className="content w-full overflow-scroll no-scrollbar">
     
            
-            <div className="data w-full grid overflow-scroll no-scrollbar">
-              <div className="head grid grid-cols-[minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(150px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)] h-[54px] items-center bg-[#00000005]">
+            <div className="data bg-white w-full border border-border-primary grid overflow-scroll no-scrollbar">
+              <div className="head grid grid-cols-[minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(150px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)] h-[54px] items-center ">
                <div className="code border pl-[10px]  flex items-center border-[#0000000f] h-full" >Code</div>
                <div className="type border pl-[10px]  flex items-center border-[#0000000f] h-full" >Coupon Type</div>
                <div className="amount border pl-[10px]  flex items-center border-[#0000000f] h-full" >Coupon Amount</div>
@@ -35,7 +35,7 @@ const CouponPage = () => {
               
               {
             
-                  <div key={""} className="body grid grid-cols-[minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(150px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)] items-center  h-[72px]  ">
+                  <div key={""} className="body  grid grid-cols-[minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(150px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)] items-center  h-[72px]  ">
                   <div className="id border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{175757}</div>
 
                   <div className="type border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{"price"}</div>

@@ -7,6 +7,10 @@ import { useSelector } from 'react-redux';
 
 const OrderHistoryPage = () => {
  const { orders } = useSelector((state) => state.order);
+ useEffect(() => {
+    console.log(orders);
+  }, [orders]);
+    
   return (
     <section className='flex justify-center '>
 
@@ -37,7 +41,7 @@ const OrderHistoryPage = () => {
                             <div className="order-info flex-col lg:flex-row gap-md flex justify-between items-center border-b py-p-md border-border-primary"> 
                                 <div className="date">
                                 <p className='text-md'>Order Id: #{order._id}</p>
-                                <p className='text-text-secondary '>Order Date: {order?.orderDate}</p>
+                                <p className='text-text-secondary '>Order Date: {order?.orderDate} </p>
                                 </div>
                                 <div className="manage">
                                 <Link to="/order-details">
@@ -55,7 +59,7 @@ const OrderHistoryPage = () => {
                                  <div className="additional items-center lg:items-start flex-col lg:flex-row flex gap-md lg:justify-between px-md w-full">
                                  <div className="quantity"><span className='text-text-secondary'>Quantity:</span> {product?.quantity}</div>
                                  <div className="status">{order?.status}</div>
-                                 <div className="deliveryDate"><span className='text-text-secondary'>Delivery Date:</span> {product?.deliveryDate}</div>
+                                 <div className="deliveryDate"><span className='text-text-secondary'>Delivery Date:</span></div>
                                  </div>
          
          

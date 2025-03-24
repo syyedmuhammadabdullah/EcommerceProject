@@ -24,7 +24,7 @@ const orderSlice=createSlice({
         })
         .addCase(createOrder.fulfilled,(state,action)=>{
             state.loading=false,
-            state.orders=action.payload
+            state.orders=[action.payload,...state.orders],
             state.latestOrder=true
         })
         .addCase(createOrder.rejected,(state,action)=>{

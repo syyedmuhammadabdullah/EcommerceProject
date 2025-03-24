@@ -1,6 +1,6 @@
 import React,{useEffect, useRef,useState} from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Input,updateSeller } from '../index'
+import { Button, Input,updateSeller,getSeller } from '../index'
 import { CloudUploadOutlined, EyeOutlined, UploadOutlined } from '@ant-design/icons';
 import { useDispatch,useSelector } from 'react-redux';
 
@@ -34,7 +34,43 @@ const ProfilePage = () => {
 
     const dispatch=useDispatch()
     const {seller}=useSelector((state)=>state.seller)
+    useEffect(()=>{
+        dispatch(getSeller())
       
+           
+        
+    },[])
+    useEffect(()=>{
+        console.log(seller);
+        if (seller) {
+            const form={
+                businessName:seller?.businessName,
+                registrationNumber:seller?.registrationNumber,
+                taxId:seller?.taxId,
+                businessEmail:seller?.businessEmail,
+                sellerId:seller?._id,
+                cnic:seller?.cnic,
+           
+                street1:seller?.businessAddress?.addressLine1,
+                street2:seller?.businessAddress?.addressLine2,
+                city:seller?.businessAddress?.city,
+                state:seller.businessAddress?.state,
+                postalCode:seller.businessAddress?.postalCode,
+                country:seller.businessAddress?.country,
+                phone:seller.businessAddress?.phone,
+                phone:seller.businessAddress?.town,
+                bankName:seller.bankDetails?.bankName,
+                accountHolderName:seller.bankDetails?.accountHolderName,
+                accountNumber:seller.bankDetails?.accountNumber,
+                iban:seller.bankDetails?.iban,
+                storeName:seller.storeDetails?.storeName,
+                storeDescription:seller.storeDetails?.storeDescription
+            }
+            setSellerForm(form)
+            
+        }
+   
+    },[seller])
 
     const handleClick=()=>{
         console.log(inputRef.current);
@@ -70,7 +106,7 @@ const ProfilePage = () => {
             registrationNumber:sellerForm.registrationNumber,
             taxId:sellerForm.taxId,
             businessEmail:sellerForm.businessEmail,
-            sellerId:"679257acc857778289d29470",
+            sellerId:seller._id,
             cnic:sellerForm.cnic,
             businessAddress: {
                 addressLine1:sellerForm.street1,
@@ -94,10 +130,7 @@ const ProfilePage = () => {
         }
         dispatch(updateSeller(form))
     }
-  useEffect(()=>{
-      console.log(seller);
-      
-  },[seller])
+
 
     return (
         <section className="flex justify-center">

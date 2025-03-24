@@ -16,10 +16,10 @@ useEffect(() => {
   console.log("products",products);
   
 }, []);
-const handleEdit=(name,value,product)=>{
+const handleEdit=(id)=>{
   
-  setProductForm(name,value,product)
-  navigate("/edit-product")
+  // setProductForm()
+  navigate(`/edit-product/${id}`)
 }
 
 const handleDelete=(id)=>{
@@ -102,7 +102,7 @@ const handleDelete=(id)=>{
                </div>
                <div className="price border pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >{product.price}</div>
                <div className="price border pl-[10px] w-[179px] flex items-center border-[#0000000f] h-full" >{product.status}</div>
-               <div className="action border pl-[10px] w-[111px] flex items-center border-[#0000000f] h-full" >Action</div>
+               <div className="action border pl-[10px] w-[111px] flex items-center border-[#0000000f] h-full" ><span className="cursor-pointer" onClick={()=>handleEdit(product._id)}>Edit</span><span className="cursor-pointer" onClick={()=>handleDelete(product._id)} >Delete</span></div>
                  
               </div>
             ))

@@ -2,7 +2,6 @@ import { apiError, apiResponse, asyncHandler, ProductModel } from "../../index.j
 
 
 const getOneProduct = asyncHandler(async (req, res) => {
-    console.log("get product runs",req.query);
     
     const product = await ProductModel.findById(req.query.productId).populate({path:"seller",select:"storeDetails"});
     if (!product) {

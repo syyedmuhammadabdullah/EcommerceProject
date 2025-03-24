@@ -3,14 +3,14 @@ import axios from "axios"
 
 const trackOrder=createAsyncThunk(
     "order/trackOrder",
-    async(credentials,{rejectWithValue})=>{
-        console.log(credentials);
+    async({orderId},{rejectWithValue})=>{
+        console.log("orderId",orderId);
         
         try {
             const {data}=await axios.get("http://localhost:3001/api/v1/orders/trackOrder",
                 {
                     withCredentials: true,
-                    params:credentials
+                    params: {orderId},
                 })
             return data.data
         } catch (error) {

@@ -1,10 +1,10 @@
 import {apiError,apiResponse,asyncHandler,CartModel,CartItemModel, ProductModel} from "../../index.js";
 
 const addItemToCart=asyncHandler(async(req,res)=>{
-    const {productId,quantity,userId,unitPrice}=req.body
-    console.log(req.body);
+    const {productId,quantity,userId,unitPrice,sellerId}=req.body
+    console.log("cart log",req.body);
     
-    if(!productId || !quantity || !userId || !unitPrice){
+    if(!productId || !quantity || !userId || !unitPrice || !sellerId){
         throw new apiError(400,"All fields are required")
     }
 
@@ -27,7 +27,7 @@ const addItemToCart=asyncHandler(async(req,res)=>{
         }
         
     })
-   let item = await CartItemModel.create({productId,name,unitPrice,image,quantity,price:Number((quantity*unitPrice).toFixed(2))})
+   let item = await CartItemModel.create({productId,sellerId,name,unitPrice,image,quantity,price:Number((quantity*unitPrice).toFixed(2))})
     cart.items.push(item)
     cart.totalItems=cart.items.length
     cart.totalPrice=cart.items.reduce((acc,item)=>Number((acc+item.price).toFixed(2)),0)

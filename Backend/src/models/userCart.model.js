@@ -15,6 +15,9 @@ const cartItemSchema = new Schema({
     },
     image:{
         type:String
+    },
+    sellerId:{
+        type:Schema.Types.ObjectId
     }
 
 });

@@ -15,6 +15,7 @@ import {
   WithdrawPage,
   CouponPage,
   ProfilePage,
+  CreateCouponPage,
 } from "./index";
 function App() {
   const router = createBrowserRouter([
@@ -44,7 +45,7 @@ function App() {
           element: <ProductForm />,
         },
         {
-          path: "edit-product",
+          path: "edit-product/:id",
           element: <ProductForm />,
         },
         {
@@ -86,7 +87,11 @@ function App() {
         {
           path: "settings",
           element: <ProfilePage />,
-        }
+        },
+        {
+          path: "new-coupon",
+          element: <CreateCouponPage />,
+        },
       ],
     },
   ]);

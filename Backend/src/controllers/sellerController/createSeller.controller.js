@@ -1,4 +1,4 @@
-import { apiError, apiResponse, asyncHandler, UserModel, generateTokens, options, CartModel, SellerModel } from "../../index.js";
+import { apiError, apiResponse, asyncHandler, UserModel, generateTokens, options, SellerWalletModel, SellerWithdrawalModel, SellerModel } from "../../index.js";
 import { validate } from "email-validator";
 
 const createSeller = asyncHandler(async (req, res) => {
@@ -29,12 +29,17 @@ const createSeller = asyncHandler(async (req, res) => {
                 email,
                 password,
                 username,
-                role: ["seller"], // Ensure `role` is an array if you want to push to it later
+                role: ["seller"], 
             });
       
         const seller = await SellerModel.create({
             userId:user._id,
         })
+       await SellerWalletModel.create({
+            sellerId:seller._id,
+        })
+       
+
         const sessionId = Date.now().toString();
         const { accessToken, refreshToken } = await generateTokens({userId:user._id,role:"seller",sessionId:sessionId});
         const newSession={
@@ -43,7 +48,9 @@ const createSeller = asyncHandler(async (req, res) => {
             ip:ip,}
         
         user.sellerSessions.push(newSession);
-        user.sellerId = seller._id
+        user.sellerId = seller._id;
+        console.log("sellerID",user.sellerId,seller._id);
+        
         await user.save();
        
         

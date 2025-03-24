@@ -1,15 +1,31 @@
 import React, { useEffect, useState } from "react";
 import Stepper from "./Stepper";
-import { Button, useProductFormData, createProduct, updateProduct } from "../index";
+import { Button, useProductFormData, createProduct, updateProduct,getOneProduct } from "../index";
 import { useSelector, useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation,useParams } from "react-router-dom";
 
 const Step1 = () => {
   const { productForm, setProductForm } = useProductFormData();
+  const {product}=useSelector((state)=>state.product)
+  const dispatch = useDispatch();
+  const {id}=useParams()
+
 
   useEffect(() => {
+    if (id) {
+      dispatch(getOneProduct(id));
+    }
+  }, [id]);
+  useEffect(() => {
+    console.log(product);
+    
+    if (product) {
+      setProductForm(null,null,product);
+    }
+  }, [product]);
+  useEffect(() => {
     console.log(productForm);
-  });
+  }, [productForm]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProductForm(name, value);

@@ -33,6 +33,7 @@ import WalletPage from "./pages/WalletPage";
 import WithdrawPage from "./pages/WithdrawPage";
 import CouponPage from "./pages/CouponPage";
 import ProfilePage from "./pages/ProfilePage";
+import CreateCouponPage from "./pages/CreateCouponPage";
 //layouts
 import MainLayout from "./layouts/MainLayout";
 //hooks
@@ -49,6 +50,7 @@ import createProduct from "./store/Slices/ProductSlice/createProduct";
 import getAllProducts from "./store/Slices/ProductSlice/getAllProducts";
 import updateProduct from "./store/Slices/ProductSlice/updateProduct";
 import deleteProduct from "./store/Slices/ProductSlice/deleteProduct";
+import getOneProduct from "./store/Slices/ProductSlice/getOneProduct";
 
 //productQuestion Slice
 import productQuestionReducer from "./store/Slices/ProductQuestionSlice/productQuestionSlice";
@@ -63,6 +65,7 @@ import sellerReducer from "./store/Slices/SellerSlice/SellerSlice";
 import createSeller from "./store/Slices/SellerSlice/createSeller";
 import loginSeller from "./store/Slices/SellerSlice/loginSeller";
 import updateSeller from "./store/Slices/SellerSlice/updateSeller";
+import getSeller from "./store/Slices/SellerSlice/getSeller";
 
 //customer Slice
 import customerReducer from "./store/Slices/CustomerSlice/CustomerSlice";
@@ -82,6 +85,7 @@ export {
   updateProductFormData,
   deleteProduct,
   updateProduct,
+  getOneProduct,
   productQuestionReducer,
   getProductsQuestion,
   giveAnswerToQuestion,
@@ -96,6 +100,7 @@ export {
   getAllProducts,
   loginSeller,
   updateSeller,
+  getSeller,
   sellerReducer,
   createProduct,
   SearchBtn,
@@ -111,6 +116,7 @@ export {
   OrderDetailPage,
   ProductsPage,
   OrderInvoicePage,
+  CreateCouponPage,
   ProfilePage,
   InputBox,
   Footer,

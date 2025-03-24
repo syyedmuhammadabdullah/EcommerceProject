@@ -223,10 +223,10 @@ const TrackOrder = () => {
    
         </div>
         
-         <div className="price py-sm px-xs">$ <span>{product.price}</span></div>
+         <div className="price py-sm px-xs">$ <span>{product.priceAtPurchase}</span></div>
         <div className="amount  py-sm px-xs">{product.quantity}</div>
     
-        <div className="details py-sm px-xs text-primary-base"><Link to={`/user-account/order-detail/${product.tracking.trackingNumber}`}>Track Product</Link></div>    
+        <div className="details py-sm px-xs text-primary-base"><Link to={`/user-account/order-detail/${""}`}>Track Product</Link></div>    
             </React.Fragment>
         // </div>
        ))}

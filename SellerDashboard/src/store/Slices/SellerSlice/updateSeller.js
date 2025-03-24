@@ -4,8 +4,11 @@ import axios from "axios";
 
 const updateSeller = createAsyncThunk(
     "seller/updateSeller",
-    async (seller, { rejectWithValue }) => {
+    async (seller, { rejectWithValue }) => 
+        {
         try {
+        console.log(seller);
+
         const response = await axios.put(
             `http://localhost:3001/api/v1/sellers/updateSellerDetails/${seller.sellerId}`,
             seller,

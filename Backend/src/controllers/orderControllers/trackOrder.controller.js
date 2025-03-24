@@ -1,38 +1,17 @@
 import {apiError,apiResponse,asyncHandler,OrderModel} from "../../index.js"
 
 const trackOrder=asyncHandler(async(req,res)=>{	
-    const {orderId,trackingNumber}=req.query;
-    console.log("the body is ",req.query);
+    const {orderId}=req.query;
+    console.log("order id",req.query);
     
-   
-
-    if (trackingNumber) {
-
-      const   order=await OrderModel.find({trackingNumber})
-
-
-
-
-
-      console.log("tracking number order is ",order);
-      
-      res.status(200)
-    .json(new apiResponse(200,"Order found successfully",order));
-
+    const order=await OrderModel.findById(orderId);
+    if(!order){
+        throw new apiError(404,"Order not found");
     }
-
-    if (orderId) {
-       const  order=await OrderModel.findOne({orderId})
-       .populate("shippingAddress")
-       .populate("billingAddress")
-       console.log("order is ",order.userId,req.user._id);
-       
-       if(order.userId.toString()!==req.user._id.toString()){
-           throw new apiError(404,"Order not found")
-       }
+    
         res.status(200)
     .json(new apiResponse(200,"Order found successfully",order));
-    }
+    
  
 
     

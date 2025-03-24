@@ -1,7 +1,7 @@
-import { ArrowDownOutlined, ArrowUpOutlined, SearchOutlined } from '@ant-design/icons'
+import { ArrowDownOutlined, ArrowUpOutlined, } from '@ant-design/icons'
 import React,{useEffect, useRef} from 'react'
 import { Link } from 'react-router-dom'
-import {Button, Input,getSellerOrdersDetail} from "../index"
+import {Button, Input,getSellerOrdersDetail,} from "../index"
 import Chart from "chart.js/auto"
 import { useSelector,useDispatch } from 'react-redux'
 

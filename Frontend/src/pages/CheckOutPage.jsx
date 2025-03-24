@@ -44,7 +44,7 @@ const CheckOutPage = () => {
   };
 
   const handlePlaceOrder = () => {
-    console.log("place order called ");
+    console.log("place order called ",product);
 
     if (selectedPaymentMethod === "stripe") {
    dispatch(
@@ -67,8 +67,9 @@ const CheckOutPage = () => {
           billingAddress: selectedBillingInfo,
           cartProducts:product? [product]: cartItems?.items,
           paymentMethod: "cod",
-          sellerId:"679257acc857778289d29470",
+          sellerId:product? product?.seller._id: cartItems?.items[0]?.sellerId,
           paymentStatus: "pending",
+          userId: user?._id,
         })
       );
     

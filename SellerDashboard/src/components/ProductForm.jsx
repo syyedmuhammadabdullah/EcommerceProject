@@ -152,7 +152,7 @@ const Step2 = () => {
 
   const addAttribute = () => {
     setProductForm("attributes", [
-      ...productForm.attributes,
+      ...productForm?.attributes,
       { name: "", value: "" },
     ]);
   };
@@ -470,7 +470,7 @@ const Step5 = () => {
             id="length"
             name="length"
             placeholder="Enter length"
-            value={productForm.dimensions.length || ""}
+            value={productForm?.dimensions?.length || ""}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md p-2 text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
@@ -486,7 +486,7 @@ const Step5 = () => {
             id="width"
             name="width"
             placeholder="Enter width"
-            value={productForm.dimensions.width || ""}
+            value={productForm?.dimensions?.width || ""}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md p-2 text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
@@ -502,7 +502,7 @@ const Step5 = () => {
             id="height"
             name="height"
             placeholder="Enter height"
-            value={productForm.dimensions.height || ""}
+            value={productForm?.dimensions?.height || ""}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md p-2 text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
@@ -620,7 +620,7 @@ const Step6 = () => {
           className="w-full border border-gray-300 rounded-md p-2 text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
         />
         <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 mt-4">
-          {productForm.additionalImages.map((image, index) => (
+          {productForm?.additionalImages?.map((image, index) => (
             <div key={index} className="relative">
               <img
                 src={image}

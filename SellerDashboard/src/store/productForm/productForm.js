@@ -44,6 +44,7 @@ const productFormSlice = createSlice({
   reducers: {
     updateProductFormData: (state, action) => {
         const { name, value,product } = action.payload;
+  console.log("action.payload", action.payload);
   
         if (name === "attributes") {
           state.product.attributes = value; // Directly update the attribute array

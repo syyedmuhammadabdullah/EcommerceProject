@@ -148,7 +148,7 @@ import { productReviewRouter } from "./routes/productReview.routes.js";
 import { productQuestionRouter } from "./routes/productQuestion.routes.js";
 import { mainCategoryRouter, subMainCategoryRouter } from "./routes/category.routes.js";
 import { customerRouter } from "./routes/customer.route.js";
-
+import { couponRouter } from "./routes/coupon.routes.js";
 
 //Others
 import { connectDB } from "./db/connectDB.js";
@@ -225,10 +225,25 @@ export { addItemToCart, getUserCart, removeItemFromCart, updateCartItem }; // En
 export { addItemToWishlist, removeItemFromWishlist, getWishlist }; // End of Wishlist Controller Exports
 
 //Order Controller Exports
-export { createOrder, getOrders, trackOrder, deliveredOrder, getSellerOrders, getOneSellerOrder, getSellerOrdersDetail }; // End of Order Controller Exports
+export { createOrder,
+         getOrders,
+         trackOrder,
+         deliveredOrder,
+         getSellerOrders,
+         getOneSellerOrder,
+         getSellerOrdersDetail
+             }; // End of Order Controller Exports
 
 //Category Controller Exports
-export { createMainCategory, getMainCategory, deleteMainCategory, updateMainCategory, createSubMainCategory, getSubMainCategory, deleteSubMainCategory, updateSubMainCategory };
+export { createMainCategory, 
+         getMainCategory, 
+         deleteMainCategory, 
+         updateMainCategory, 
+         createSubMainCategory,
+         getSubMainCategory,
+         deleteSubMainCategory,
+         updateSubMainCategory 
+        };
 
 //Payment Controller Exports
 
@@ -264,7 +279,8 @@ export {
     wishlistRouter,
     mainCategoryRouter,
     subMainCategoryRouter,
-    customerRouter
+    customerRouter,
+    couponRouter
 }; // End of Route Exports
 
 // Service Exports

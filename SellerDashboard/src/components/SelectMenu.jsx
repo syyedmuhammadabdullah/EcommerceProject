@@ -11,7 +11,7 @@ const SelectMenu = ({
   onClick = () => {}
 }) => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(defaultValue || "English");
+  const [value, setValue] = useState(defaultValue || "Select");
   const menuRef = useRef(null);
 
   const changeValue = (e, item) => {

@@ -38,11 +38,14 @@ const CheckOutPage = () => {
   const stripe = useStripe();
   const elements = useElements();
   const dispatch = useDispatch();
-  const product=location.state?.product
+  const {product,quantity}=location?.state || {};
   const handleRemoveItem = (id) => {
     dispatch(removeItemFromCart({ userId: user?._id, productId: id }));
   };
-
+useEffect(() => {
+  console.log("product",product,quantity);
+  
+}, [product,quantity]);
   const handlePlaceOrder = () => {
     console.log("place order called ",product);
 
@@ -70,6 +73,7 @@ const CheckOutPage = () => {
           sellerId:product? product?.seller._id: cartItems?.items[0]?.sellerId,
           paymentStatus: "pending",
           userId: user?._id,
+          quantity:quantity
         })
       );
     
@@ -168,10 +172,10 @@ const CheckOutPage = () => {
                           Size: <span>Xl</span>
                         </div>
                       </div>
-                      <div className="price">Rs.{product?.price}</div>
+                      <div className="price">Rs.{product?.discountPrice ? product?.discountPrice*quantity : product?.price*quantity}</div>
                     </div>
                     <div className="quantity flex justify-between">
-                      <div className="quantity">{product?.quantity}</div>
+                      <div className="quantity">{quantity}</div>
                       <div
                         className="remove"
                         onClick={() => handleRemoveproduct(product?.productId)}

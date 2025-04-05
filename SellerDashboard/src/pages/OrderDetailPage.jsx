@@ -227,7 +227,7 @@ const OrderDetailPage = () => {
               </div>
              <div className="stock border pl-[10px] min-w-[137px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >{product.quantity}</div>
              <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{product.priceAtPurchase}</div>
-             <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{order.totalPrice}</div>
+             <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{product.priceAtPurchase*product.quantity}</div>
              <div className="action border pl-[10px] min-w-[111px] flex items-center border-[#0000000f] h-full" >Action</div>
                
             </div>

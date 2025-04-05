@@ -5,7 +5,8 @@ const createOrder=asyncHandler(async(req,res)=>{
   
     console.log("create order runs",req.body);
     
-    const {shippingAddress,billingAddress,paymentMethod,cartProducts,sellerId,paymentId,paymentStatus}=req.body;
+    const {shippingAddress,billingAddress,paymentMethod,cartProducts,sellerId,paymentId,paymentStatus,quantity}=req.body;
+    console.log(quantity);
     
     if (!shippingAddress || !paymentMethod || !cartProducts,!sellerId,!paymentId,!paymentStatus) {
         throw new apiError(400, "All fields are required");
@@ -16,26 +17,32 @@ const createOrder=asyncHandler(async(req,res)=>{
         const orderId = customAlphabet("1234567890", 6);
         console.log("order is to be created",orderId());
      
-                const order = await OrderModel.create({
-                    userId: req.user._id,
-                    sellerId,
-                    shippingAddress,
-                    billingAddress,
-                    paymentMethod,
-                    paymentId,
-                    paymentStatus,
-                    products: cartProducts.map((product) => ({
-                        productId: product._id,
-                        quantity: product.quantity,
-                        priceAtPurchase: product.price,
-                        image:product.image,
-                        name:product.name,
-                        
-                    })),
-                    trackingNumber: orderId(),
+      
+       
+                     const order = await OrderModel.create({
+                         userId: req.user._id,
+                         sellerId,
+                         shippingAddress,
+                         billingAddress,
+                         paymentMethod,
+                         paymentId,
+                         paymentStatus,
+                         products: cartProducts.map((product) => ({
+                             productId: product._id,
+                             quantity:product.quantity ? product.quantity : quantity,
+                             priceAtPurchase: product.discountPrice ? product.discountPrice : product.unitPrice,
+                             image:product.image,
+                             name:product.name,
+                             
+                         })),
+                         trackingNumber: orderId(),
+                         
+                     });
+             
+                if (!order) {
+                    throw new apiError(500, "Failed to create order");
                     
-                });
-          
+                }
           
             
             order.totalPrice = order.products.reduce((total, product) => Number((total + (product.priceAtPurchase * product.quantity)).toFixed(2)), 0);

@@ -1,7 +1,7 @@
 import { apiError, apiResponse, asyncHandler, ProductModel, uploadOnCloudinary, deleteOnCloudinary,transformAttributes } from "../../index.js";
 
 const createProduct = asyncHandler(async (req, res) => {
-console.log("create product runs",req.seller);
+console.log("create product runs",req.body);
 const transformedAttributes = transformAttributes(req.body);
 
 
@@ -16,6 +16,7 @@ const transformedAttributes = transformAttributes(req.body);
         const additionalImages=uploadedImages?.slice(1);
         const productData={
             ...req.body,
+            discount:req.body.discountPrice,
             totalStock:req.body.currentStock,
             image:mainImage.secure_url,
             imagePublic_id:mainImage?.public_id,
@@ -24,9 +25,14 @@ const transformedAttributes = transformAttributes(req.body);
             attributes:[...transformedAttributes]
 
         }
-  
-       
-            const product = await ProductModel.create(productData);
+
+            try {
+                const product = await ProductModel.create(productData);
+                
+            } catch (error) {
+                console.log(error);
+                
+            }
             
     
         if (!product) {

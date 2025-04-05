@@ -55,7 +55,7 @@ const ProductDetailPage = () => {
     dispatch(
     addItemToCart({
       productId: product._id,
-        quantity: 1,
+        quantity: quantity,
         unitPrice: product?.discountPrice
           ? product?.discountPrice
           : product.unitPrice,
@@ -85,7 +85,7 @@ const ProductDetailPage = () => {
     if (!isAuthenticated) {
       navigate(`/login`);
     }
-   navigate("/checkout",{state:{product}})
+   navigate("/checkout",{state:{product,quantity:quantity}})
   };
 
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { Button, Input, } from '../index'
+import { Button, Input,SelectMenu } from '../index'
 const createCouponPage = () => {
     const [couponForm, setCouponForm] = useState({
         code: '',
@@ -18,6 +18,8 @@ const createCouponPage = () => {
         Usagelimitperuser: false,
         Usagelimitpercoupon: 0,
       });
+      const couponTypes = ['whole store', 'specific product', 'specific category', 'specific seller'];
+      const discountTypes = ['percentage', 'price'];
     
       const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -65,16 +67,12 @@ const createCouponPage = () => {
                   </div>
                   <div className="couponType">
                     <label htmlFor="couponType">Coupon Type</label>
-                    {/* <Select
+                    <SelectMenu
                       value={couponForm.couponType}
                       onChange={(value) => handleSelectChange('couponType', value)}
-                      options={[
-                        { value: 'whole store', label: 'Whole Store' },
-                        { value: 'specific product', label: 'Specific Product' },
-                        { value: 'specific category', label: 'Specific Category' },
-                      ]}
+                      options={couponTypes}
                       className="w-full"
-                    /> */}
+                    />
                   </div>
                   <div className="couponAmount">
                     <label htmlFor="couponAmount">Coupon Amount</label>
@@ -104,15 +102,12 @@ const createCouponPage = () => {
             
                   <div className="discountType">
                     <label htmlFor="discountType">Discount Type</label>
-                    {/* <Select
+                    <SelectMenu
                       value={couponForm.discountType}
                       onChange={(value) => handleSelectChange('discountType', value)}
-                      options={[
-                        { value: 'percentage', label: 'Percentage' },
-                        { value: 'price', label: 'Price' },
-                      ]}
+                      options={discountTypes}
                       className="w-full"
-                    /> */}
+                    />
                   </div>
                   <div className="discountValue">
                     <label htmlFor="discountValue">Discount Value</label>
@@ -160,19 +155,19 @@ const createCouponPage = () => {
                              
                   <div className="startDate">
                     <label htmlFor="startDate">Start Date</label>
-                    {/* <DatePicker
+                    <input type="date"
                       value={couponForm.startDate}
                       onChange={(date) => handleDateChange('startDate', date)}
-                      className="w-full"
-                    /> */}
+                      className="w-full outline-none"
+                    />
                   </div>
                   <div className="endDate">
                     <label htmlFor="endDate">End Date</label>
-                    {/* <DatePicker
+                    <input type="date"
                       value={couponForm.endDate}
                       onChange={(date) => handleDateChange('endDate', date)}
-                      className="w-full"
-                    /> */}
+                      className="w-full outline-none"
+                    />
                   </div>
                   
                 </div>

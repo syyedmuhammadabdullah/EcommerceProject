@@ -72,10 +72,6 @@ const ProductSchema = new Schema({
         type: String,
         required: true
     },
-    quantity: {
-        type: Number,
-        required: true
-    },
     maxQuantity: {
         type: Number
     },

@@ -47,42 +47,50 @@ const handleDecreaseQuantity=(item)=>{
         <h2>Shopping Cart</h2>
         <p className='text-text-secondary text-md font-semibold'>{cartItems?.items?.length} item(s)</p>
       </div>
-    {cartItems?.items?.length==0 && <p className='text-text-secondary text-lg'>Your cart is empty</p>}
-
-    {cartItems?.items?.length>0 && <div className="cartItems w-full grid place-items-center sm:place-items-stretch   gap-xxl">
-      <div className="sm:grid hidden px-xl grid-cols-5 place-items-center">
-        <div className="product">Product Image</div>
-        <div className="P-name">Product Name</div>
-        <div className="quantity">Quantity</div>
-        <div className="price">Price</div>
-        <div className="remove">Remove</div>
-      </div>
-    
-  {loading?<div>Loading...</div>:cartItems?.items?.map((item)=>(
-      <div key={item._id} className="productItem shadow-secondary place-items-center max-w-[300px] sm:max-w-full gap-xs px-p-sm py-p-lg sm:p-p-lg md:px-p-lg md:py-p-sm rounded-md  grid sm:grid-cols-5">
    
-      <div className="img w-full bg-red-300 aspect-square"><img src={item.image?item.image: "https://help.rangeme.com/hc/article_attachments/360006928633/what_makes_a_good_product_image.jpg"} alt="img" className='w-full h-full'/></div>
+
+    <div className="cartItems w-full grid place-items-center sm:place-items-stretch   gap-xxl">
       
-      
-      
-      <div className="name"><p>{item.name.length> 70 ? item.name.slice(0,70)+"...":item.name}</p></div>
-      <div className="quantity flex">
-        <div className="increment" onClick={()=>handleIncreaseQuantity(item)}><PlusOutlined /></div>
-        <div className="quantity">{item.quantity}</div>
-        <div className="decrement" onClick={()=>handleDecreaseQuantity(item)}><MinusOutlined /></div>
-      </div>
-  
-      <div className="price">Rs. {item.price}</div>
-      <div className="remove ml-xs" onClick={() => {handleRemove(item.productId)}}><CloseOutlined /></div>
-  
-      </div>
-  ))}
+
+               {cartItems?.items?.map((order) => (
+                 <div key={order._id} className="order  bg-white border border-border-primary p-p-lg rounded-md">
+
+                 <div className="seller border-b py-p-md border-border-primary flex items-center gap-xs ">
+                     <div className="logo h-[50px] w-[50px] rounded-full border border-border-primary"><img src={order?.sellerId?.storeDetails?.storeLogo} alt="store logo" /></div>
+                     <div className="name">{order?.sellerId?.storeDetails?.storeName}</div>
+                 </div>
+ 
+                {order?.items?.map((product) => (
+                  <div className="order-details mt-md" key={product?._id}>
+ 
+                  
+                     
+                  <div className="product flex-col lg:flex-row items-center lg:items-start flex gap-md border border-border-primary bg-white  py-p-md">
+                  <div className="basic flex-col lg:flex-row flex gap-md">
+
+                  <div className="img h-[150px] w-[150px] bg-red-100"><img src={product?.image} alt="" /></div>
+                  <div className="name  sm:w-[200px] h-[150px] overflow-hidden">{product?.name} </div>
+                  </div>
+                  <div className="additional items-center lg:items-start flex-col lg:flex-row flex gap-md lg:justify-between px-md w-full">
+                  <div className="quantity"><span className='text-text-secondary'>Quantity:</span> {product?.quantity}</div>
+                  <div className="price"><span className='text-text-secondary'>Price:</span> {product?.unitPrice}</div>
+                  <div className="remove"><CloseOutlined onClick={()=>handleRemove(product?.productId)}/></div>
+                  </div>
+              </div>
+             </div>
+                ))}
+                 
+                 </div>
+               ))}
+                       
+                 
+            
   
   
 
-    </div>}
+    </div>
     
-    {cartItems?.items?.length>0 && <div className="summary w-full p-xxl flex flex-col max-w-[440px] h-fit rounded-md gap-xl bg-background-layout">
+     <div className="summary w-full p-xxl flex flex-col max-w-[440px] h-fit rounded-md gap-xl bg-background-layout">
       <div className="heading"><h3 className='text-lg'>Order Summary</h3></div>
       <div className="price flex flex-col gap-sm">
           <div className="subtotal flex justify-between"><span>Subtotal</span><span>{cartItems?.totalPrice}</span></div>
@@ -90,7 +98,7 @@ const handleDecreaseQuantity=(item)=>{
           <Button className="w-full bg-primary-base rounded-md py-xxs text-white" children='Checkout'/>
           </Link>
         </div>
-    </div>}
+    </div>
     
 
 

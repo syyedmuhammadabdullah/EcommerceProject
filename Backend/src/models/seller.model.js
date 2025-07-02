@@ -32,6 +32,7 @@ const SellerSchema = new Schema({
         postalCode: { type: String, default: null },
         country: { type: String, default: null },
         phone: { type: String, default: null },
+        town: { type: String, default: null },
       },
       bankDetails: {
         bankName: { type: String, default: null },
@@ -44,6 +45,8 @@ const SellerSchema = new Schema({
         storeDescription: { type: String, default: null },
         storeLogo: { type: String, default: null },
         storeBanner: { type: String, default: null },
+        storeBannerPublicId: { type: String, default: null },
+        storeLogoPublicId: { type: String, default: null },
       },
       verification: {
         isVerified: { type: Boolean, default: false },

@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom'
 import { Button, Input,updateSeller,getSeller } from '../index'
 import { CloudUploadOutlined, EyeOutlined, UploadOutlined } from '@ant-design/icons';
 import { useDispatch,useSelector } from 'react-redux';
+import { TailSpin } from 'react-loader-spinner';
 
 const ProfilePage = () => {
-    const inputRef=useRef(null);
-    const [bannerImage,setBannerImage]=useState()
+    
+    const [bannerImage,setBannerImage]=useState("")
     const [hoverBanner,setHoverBanner]=useState(false)
-    const [profileImage,setProfileImage]=useState()
+    const [profileImage,setProfileImage]=useState("")
+    const [hoverProfile,setHoverProfile]=useState(false)
     const [sellerForm, setSellerForm] = useState({
         businessName: '',
         registrationNumber: '',
@@ -33,7 +35,12 @@ const ProfilePage = () => {
         });
 
     const dispatch=useDispatch()
-    const {seller}=useSelector((state)=>state.seller)
+    const bannerInputRef = useRef(null);
+    const profileInputRef = useRef(null);
+
+ 
+ 
+    const {seller,loading}=useSelector((state)=>state.seller)
     useEffect(()=>{
         dispatch(getSeller())
       
@@ -58,13 +65,15 @@ const ProfilePage = () => {
                 postalCode:seller.businessAddress?.postalCode,
                 country:seller.businessAddress?.country,
                 phone:seller.businessAddress?.phone,
-                phone:seller.businessAddress?.town,
+                town:seller.businessAddress?.town,
                 bankName:seller.bankDetails?.bankName,
                 accountHolderName:seller.bankDetails?.accountHolderName,
                 accountNumber:seller.bankDetails?.accountNumber,
                 iban:seller.bankDetails?.iban,
                 storeName:seller.storeDetails?.storeName,
-                storeDescription:seller.storeDetails?.storeDescription
+                storeDescription:seller.storeDetails?.storeDescription,
+                storeLogo:seller.storeDetails?.storeLogo,
+                storeBanner:seller.storeDetails?.storeBanner
             }
             setSellerForm(form)
             
@@ -72,10 +81,9 @@ const ProfilePage = () => {
    
     },[seller])
 
-    const handleClick=()=>{
-        console.log(inputRef.current);
-        if (inputRef.current) {
-            inputRef.current.click()
+    const handleBannerClick=()=>{
+        if (bannerInputRef.current) {
+            bannerInputRef.current.click()
         }
     }
     const handleBannerUpload=(e)=>{
@@ -83,58 +91,105 @@ const ProfilePage = () => {
         setBannerImage(file)
     }
 
-    const handleDrag=(e)=>{
+    const handleBannerDrag=(e)=>{
         e.preventDefault();
         e.stopPropagation();
     }
-    const handleDrop=(e)=>{
+    const handleBannerDrop=(e)=>{
         e.preventDefault();
         handleBannerUpload(e);
     }
 
-    const handleImageChange=()=>{
-        handleClick();
+    const handleBannerImageChange=()=>{
+        handleBannerClick();
     }
+
+
+    const handleProfileClick=()=>{
+        if (profileInputRef.current) {
+            profileInputRef.current.click()
+        }
+    }
+    const handleProfileUpload=(e)=>{
+        const file=e.target.files[0] || e.dataTransfer.files[0];
+        setProfileImage(file)
+    }
+
+    const handleProfileDrag=(e)=>{
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    const handleProfileDrop=(e)=>{
+        e.preventDefault();
+        handleProfileUpload(e);
+    }
+
+    const handleProfileImageChange=()=>{
+        handleProfileClick();
+    }
+
 
     const handleInputChange=(e)=>{
         const {name,value}=e.target;
         setSellerForm({...sellerForm,[name]:value})
     }
-    const handleSubmit=()=>{
-        const form={
-            businessName:sellerForm.businessName,
-            registrationNumber:sellerForm.registrationNumber,
-            taxId:sellerForm.taxId,
-            businessEmail:sellerForm.businessEmail,
-            sellerId:seller._id,
-            cnic:sellerForm.cnic,
-            businessAddress: {
-                addressLine1:sellerForm.street1,
-                addressLine2:sellerForm.street2,
-                city:sellerForm.city,
-                state:sellerForm.state,
-                postalCode:sellerForm.postalCode,
-                country:sellerForm.country,
-                phone:sellerForm.phone
-            },
-            bankDetails: {
-                bankName:sellerForm.bankName,
-                accountHolderName:sellerForm.accountHolderName,
-                accountNumber:sellerForm.accountNumber,
-                iban:sellerForm.iban
-            },
-            storeDetails: {
-                storeName:sellerForm.storeName,
-                storeDescription:sellerForm.storeDescription
-            }
-        }
-        dispatch(updateSeller(form))
-    }
+    
 
+    const handleSubmit = () => {
+        const formData = new FormData();
+      
+        // Append files
+        if (profileImage instanceof File) {
+          formData.append("storeLogo", profileImage);
+          formData.append("storeLogoPublicId", seller.storeDetails?.storeLogoPublicId);
+        }
+      
+        if (bannerImage instanceof File) {
+          formData.append("storeBanner", bannerImage);
+          formData.append("storeBannerPublicId", seller.storeDetails?.storeBannerPublicId);
+        }
+      
+        // Append text fields individually
+        formData.append("businessName", sellerForm.businessName);
+        formData.append("registrationNumber", sellerForm.registrationNumber);
+        formData.append("taxId", sellerForm.taxId);
+        formData.append("businessEmail", sellerForm.businessEmail);
+        formData.append("sellerId", seller._id);
+        formData.append("cnic", sellerForm.cnic);
+      
+        // Business address
+        formData.append("street1", sellerForm.street1);
+        formData.append("street2", sellerForm.street2);
+        formData.append("city", sellerForm.city);
+        formData.append("state", sellerForm.state);
+        formData.append("postalCode", sellerForm.postalCode);
+        formData.append("country", sellerForm.country);
+        formData.append("phone", sellerForm.phone);
+        formData.append("town", sellerForm.town);
+      
+        // Bank details
+        formData.append("bankName", sellerForm.bankName);
+        formData.append("accountHolderName", sellerForm.accountHolderName);
+        formData.append("accountNumber", sellerForm.accountNumber);
+        formData.append("iban", sellerForm.iban);
+      
+        // Store details
+        formData.append("storeName", sellerForm.storeName);
+        formData.append("storeDescription", sellerForm.storeDescription);
+        if (!bannerImage) {
+            formData.append("storeBanner", sellerForm.storeBanner);
+        }
+        if (!profileImage) {
+            formData.append("storeLogo", sellerForm.storeLogo);
+        }
+        dispatch(updateSeller({ formData, sellerId: seller._id }));
+      };
+      
 
     return (
-        <section className="flex justify-center">
-          <div className="container max-w-screen-xl lg:gap-xxl  grid gap-xl px-p-md lg:p-p-xxl">
+        <section className="flex justify-center ">
+          <div className="container max-w-screen-xl relative lg:gap-xxl  grid gap-xl px-p-md lg:p-p-xxl">
+            <div className={`disabled bg-black/5 w-full h-full absolute top-0 left-0 ${loading ? "flex justify-center items-center" : "hidden"}`} > <TailSpin color="black" height={50} /> </div>
             <div className="top-menu ">
             <div className="title ">
               <h4>Store Details</h4>
@@ -146,26 +201,27 @@ const ProfilePage = () => {
           
             <div className="content w-full overflow-scroll no-scrollbar">
             {/* Banner */}
-            {bannerImage? 
-            <div className="bannerImg relative h-[146px] bg-red-200" >
-                <img  className="w-full h-full object-cover" src={bannerImage ? URL.createObjectURL(bannerImage) : ""} alt="" />
-                <div onClick={handleImageChange} onMouseEnter={()=>{setHoverBanner(true)}} onMouseLeave={()=>{setHoverBanner(false)}} className="change cursor-pointer absolute h-full w-full top-0 p-sm flex justify-center items-center ">
+            {seller?.storeDetails?.storeBanner ? 
+            <div className="bannerImg relative h-[150px]" >
+                <h5>Store Banner</h5>
+                <img  className="w-full h-full object-cover" src={bannerImage ? URL.createObjectURL(bannerImage) : seller?.storeDetails?.storeBanner} alt="" />
+                <div onClick={handleBannerImageChange} onMouseEnter={()=>{setHoverBanner(true)}} onMouseLeave={()=>{setHoverBanner(false)}} className="change cursor-pointer absolute h-full w-full top-0 p-sm flex justify-center items-center ">
                  
                     <UploadOutlined className={`text-primary-base text-xxl ${hoverBanner ?"block" :"hidden"}`}/>
                 </div>
-                <Input type="file" className="hidden" divClassName="hidden" onChange={handleBannerUpload} ref={inputRef}/>
+                <Input type="file" className="hidden" divClassName="hidden" onChange={handleBannerUpload} ref={bannerInputRef}/>
                 
                 </div>:
                 <div className="banner flex flex-col gap-xs" >
 
 <div className="name">
-    <h5>Background Image</h5>
+    <h5>Store Banner</h5>
 </div>
-<div  onClick={handleClick} onDragOver={handleDrag} onDrop={handleDrop} className="upload cursor-pointer bg-[#00000005] flex flex-col items-center justify-center gap-md h-[146px] border-dashed border border-border-primary rounded-md ">
+<div  onClick={handleBannerClick} onDragOver={handleBannerDrag} onDrop={handleBannerDrop} className="upload cursor-pointer bg-[#00000005] flex flex-col items-center justify-center gap-md h-[146px] border-dashed border border-border-primary rounded-md ">
 <div className="icon">
     <UploadOutlined className='text-xxl text-primary-base'/>
 </div>
-<Input type="file" className="hidden" divClassName="hidden" onChange={handleBannerUpload} ref={inputRef}/>
+<Input type="file" className="hidden" divClassName="hidden" onChange={handleBannerUpload} ref={bannerInputRef}/>
 <div className="text text-center">
     <p className='text-md'>Click or drag file to this area to upload</p>
     <p className='text-text-secondary'>Support for a single upload only.</p>
@@ -175,32 +231,52 @@ const ProfilePage = () => {
 </div>}
 <div className="info grid grid-cols-1 lg:grid-cols-2 gap-xxl py-p-xl">
 
-<div className="personalInfo bg-white border border-border-primary rounded-md p-p-lg grid grid-cols-1 lg:grid-cols-2 gap-lg">
+
+<div className="storeDetails bg-white border border-border-primary rounded-md p-p-lg grid grid-cols-1 lg:grid-cols-2 gap-lg">
     <div className="name col-span-full">
-        <h5>Personal Information</h5>
+        <h5>Store Details</h5>
     </div>
-    <div className="businessName">
-        <label htmlFor="businessName">Business Name</label>
-        <Input value={sellerForm.businessName} onChange={(e)=>handleInputChange(e)} label="businessName" divClassName='mt-xs' placeholder="Business Name if any" name="businessName" id="businessName"/>
-    </div>
-    <div className="registrationNumber">
-        <label htmlFor="registrationNumber">Registration Number</label>
-        <Input value={sellerForm.registrationNumber} onChange={(e)=>handleInputChange(e)} label="Registration Number" divClassName='mt-xs' placeholder="Registration Number" name="registrationNumber" id="registrationNumber"/>
-    </div>
-    <div className="taxId">
-        <label htmlFor="taxId">Tax ID</label>
-        <Input value={sellerForm.taxId} onChange={(e)=>handleInputChange(e)} label="Tax ID" divClassName='mt-xs' placeholder="Tax ID" name="taxId" id="taxId"/>
-    </div>
-    <div className="businessEmail">
-        <label htmlFor="businessEmail">Business Email</label>
-        <Input value={sellerForm.businessEmail} onChange={(e)=>handleInputChange(e)} label="Business Email" divClassName='mt-xs' placeholder="Business Email" name="businessEmail" id="businessEmail"/>
-    </div>
-    <div className="cnic">
-        <label htmlFor="cnic">CNIC</label>
-        <Input value={sellerForm.cnic} onChange={(e)=>handleInputChange(e)} label="CNIC" divClassName='mt-xs' placeholder="CNIC" name="cnic" id="cnic"/>
-    </div>
+
+    {seller?.storeDetails?.storeLogo ? 
+            <div className="bannerImg relative h-[100px] w-[100px] rounded-full col-span-full" >
+                <h5>Store Logo</h5>
+                <img  className="w-full h-full object-cover" src={profileImage ?URL.createObjectURL(profileImage) : seller?.storeDetails?.storeLogo} alt="" />
+                <div onClick={handleProfileImageChange} onMouseEnter={()=>{setHoverProfile(true)}} onMouseLeave={()=>{setHoverProfile(false)}} className="change cursor-pointer absolute h-full w-full top-0 p-sm flex justify-center items-center ">
+                 
+                    <UploadOutlined className={`text-primary-base text-xxl ${hoverProfile ?"block" :"hidden"}`}/>
+                </div>
+                <Input type="file" className="hidden" divClassName="hidden" onChange={handleProfileUpload} ref={profileInputRef}/>
+                
+                </div>:
+                <div className="banner flex flex-col gap-xs col-span-full" >
+
+<div className="name">
+    <h5>Store Logo</h5>
+</div>
+<div  onClick={handleProfileClick} onDragOver={handleProfileDrag} onDrop={handleProfileDrop} className="upload cursor-pointer bg-[#00000005] flex flex-col items-center justify-center gap-md h-[146px] border-dashed border border-border-primary rounded-md ">
+<div className="icon">
+    <UploadOutlined className='text-xxl text-primary-base'/>
+</div>
+<Input type="file" className="hidden" divClassName="hidden" onChange={handleProfileUpload} ref={profileInputRef}/>
+<div className="text text-center">
+    <p className='text-md'>Click or drag file to this area to upload</p>
+    <p className='text-text-secondary'>Support for a single upload only.</p>
+</div>
 </div>
 
+</div>}
+
+
+    <div className="storeName">
+        <label htmlFor="storeName">Store Name</label>
+        <Input value={sellerForm.storeName} onChange={(e)=>handleInputChange(e)} label="Store Name" divClassName='mt-xs' placeholder="Store Name" name="storeName" id="storeName"/>
+    </div>
+    <div className="storeDescription ">
+        <label htmlFor="storeDescription">Store Description</label>
+        <Input value={sellerForm.storeDescription} onChange={(e)=>handleInputChange(e)} type="textarea" label="Store Description" divClassName='mt-xs' placeholder="Store Description" name="storeDescription" id="storeDescription"/>
+    </div>
+   
+</div>
 
 <div className="address bg-white border border-border-primary rounded-md p-p-lg grid grid-cols-1 lg:grid-cols-2 gap-lg">
 
@@ -264,28 +340,30 @@ const ProfilePage = () => {
     </div>
 </div>
 
-
-<div className="storeDetails bg-white border border-border-primary rounded-md p-p-lg grid grid-cols-1 lg:grid-cols-2 gap-lg">
+<div className="personalInfo bg-white border border-border-primary rounded-md p-p-lg grid grid-cols-1 lg:grid-cols-2 gap-lg">
     <div className="name col-span-full">
-        <h5>Store Details</h5>
+        <h5>Personal Information</h5>
     </div>
-    <div className="storeName">
-        <label htmlFor="storeName">Store Name</label>
-        <Input value={sellerForm.storeName} onChange={(e)=>handleInputChange(e)} label="Store Name" divClassName='mt-xs' placeholder="Store Name" name="storeName" id="storeName"/>
+    <div className="businessName">
+        <label htmlFor="businessName">Business Name</label>
+        <Input value={sellerForm.businessName} onChange={(e)=>handleInputChange(e)} label="businessName" divClassName='mt-xs' placeholder="Business Name if any" name="businessName" id="businessName"/>
     </div>
-    <div className="storeLogo">
-        <label htmlFor="storeLogo">Store Logo</label>
-        <Input value={sellerForm.storeLogo} onChange={(e)=>handleInputChange(e)} label="Store Logo" divClassName='mt-xs' placeholder="Store Logo" name="storeLogo" id="storeLogo"/>
-    </div>
-    <div className="storeDescription col-span-full">
-        <label htmlFor="storeDescription">Store Description</label>
-        <Input value={sellerForm.storeDescription} onChange={(e)=>handleInputChange(e)} type="textarea" label="Store Description" divClassName='mt-xs' placeholder="Store Description" name="storeDescription" id="storeDescription"/>
-    </div>
+    
    
+    <div className="businessEmail">
+        <label htmlFor="businessEmail">Business Email</label>
+        <Input value={sellerForm.businessEmail} onChange={(e)=>handleInputChange(e)} label="Business Email" divClassName='mt-xs' placeholder="Business Email" name="businessEmail" id="businessEmail"/>
+    </div>
+    <div className="cnic col-span-full">
+        <label htmlFor="CNIC">CNIC</label>
+        <Input value={sellerForm.cnic} onChange={(e)=>handleInputChange(e)} label="CNIC" divClassName='mt-xs' placeholder="CNIC" name="cnic" id="CNIC"/>
+    </div>
 </div>
 
+
 <div className="update col-span-full ml-auto">
-    <Button onClick={handleSubmit} children="Update" className='w-full bg-primary-base text-white py-p-xs rounded-md px-p-md' />
+    {loading? <TailSpin color="black" height={20} /> :<Button onClick={handleSubmit} disabled={loading} children="Update" className='w-full bg-primary-base text-white py-p-xs rounded-md px-p-md' />}
+    
 </div>
 
 </div>     

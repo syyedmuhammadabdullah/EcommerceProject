@@ -2,7 +2,7 @@ import { apiError, asyncHandler, UserModel, refreshAccessToken } from "../index.
 import jwt from "jsonwebtoken";
 
 const authMiddleware=asyncHandler(async(req,res,next)=>{
-   console.log("auth middleware runs");
+   console.log("auth middleware runs",req.cookies.accessToken);
        const accessToken=req.cookies.accessToken
        
        

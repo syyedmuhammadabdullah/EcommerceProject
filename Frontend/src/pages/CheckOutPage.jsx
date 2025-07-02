@@ -39,6 +39,23 @@ const CheckOutPage = () => {
   const elements = useElements();
   const dispatch = useDispatch();
   const {product,quantity}=location?.state || {};
+
+
+
+
+  const groupedCart = cartItems?.items?.reduce((acc, item) => {
+    const sellerId = item.sellerId;
+    if (!acc[sellerId]) {
+      acc[sellerId] = {
+        seller: item.seller,
+        items: [],
+      };
+    }
+    acc[sellerId].items.push(item);
+    return acc;
+  }, {});
+  
+
   const handleRemoveItem = (id) => {
     dispatch(removeItemFromCart({ userId: user?._id, productId: id }));
   };
@@ -68,12 +85,13 @@ useEffect(() => {
         createOrder({
           shippingAddress: selectedShippingInfo,
           billingAddress: selectedBillingInfo,
-          cartProducts:product? [product]: cartItems?.items,
+          buyNowProduct:product?[product]:false,
           paymentMethod: "cod",
           sellerId:product? product?.seller._id: cartItems?.items[0]?.sellerId,
           paymentStatus: "pending",
           userId: user?._id,
-          quantity:quantity
+          quantity:quantity,
+          cartProducts:cartItems
         })
       );
     
@@ -186,33 +204,40 @@ useEffect(() => {
                   </div>
                 </div>:cartItems &&
                 cartItems?.items?.map((item) => (
-                  <div className="product flex gap-base" key={item.productId}>
-                    <div className="img">
-                      <img src="" alt="" className="w-[104px] h-[130px]" />{" "}
-                    </div>
-                    <div className="info w-full flex flex-col justify-between">
-                      <div className="content flex justify-between">
-                        <div className="nameAndType">
-                          <div className="name">{item.name}</div>
-                          <div className="type">
-                            Color: <span>White</span>
-                          </div>
-                          <div className="type">
-                            Size: <span>Xl</span>
-                          </div>
-                        </div>
-                        <div className="price">Rs.{item.price}</div>
-                      </div>
-                      <div className="quantity flex justify-between">
-                        <div className="quantity">{item.quantity}</div>
-                        <div
-                          className="remove"
-                          onClick={() => handleRemoveItem(item.productId)}
-                        >
-                          <Button children="Remove" />
-                        </div>
-                      </div>
-                    </div>
+                  <div key={item._id} className="border rounded-xl p-4 mb-6 shadow-sm">
+      <h3 className="text-lg font-semibold mb-2">Seller: {item?.sellerId?.storeDetails?.storeName ? item?.sellerId?.storeDetails?.storeName : "Unknown Seller"}</h3>
+                  {item?.items?.map((item) => (
+                     <div className="product flex gap-base" key={item._id}>
+                     <div className="img">
+                       <img src="" alt="" className="w-[104px] h-[130px]" />{" "}
+                     </div>
+                     <div className="info w-full flex flex-col justify-between">
+                       <div className="content flex justify-between">
+                         <div className="nameAndType">
+                           <div className="name">{item.name}</div>
+                           <div className="type">
+                             Color: <span>White</span>
+                           </div>
+                           <div className="type">
+                             Size: <span>Xl</span>
+                           </div>
+                         </div>
+                         <div className="price">Rs.{item.price}</div>
+                       </div>
+                       <div className="quantity flex justify-between">
+                         <div className="quantity">{item.quantity}</div>
+                         <div
+                           className="remove"
+                           onClick={() => handleRemoveItem(item.productId)}
+                         >
+                           <Button children="Remove" />
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                  ))}
+                 
+                  <div className="text-right font-medium">Subtotal: Rs. {item.totalPrice}</div>
                   </div>
                 ))
             }
@@ -221,20 +246,20 @@ useEffect(() => {
           <div className="price flex flex-col gap-sm">
             <div className="subtotal flex justify-between">
               <span>Subtotal</span>
-              <span>Rs. 1000</span>
+              <span>{cartItems?.totalPrice}</span>
             </div>
 
             <div className="subtotal flex justify-between">
-              <span>Subtotal</span>
+              <span>Shipping</span>
+              <span>Rs. 100</span>
+            </div>
+            <div className="subtotal flex justify-between">
+              <span>Discount</span>
               <span>Rs. 1000</span>
             </div>
             <div className="subtotal flex justify-between">
-              <span>Subtotal</span>
-              <span>Rs. 1000</span>
-            </div>
-            <div className="subtotal flex justify-between">
-              <span>Subtotal</span>
-              <span>Rs. 1000</span>
+              <span>Grand Total</span>
+              <span>Rs. {cartItems?.totalPrice+100+1000}</span>
             </div>
             <Button
               onClick={handlePlaceOrder}

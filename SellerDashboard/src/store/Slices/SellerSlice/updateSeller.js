@@ -4,19 +4,20 @@ import axios from "axios";
 
 const updateSeller = createAsyncThunk(
     "seller/updateSeller",
-    async (seller, { rejectWithValue }) => 
+    async ({formData,sellerId}, { rejectWithValue }) => 
         {
         try {
-        console.log(seller);
 
         const response = await axios.put(
-            `http://localhost:3001/api/v1/sellers/updateSellerDetails/${seller.sellerId}`,
-            seller,
-            {
-            withCredentials: true,
-            }
+            `http://localhost:3001/api/v1/sellers/updateSellerDetails/${sellerId}`,
+            formData,{
+          headers:  {
+            "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+        }
         );
-        return response.data;
+        return response.data.data;
         } catch (error) {
         return rejectWithValue(error.response.data);
         }

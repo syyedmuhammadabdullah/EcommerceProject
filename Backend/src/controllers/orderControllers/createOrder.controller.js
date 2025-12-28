@@ -115,7 +115,7 @@ import { customAlphabet } from "nanoid";
 
 const createOrder = asyncHandler(async (req, res) => {
   console.log("create order runs", req.body);
-
+try{
   const {
     shippingAddress,
     billingAddress,
@@ -179,13 +179,13 @@ const createOrder = asyncHandler(async (req, res) => {
   // Case 2: Cart Products Handling
   console.log("cartProducts", cartProducts);
   
-  if (cartProducts) {
+  if (cartProducts &&!buyNowProduct) {
     // Iterate over each seller's items in the cartProducts array
-    console.log("cartProducts found");
+    console.log("cartProducts found", cartProducts);
     
     for (const item of cartProducts.items) {
       const sellerProducts = item.items; // Products for this seller
-      const sellerId = item.sellerId._id; // Seller's ID
+      const sellerId = item.sellerId; // Seller's ID
       
             const order = await OrderModel.create({
                 userId: req.user._id,
@@ -233,6 +233,10 @@ const createOrder = asyncHandler(async (req, res) => {
 
   res.status(201)
     .json(new apiResponse(201, "Order created successfully", createdOrders));
+} catch (error) {
+  console.error("Error creating order:", error);
+  throw new apiError(500, "An error occurred while creating the order");
+}
 });
 
 export { createOrder };

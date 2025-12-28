@@ -6,8 +6,7 @@ import { DownOutlined, UpOutlined } from "@ant-design/icons";
 const SelectMenu = ({
   options,
   className = "",
-  defaultValue, 
-  attributes,
+  defaultValue,
   onClick = () => {}
 }) => {
   const [open, setOpen] = useState(false);
@@ -53,8 +52,7 @@ const SelectMenu = ({
         </div>
       </div>
       {open && (
-        <div className="shadow-secondary z-10 bg-white min-w-[180px] max-h-[200px] flex flex-col gap-md overflow-y-scroll p-2 absolute">
-          {attributes}
+        <div className="shadow-secondary z-10 bg-white max-h-[200px] flex flex-col gap-md overflow-y-scroll no-scrollbar p-2 absolute">
 
           {options && options.map((option, index) => (
             <div

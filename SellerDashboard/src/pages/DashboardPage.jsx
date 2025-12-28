@@ -111,7 +111,7 @@ const DashboardPage = () => {
                 <div className="totalSales border border-border-primary rounded-md  h-[187px] bg-white ">
                     <div className="con h-[150px] flex flex-col gap-sm p-lg">
                     <div className="t-order text-text-description"><p>Total Sucessfull Orders</p></div>
-                    <div className="percent "><p className='text-xl font-bold'>{orderstats?.totalSuccessfulOrders/orderstats?.totalOrders*100}%</p></div>
+                    <div className="percent "><p className='text-xl font-bold'>{(orderstats?.totalSuccessfulOrders/orderstats?.totalOrders*100).toFixed(2)}%</p></div>
                     <div className="res">
                     <div className="bar max-w-[250px] h-[20px] bg-border-secondary relative ">
                       <div className={`range absolute left-0 top-0 bg-primary-base h-full `} style={{width:`${orderstats?.totalSuccessfulOrders/orderstats?.totalOrders*100}%`}}></div>

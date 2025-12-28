@@ -1,15 +1,12 @@
 import {apiError,asyncHandler,apiResponse,OrderModel} from "../../index.js";
 
 const getSellerOrders=asyncHandler(async(req,res)=>{
-    console.log("get seller orders runs",req.query);
     let query={
         sellerId:req.seller.sellerId,
     };
     if (req.query.filter && req.query.filter !== "all" && req.query.filter !== "undefined" && req.query.filter !== "null") {
-      console.log("filter", req.query.filter);
       query.status = req.query.filter;  // Apply the filter to your query
-  }
-    console.log("query",query);
+  };
     
 
     const totalOrders = await OrderModel.countDocuments(query);

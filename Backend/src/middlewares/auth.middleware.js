@@ -2,8 +2,7 @@ import { apiError, asyncHandler, UserModel, refreshAccessToken } from "../index.
 import jwt from "jsonwebtoken";
 
 const authMiddleware=asyncHandler(async(req,res,next)=>{
-   console.log("auth middleware runs",req.cookies.accessToken);
-       const accessToken=req.cookies.accessToken
+    const accessToken=req.cookies.accessToken
        
        
            if (!accessToken) {
@@ -43,12 +42,11 @@ const authMiddleware=asyncHandler(async(req,res,next)=>{
    
      if (session) {
          session.lastActive=Date.now()
-         console.log("user found",user);
+       
          
          req.user=user
      }else if (sellerSession) {
          sellerSession.lastActive=Date.now()
-         console.log("seller found",user);
          req.seller=user      
      }else if (adminSession) {
          adminSession.lastActive=Date.now() 

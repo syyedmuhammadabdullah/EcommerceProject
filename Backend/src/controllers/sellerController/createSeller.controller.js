@@ -38,6 +38,7 @@ const createSeller = asyncHandler(async (req, res) => {
        await SellerWalletModel.create({
             sellerId:seller._id,
         })
+
        
 
         const sessionId = Date.now().toString();

@@ -7,15 +7,7 @@ const sellerWalletSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  widthdrawableAmount: {
-    type: Number,
-    default: 0,
-  },
-  totalEarnings: {
-    type: Number,
-    default: 0,
-  },
-  refundedAmount: {
+  balance: {
     type: Number,
     default: 0,
   },

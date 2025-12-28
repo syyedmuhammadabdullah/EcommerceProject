@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {getSellerOrders,getOneSellerOrder,getSellerOrdersDetail} from "../../../index"
+import updateOderStatus from "./updateOderStatus";
 const initialState = {
     loading: false,
     error: null,
@@ -48,6 +49,18 @@ const orderSlice = createSlice({
             state.orderstats = action.payload[0];
         })
         .addCase(getSellerOrdersDetail.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        })
+        .addCase(updateOderStatus.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(updateOderStatus.fulfilled, (state, action) => {
+            state.loading = false;
+            state.order = action.payload;
+        })
+        .addCase(updateOderStatus.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
         });

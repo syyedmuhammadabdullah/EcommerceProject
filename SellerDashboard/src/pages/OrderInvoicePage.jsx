@@ -79,7 +79,14 @@ const OrderInvoicePage = () => {
 </div>
 <div className="price flex gap-xs">
     <p className='text-[#000000a6]'>Date:</p>
-    <p>{order?.orderDate}</p>
+    <p>{new Date(order?.orderDate).toLocaleString("en-PK", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })}</p>
 </div>
 </div>
 </div>

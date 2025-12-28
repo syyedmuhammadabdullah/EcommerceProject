@@ -1,8 +1,21 @@
-import React from 'react'
-import { Button } from '../index'
+import React, { useEffect, useState } from 'react'
+import { Button, getBalance, getTransactions, Input, requestWithdraw } from '../index'
 import { BankOutlined } from '@ant-design/icons'
+import { useDispatch,useSelector } from 'react-redux'
 
 const WithdrawPage = () => {
+
+    const [withdrawRequested,setWithdrawRequested]=useState(false);
+    const [withdrawAmount,setWithdrawAmount]=useState();
+    const dispatch=useDispatch()
+     const {transactions,walletBalance,loading,error}=useSelector((state)=>state.transaction)
+    useEffect(() => {
+      dispatch(getBalance());
+        dispatch(getTransactions());
+       
+    }, [])
+    
+
   return (
     <section className='flex justify-center'>
         <div className="container">
@@ -19,17 +32,23 @@ const WithdrawPage = () => {
                 </div>
          
             <div className="balance flex justify-between items-center bg-white border border-border-primary rounded-md p-p-md">
-                <div className="data flex flex-col gap-xxs">
-                   <div className="currentBalance">
-                    <p className='text-md'>Current Balance Rs. 0</p>
+              
+                 {withdrawRequested ?<> <Input  className='w-full outline-none ' placeholder='Enter Amount' value={withdrawAmount} onChange={(e)=>setWithdrawAmount(e.target.value)} /> 
+                 <Button onClick={()=>{
+                    dispatch(requestWithdraw({amount:withdrawAmount}));
+                    setWithdrawRequested(false);
+                 }} children="Submit" className='bg-primary-base p-p-sm text-white rounded-md'/>
+                 </>
+                 :<> <div className="currentBalance">
+                    <p className='text-md'> Balance Rs. {walletBalance ? walletBalance?.balance :0}</p>
                    </div>
-                   <div className="minBalance">
-                    <p className='text-md'>Minimum Balance Rs. 5000</p>
-                   </div>
-                </div>
+                
+           
                 <div className="btn">
-                    <Button children="Request Withdraw" className='bg-primary-base p-p-sm text-white rounded-md'/>
+                    <Button onClick={()=>setWithdrawRequested(true)} children="Request Withdraw" className='bg-primary-base p-p-sm text-white rounded-md'/>
                 </div>
+                </>
+}
             </div>
 
 
@@ -47,15 +66,23 @@ const WithdrawPage = () => {
        <div className="name border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Amount</div>
        <div className="stock border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Date</div>
       </div>
-     {
-        <div key={""} className="body grid grid-cols-[137px_minmax(137px,_1fr)_minmax(137px,_1fr)] items-center  h-[72px]  ">
-        <div className="id border text-text-secondary pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >{34867}</div>
+   {
+       transactions?.withdrawn?.map((item)=>(
+         <div key={item._id} className="body grid grid-cols-[137px_minmax(137px,_1fr)_minmax(137px,_1fr)] items-center  h-[72px]  ">
+        <div className="id border text-text-secondary pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >{item._id.slice(0,8)}</div>
          <div className="Amount border text-text-secondary gap-xs pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >
-          {"RS 100"}
+          RS  {item.amount}
           </div>
-         <div className="date border text-text-secondary pl-[10px] min-w-[137px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >{"11/11/2022"}</div>
-           
+         <div className="date border text-text-secondary pl-[10px] min-w-[137px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >{new Date(item.createdAt).toLocaleString("en-PK", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })}</div>
         </div>
+       ))
      }
 
             </div>

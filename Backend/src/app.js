@@ -85,6 +85,9 @@ app.use("/api/v1/subMainCategory",subMainCategoryRouter)
 import { customerRouter } from "./index.js";
 app.use("/api/v1/customers",customerRouter)
 
+//Transaction Routes
+import { transactionRouter } from "./index.js";
+app.use("/api/v1/transactions",transactionRouter)
 
 app.use(errorHandler);
 

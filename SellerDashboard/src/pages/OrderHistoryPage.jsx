@@ -21,7 +21,6 @@ const OrderHistoryPage = () => {
 
 
   useEffect(() => {
-    console.log("search changed");
     dispatch(getSellerOrders({search}));
   }, [debouncedSearch]);
 

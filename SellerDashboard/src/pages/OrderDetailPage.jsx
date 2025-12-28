@@ -1,21 +1,24 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector,useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom';
-import getOneSellerOrder from '../store/Slices/orderSlice/getOneSellerOrder';
+import { Button,getOneSellerOrder,SelectMenu,updateOrderStatus } from '../index.js';
 const OrderDetailPage = () => {
     const dispatch = useDispatch();
     const {loading,error,order}=useSelector(state=>state.order)
     const {orderId}=useParams();
+    const [orderStatus, setOrderStatus] = useState(order?.orderStatus);
+    const [editMode, setEditMode] = useState(false);
+    const statusOptions = ["pending", "processing","cancelled","delivered", "refunded"];
+    const currentStatus = statusOptions.findIndex((status) => status === order?.orderStatus);
+    const handleStatusChange=(orderId)=>{
+        //dispatch update order status action
+        dispatch(updateOrderStatus({orderId,status:orderStatus}));        
+        setEditMode(false);
+    }
     
-
     useEffect(() => {
         dispatch(getOneSellerOrder(orderId))
-    }, [orderId]);
-    useEffect(() => {
-        console.log(order);
-        
-    }, [order]);
-
+    }, [orderId,dispatch]);
 
   return (
     <section className='flex justify-center'>
@@ -28,7 +31,14 @@ const OrderDetailPage = () => {
     <div className="cutomer ">
     <div className="customerTitle h-[56px] items-center flex justify-between border-b border-[#0000000F]">
         <h4>Customer</h4>
-        <p>Order placed: {order?.orderDate}</p>
+        <p>Order placed: {new Date(order.orderDate).toLocaleString("en-PK", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })}</p>
     </div>
     <div className="Contact-details flex gap-lg h-[62px] items-center ">
     <p>Name: <span className='ml-xs'>{order?.userId?.fullName}</span></p>
@@ -98,7 +108,14 @@ const OrderDetailPage = () => {
         </div>
         <div className="price flex gap-xs">
             <p className='text-[#000000a6]'>Date:</p>
-            <p>{order?.orderDate}</p>
+            <p>{new Date(order.orderDate).toLocaleString("en-PK", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })}</p>
         </div>
     </div>
 
@@ -211,7 +228,7 @@ const OrderDetailPage = () => {
            <div className="stock border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Quantity</div>
            <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Price</div>
            <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Total</div>
-           <div className="action border pl-[10px] min-w-[111px] flex items-center border-[#0000000f] h-full" >Action</div>
+           <div className="action border pl-[10px] min-w-[111px] flex items-center border-[#0000000f]  h-full" >Status / {order?.status}</div>
           </div>
          {order?.products?.map((product,index)=>(
             <div key={product._id} className="body grid grid-cols-[48px_minmax(389px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(111px,_1fr)] items-center  h-[72px]  ">
@@ -228,7 +245,11 @@ const OrderDetailPage = () => {
              <div className="stock border pl-[10px] min-w-[137px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >{product.quantity}</div>
              <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{product.priceAtPurchase}</div>
              <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{product.priceAtPurchase*product.quantity}</div>
-             <div className="action border pl-[10px] min-w-[111px] flex items-center border-[#0000000f] h-full" >Action</div>
+             <div className="action border pl-[10px] min-w-[111px] flex items-center border-[#0000000f] h-full" >{editMode?<div className="flex flex-col gap-sm"> <SelectMenu onClick={(status)=>setOrderStatus(status)} defaultValue={order?.status} options={statusOptions.slice(currentStatus-1)}/>
+             
+                <Button onClick={() => handleStatusChange(order?._id)} children="Save" className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm text-white" />
+             </div>
+             :<Button onClick={() => setEditMode(true)} children="Edit" className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm text-white" />}</div>
                
             </div>
          ))}
@@ -236,9 +257,7 @@ const OrderDetailPage = () => {
            
          
        
-        
-          
-         
+    
        
     </div>
     <div className="price ml-auto flex flex-col gap-sm w-[250px]">

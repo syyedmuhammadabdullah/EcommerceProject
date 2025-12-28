@@ -74,7 +74,12 @@ import getAllSellerCustomers from "./store/Slices/CustomerSlice/getAllSellerCust
 import orderReducer from "./store/Slices/OrderSlice/OrderSlice";
 import getSellerOrders from "./store/Slices/orderSlice/getSellerOrders";
 import getOneSellerOrder from "./store/Slices/orderSlice/getOneSellerOrder";
+import updateOrderStatus from "./store/Slices/orderSlice/updateOderStatus";
 import getSellerOrdersDetail from "./store/Slices/orderSlice/getSellerOrdersDetail";
+import transationReducer from "./store/Slices/TransactionSlice/transactionSlice";
+import getBalance from "./store/Slices/TransactionSlice/getBalance";
+import getTransactions from "./store/Slices/TransactionSlice/getTransaction";
+import requestWithdraw from "./store/Slices/TransactionSlice/requestWithdraw";
 // store
 import store from "./store/store";
 export {
@@ -82,6 +87,7 @@ export {
   DefaultBtn,
   productFormReducer,
   useProductFormData,
+  requestWithdraw,
   updateProductFormData,
   deleteProduct,
   updateProduct,
@@ -90,9 +96,13 @@ export {
   getProductsQuestion,
   giveAnswerToQuestion,
   customerReducer,
+  getBalance,
+  getTransactions,
   getAllSellerCustomers,
   orderReducer,
+  transationReducer,
   getSellerOrdersDetail,
+  updateOrderStatus,
   getSellerOrders,
   getOneSellerOrder,
   productReducer,

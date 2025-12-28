@@ -86,10 +86,14 @@ const ProfilePage = () => {
             bannerInputRef.current.click()
         }
     }
-    const handleBannerUpload=(e)=>{
-        const file=e.target.files[0] || e.dataTransfer.files[0];
-        setBannerImage(file)
-    }
+const handleBannerUpload = (e) => {
+  const files = e?.target?.files || e?.dataTransfer?.files;
+  if (!files || files.length === 0) return; // agar file hi nahi select hui
+  const file = files[0];
+  
+  setBannerImage(file);
+};
+
 
     const handleBannerDrag=(e)=>{
         e.preventDefault();
@@ -111,7 +115,9 @@ const ProfilePage = () => {
         }
     }
     const handleProfileUpload=(e)=>{
-        const file=e.target.files[0] || e.dataTransfer.files[0];
+         const files = e?.target?.files || e?.dataTransfer?.files;
+  if (!files || files.length === 0) return; // agar file hi nahi select hui
+  const file = files[0];  
         setProfileImage(file)
     }
 
@@ -201,7 +207,7 @@ const ProfilePage = () => {
           
             <div className="content w-full overflow-scroll no-scrollbar">
             {/* Banner */}
-            {seller?.storeDetails?.storeBanner ? 
+            {seller?.storeDetails?.storeBanner || bannerImage? 
             <div className="bannerImg relative h-[150px]" >
                 <h5>Store Banner</h5>
                 <img  className="w-full h-full object-cover" src={bannerImage ? URL.createObjectURL(bannerImage) : seller?.storeDetails?.storeBanner} alt="" />
@@ -237,7 +243,7 @@ const ProfilePage = () => {
         <h5>Store Details</h5>
     </div>
 
-    {seller?.storeDetails?.storeLogo ? 
+    {seller?.storeDetails?.storeLogo || profileImage? 
             <div className="bannerImg relative h-[100px] w-[100px] rounded-full col-span-full" >
                 <h5>Store Logo</h5>
                 <img  className="w-full h-full object-cover" src={profileImage ?URL.createObjectURL(profileImage) : seller?.storeDetails?.storeLogo} alt="" />

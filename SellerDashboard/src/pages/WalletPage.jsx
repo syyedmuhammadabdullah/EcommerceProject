@@ -14,11 +14,6 @@ const WalletPage = () => {
        
         
     }, [])
-
-    useEffect(() => {
-         console.log(transactions,"transactions")
-    }, [transactions,walletBalance])
-
   return (
     <section className="flex justify-center">
         <div className="container">

@@ -44,6 +44,9 @@ const RegisterPage = () => {
       device:string
     }
     dispatch(createSeller({sellerForm:seller}));
+    if(seller) {
+      navigate("/dashboard");
+      }
   };
 
 

@@ -16,10 +16,7 @@ const DashboardPage = () => {
 
     
   },[])
-  useEffect(()=>{
-  console.log(orderstats);
-  
-},[orderstats])
+ 
     const data = [
         { year: 2010, count: 10 },
         { year: 2011, count: 20 },
@@ -122,7 +119,7 @@ const DashboardPage = () => {
                 </div>
 
             </div>
-            <div className="chart w-screen sm:w-full h-content p-lg my-lg rounded-md border border-border-primary bg-white">
+            <div className="chart w-full sm:w-full h-content p-lg my-lg rounded-md border border-border-primary bg-white">
                 <div className="title flex justify-between  w-full">
                     <div className="heading">
                         <h4>Chart</h4>
@@ -146,44 +143,45 @@ const DashboardPage = () => {
           
         </div>
                 </div>
-                <canvas className='h-[300px] w-[99%]' ref={chartRef} />
+                <canvas className='h-[300px] max-w-[99%]' ref={chartRef} />
                     
             
             </div>
             <div className="recentOrders w-screen sm:w-full  py-lg">
 
-            <div className="data bg-white border border-border-primary w-full rounded-md px-lg pb-lg  grid overflow-scroll no-scrollbar">
+            <div className="data bg-white border border-border-primary w-full rounded-md px-lg pb-lg  grid ">
                 <div className="title my-lg">
                     <h4>Recent Orders</h4>
                 </div>
-            <div className="head h-[54px] grid grid-cols-[48px_minmax(389px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(111px,_1fr)] items-center bg-[#00000005]">
-           <div className="id border pl-[10px] w-[48px] flex items-center border-[#0000000f] h-full" >ID</div>
-           <div className="name border pl-[10px] min-w-[389px] flex items-center border-[#0000000f] h-full" >Customer Name</div>
-           <div className="stock border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >No. of Products</div>
-           <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Total Amount</div>
-           <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Order Status</div>
-           <div className="action border pl-[10px] min-w-[111px] flex items-center border-[#0000000f] h-full" >Action</div>
+        <div className="orders w-full flex flex-col overflow-scroll no-scrollbar">
+            <div className="head h-[54px] grid grid-cols-[48px_minmax(389px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(111px,_1fr)] items-center bg-[#00000005]  ">
+           <div className="id border pl-[10px] w-[48px] flex items-center border-border-primary h-full" >ID</div>
+           <div className="name border pl-[10px] min-w-[389px] flex items-center border-border-primary h-full" >Customer Name</div>
+           <div className="stock border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >No. of Products</div>
+           <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >Total Amount</div>
+           <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >Order Status</div>
+           <div className="action border pl-[10px] min-w-[111px] flex items-center border-border-primary h-full" >Action</div>
           </div>
-         {orderstats?.recentOrders?.map((order,index)=>(
-            <div key={order._id} className="body grid grid-cols-[48px_minmax(389px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(111px,_1fr)] items-center  h-[72px]  ">
-            <div className="id border pl-[10px] w-[48px] flex items-center border-[#0000000f] h-full" >{index+1}</div>
-             <div className="name border text-text-secondary gap-xs pl-[10px] min-w-[389px] flex items-center border-[#0000000f] h-full" >
+         {orderstats?.recentOrders?.slice(0,5)?.map((order,index)=>(
+            <div key={order._id} className="body grid grid-cols-[48px_minmax(389px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(111px,_1fr)] items-center  h-[72px] border-b border-border-primary ">
+            <div className="id border pl-[10px] w-[48px] flex items-center border-border-primary h-full" >{index+1}</div>
+             <div className="name border text-text-secondary gap-xs pl-[10px] min-w-[389px] flex items-center border-border-primary h-full" >
               {order?.userName}
               </div>
-             <div className="stock border pl-[10px] min-w-[137px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >{order?.totalItems}</div>
-             <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{order?.totalPrice}</div>
-             <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{order?.status}</div>
-             <div className="action border pl-[10px] min-w-[111px] flex items-center border-[#0000000f] h-full" >
+             <div className="stock border pl-[10px] min-w-[137px] flex flex-col gap-xs justify-center border-border-primary h-full" >{order?.totalItems}</div>
+             <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >{order?.totalPrice}</div>
+             <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >{order?.status}</div>
+             <div className="action border pl-[10px] min-w-[111px] flex items-center border-border-primary h-full" >
              <Link to={`/order-details/${order._id}`}>
                 <Button
                   children="View Order"
-                  className="option  text-black text-center border-[#00000026] border px-p-md py-p-xxs" />
+                  className="option  text-black text-center border-border-primary border px-p-md py-p-xxs" />
                 </Link>
              </div>
                
             </div>
          ))}
-
+        </div>
         </div>
 
 

@@ -5,11 +5,11 @@ const mainLayout = () => {
 
   return (
     <>
-        <div className='layout max-w-screen-2xl lg:h-screen lg:overflow-hidden flex flex-col lg:flex-row'>
-      <div className="navbar hidden lg:block lg:sticky  top-0 left-0">
+        <div className='layout xl:min-w-screen-2xl lg:h-screen lg:overflow-hidden flex flex-col lg:flex-row'>
+      <div className="navbar max-w-full overflow-scroll no-scrollbar block lg:sticky  top-0 left-0">
     <SidebarMenu/>
       </div>
-      <div className="content w-full min-h-screen bg-background-layout overflow-y-auto">
+      <div className="content w-screen min-h-screen bg-background-layout overflow-y-auto">
     <Outlet/>
 
       </div>

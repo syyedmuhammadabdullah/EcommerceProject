@@ -14,15 +14,8 @@ const OrderHistoryPage = () => {
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
   useEffect(() => {
-    console.log("orders", orders);
     dispatch(getSellerOrders({}));
   }, []);
-
-
-
-  useEffect(() => {
-    dispatch(getSellerOrders({search}));
-  }, [debouncedSearch]);
 
 
 useEffect(() => {
@@ -52,12 +45,12 @@ useEffect(() => {
   };
   return (
     <section className="flex justify-center">
-      <div className="container lg:gap-xxl bg-white dark:bg-black grid gap-xl px-p-md lg:p-p-xxl">
+      <div className="container lg:gap-xxl  dark:bg-black grid gap-xl px-p-md lg:p-p-xxl">
         <div className="title">
           <h4>Orders</h4>
           <p>manage your recent orders and invoices</p>
         </div>
-        <div className="filter flex justify-between">
+        <div className="filter bg-white border border-border-primary rounded-md flex justify-between">
           <div className="options rounded-md flex-wrap border-[#00000026] overflow-scroll no-scrollbar flex w-fit">
             {filters.map((filter,index) => (
               <Button key={index}
@@ -71,32 +64,32 @@ useEffect(() => {
             <Input placeholder="Search" onKeyDown={(e)=>handleKeyDown(e)} onChange={(e) => setSearch(e.target.value)} value={search} icon={<SearchOutlined  onClick={() => dispatch(getSellerOrders({search}))}/>} />
           </div>
         </div>
-        <div className="content w-full overflow-scroll no-scrollbar">
+        <div className="content border border-border-primary rounded-md bg-white w-full overflow-scroll no-scrollbar">
 
-        <div className="data w-full grid overflow-scroll no-scrollbar">
+        <div className="data  w-full grid overflow-scroll no-scrollbar">
         
             <div className="head h-[54px] grid grid-cols-[48px_minmax(389px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(111px,_1fr)] items-center bg-[#00000005]">
-           <div className="id border pl-[10px] w-[48px] flex items-center border-[#0000000f] h-full" >ID</div>
-           <div className="name border pl-[10px] min-w-[389px] flex items-center border-[#0000000f] h-full" >Customer Name</div>
-           <div className="stock border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >No. of Products</div>
-           <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Total Amount</div>
-           <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Order Status</div>
-           <div className="action border pl-[10px] min-w-[111px] flex items-center border-[#0000000f] h-full" >Action</div>
+           <div className="id border pl-[10px] w-[48px] flex items-center border-border-primary h-full" >ID</div>
+           <div className="name border pl-[10px] min-w-[389px] flex items-center border-border-primary h-full" >Customer Name</div>
+           <div className="stock border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >No. of Products</div>
+           <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >Total Amount</div>
+           <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >Order Status</div>
+           <div className="action border pl-[10px] min-w-[111px] flex items-center border-border-primary h-full" >Action</div>
           </div>
          {orders?.map((order,index)=>(
             <div key={order._id} className="body grid grid-cols-[48px_minmax(389px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(111px,_1fr)] items-center  h-[72px]  ">
-            <div className="id border pl-[10px] w-[48px] flex items-center border-[#0000000f] h-full" >{index+1}</div>
-             <div className="name border text-text-secondary gap-xs pl-[10px] min-w-[389px] flex items-center border-[#0000000f] h-full" >
+            <div className="id border pl-[10px] w-[48px] flex items-center border-border-primary h-full" >{index+1}</div>
+             <div className="name border text-text-secondary gap-xs pl-[10px] min-w-[389px] flex items-center border-border-primary h-full" >
               {order?.userId?.fullName}
               </div>
-             <div className="stock border pl-[10px] min-w-[137px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >{order.totalItems}</div>
-             <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{order.totalPrice}</div>
-             <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{order.status}</div>
-             <div className="action border pl-[10px] min-w-[111px] flex items-center border-[#0000000f] h-full" >
+             <div className="stock border pl-[10px] min-w-[137px] flex flex-col gap-xs justify-center border-border-primary h-full" >{order.totalItems}</div>
+             <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >{order.totalPrice}</div>
+             <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >{order.status}</div>
+             <div className="action border pl-[10px] min-w-[111px] flex items-center border-border-primary h-full" >
              <Link to={`/order-details/${order._id}`}>
                 <Button
                   children="View Order"
-                  className="option  text-black text-center border-[#00000026] border px-p-md py-p-xxs" />
+                  className="option  text-black text-center border-border-primary border px-p-md py-p-xxs" />
                 </Link>
              </div>
                

@@ -4,12 +4,11 @@ import { serialize } from 'object-to-formdata';
 
 const updateProduct = createAsyncThunk(
     "product/updateProduct",
-    async ({productForm,images}, { rejectWithValue }) => {
-        const credentials = serialize({...productForm,images});
+    async ({formData}, { rejectWithValue }) => {
         try {
             const { data } = await axios.post(
                 "http://localhost:3001/api/v1/products/updateProductDetails",
-                credentials,
+                formData,
                 {
                     withCredentials: true,
                     headers: {

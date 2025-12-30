@@ -61,9 +61,7 @@ const ProductSchema = new Schema({
             public_id: { type: String }
         }
     ],
-    tags: {
-        type: [String]
-    },
+   
     category: {
         type: String,
         required: true
@@ -107,14 +105,16 @@ const ProductSchema = new Schema({
         type: Number,
         default: 0
     },
+    lowStock: {
+        type: Number,
+        default: 10
+    },
     stockStatus: {
         type: String,
         enum: ["in stock", "out of stock"],
         default: "in stock"
     },
 
-    attributes: [{name:String,value:String,}],
-    
     sku: {
         type: String,
         unique: true
@@ -133,9 +133,6 @@ const ProductSchema = new Schema({
     weight: {
         type: Number
     },
-    variants: {
-        type: [String]
-    },
     seller: {
         type: Schema.ObjectId,
         ref: "SellerModel"
@@ -150,11 +147,9 @@ ProductSchema.pre('save', function (next) {
         this.sku = `${categoryCode}-${subCategoryCode}-${uniqueNumber}`;
     }
 
-    if (this.discount) {
-        this.discountPrice = this.price - this.discount;
-    } else {
-        this.discountPrice = this.price;
-    }
+    if (this.discountPrice) {
+        this.discount = ((this.price - this.discountPrice) / this.price) * 100;
+    } 
     next();
 });
 

@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {createSeller,loginSeller, updateSeller,getSeller} from "../../../index"
+import {createSeller,loginSeller,logoutSeller, updateSeller,getSeller} from "../../../index"
 const initialState = {
-    loading: false,
+    loading: true,
     error: null,
     seller: {},
+    isAuthenticated: false,
 };
 
 const sellerSlice = createSlice({
@@ -19,6 +20,7 @@ const sellerSlice = createSlice({
             .addCase(getSeller.fulfilled, (state, action) => {
                 state.loading = false;
                 state.seller = action.payload;
+                state.isAuthenticated = true;
             })
             .addCase(getSeller.rejected, (state, action) => {
                 state.loading = false;
@@ -31,6 +33,7 @@ const sellerSlice = createSlice({
             .addCase(createSeller.fulfilled, (state, action) => {
                 state.loading = false;
                 state.seller = action.payload;
+                state.isAuthenticated = true;
             })
             .addCase(createSeller.rejected, (state, action) => {
                 state.loading = false;
@@ -43,6 +46,7 @@ const sellerSlice = createSlice({
             .addCase(loginSeller.fulfilled, (state, action) => {
                 state.loading = false;
                 state.seller = action.payload;
+                state.isAuthenticated = true;
             })
             .addCase(loginSeller.rejected, (state, action) => {
                 state.loading = false;
@@ -55,8 +59,22 @@ const sellerSlice = createSlice({
             .addCase(updateSeller.fulfilled, (state, action) => {
                 state.loading = false;
                 state.seller = action.payload;
+                state.isAuthenticated = true;
             })
             .addCase(updateSeller.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+            .addCase(logoutSeller.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(logoutSeller.fulfilled, (state) => {
+                state.loading = false;
+                state.seller = {};
+                state.isAuthenticated = false;
+            })
+            .addCase(logoutSeller.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });

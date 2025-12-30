@@ -16,7 +16,7 @@ const getSellerOrders=asyncHandler(async(req,res)=>{
         { $match: query }, // Match seller's orders
         {
           $lookup: {
-            from: "usermodels", // Replace with your UserModel collection name
+            from: "usermodels", // Collection name in MongoDB
             localField: "userId",
             foreignField: "_id",
             as: "userId",

@@ -6,7 +6,6 @@ const useProductFormData = () => {
 
 
     const setProductForm=(name,value,product)=>{
-        console.log(product);
         
         dispatch(updateProductFormData({name,value,product}));
     }

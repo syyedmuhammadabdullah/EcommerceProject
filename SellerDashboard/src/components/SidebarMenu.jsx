@@ -1,9 +1,15 @@
 import React, { useState } from 'react'
 import { BarsOutlined,CloseOutlined, DashboardOutlined, UpOutlined  } from '@ant-design/icons'
 import { Link } from 'react-router-dom';
+import {useDispatch} from 'react-redux'
+import { logoutSeller } from '../index';
 const SidebarMenu = () => {
 
+const dispatch = useDispatch();
 
+const handleLogout = () => {   
+    dispatch(logoutSeller());
+}
 
     const [sideBArToggle, setSideBArToggle] = useState(true);
     
@@ -18,61 +24,34 @@ const SidebarMenu = () => {
       {name:"Coupons",icon:<DashboardOutlined/>,link:"/coupons"},
       {name:"Wallet",icon:<DashboardOutlined/>,link:"/wallet"},
       {name:"Settings",icon:<DashboardOutlined/>,link:"/settings"},
+      {name:"Logout",icon:<UpOutlined/>,link:"", btn:handleLogout},
 
    ]
 
 
   return (
-    <div className={`${sideBArToggle ? "w-[264px]" : "w-[72px]"} no-scrollbar overflow-scroll flex flex-col gap-lg p-p-xxs  h-screen`}>
-        <div className="togglesidebar p-p-lg flex gap-sm sticky top-0 bg-white">
+    <div className={`${sideBArToggle ? "lg:w-[264px]" : "lg:w-[72px]"} transition-all duration-300 no-scrollbar w-full overflow-scroll flex flex-col gap-lg p-p-xxs  lg:h-screen`}>
+        <div className="togglesidebar hidden  p-p-lg lg:flex gap-sm sticky top-0 bg-white">
             {sideBArToggle? <CloseOutlined onClick={() => setSideBArToggle(false)}/>: <BarsOutlined onClick={() => setSideBArToggle(true)}/>}
                 {sideBArToggle&& <h4>Company Name</h4>}
         </div>
 
 
-            <div className="sidebarItems  flex flex-col gap-md ">
+            <div className="sidebarItems lg:items-start  items-center flex lg:flex-col gap-md ">
                 
 
             {links.map((link, index) => (
-               <Link to={link.link}>
-                <div className={`${isActive === index ? "bg-background-controlItemBgActive rounded-lg text-primary-base":""} px-p-lg h-[40px] items-center sidebarItem flex gap-xs cursor-pointer`} key={index} onClick={()=>setIsActive(index)}>
-                   <span>{link.icon}</span> {sideBArToggle && <p>{link.name}</p>}
+               link.btn ?  <div className={`${isActive === index ? "bg-background-controlItemBgActive rounded-lg text-primary-base":""} px-p-lg h-[40px] items-center sidebarItem flex gap-xs cursor-pointer  whitespace-nowrap`} key={index} onClick={()=>link.btn()}>
+                   <span className='hidden lg:block'>{link.icon}</span> {sideBArToggle && <p>{link.name}</p>}
+                </div>:
+               < Link  to={link.link} key={index}>
+                <div className={`${isActive === index ? "bg-background-controlItemBgActive rounded-lg text-primary-base":""} px-p-lg h-[40px] items-center sidebarItem flex gap-xs cursor-pointer  whitespace-nowrap`} key={index} onClick={()=>setIsActive(index)}>
+                   <span className='hidden lg:block'>{link.icon}</span> {sideBArToggle && <p>{link.name}</p>}
                 </div>
                </Link>
             ))}
-
-
-
-
-            <div className="sidebarDropdownItems">
-
-                <div className="sidebarItem ">
-                  <div className="btn flex gap-xs">
-                     <span><DashboardOutlined/></span> {sideBArToggle && <p>Dashboard</p>}
-                    {sideBArToggle &&
-                     <span className='block ml-auto mr-lg'><UpOutlined/></span>}
-                     </div> 
-
-                     {sideBArToggle && 
-                     <div className="childContainer pl-p-lg">
-                     <div className="child  h-[40px] flex items-center">
-                      <p>Test</p>
-                      </div>
-                      <div className="child  h-[40px] flex items-center">
-                         <p>Test</p>
-                      </div>
-                      </div>
-                     }
-                     
-                </div>
-            </div>
               
             </div>
-
-
-
-
-
 
     </div>
   )

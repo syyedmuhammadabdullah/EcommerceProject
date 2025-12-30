@@ -4,16 +4,21 @@ import axios from "axios";
 
 const getProductsQuestion = createAsyncThunk(
     "productQuestion/getProductsQuestion",
-    async (_, { rejectWithValue }) => {
+    async ({filter,search,page,limit}, { rejectWithValue }) => {
         try {
             const { data } = await axios.get(
                 "http://localhost:3001/api/v1/sellers/getSellerProductsQuestion",
                 
                 {
+                    params: {
+                        filter,
+                        search,
+                        page,
+                        limit
+                    },
                     withCredentials: true,
                 }
             );
-            console.log(data);
             
             return data.data;
         } catch (error) {

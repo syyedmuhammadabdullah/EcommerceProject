@@ -14,6 +14,7 @@ import StarRating from "./components/StarRating";
 import BillingFormCard from "./components/BillingFormCard";
 import TrackOrder from "./components/TrackOrder";
 import ProductForm from "./components/ProductForm";
+import ProductDescriptionEditor from "./components/ProductDescriptionEditor";
 //Home Components
 import PromoSectionOne from "./components/Home/PromoSectionOne";
 import PopularProducts from "./components/Home/PopularProducts";
@@ -34,6 +35,7 @@ import WithdrawPage from "./pages/WithdrawPage";
 import CouponPage from "./pages/CouponPage";
 import ProfilePage from "./pages/ProfilePage";
 import CreateCouponPage from "./pages/CreateCouponPage";
+import CreateProductPage from "./pages/CreateProductPage";
 //layouts
 import MainLayout from "./layouts/MainLayout";
 //hooks
@@ -66,7 +68,7 @@ import createSeller from "./store/Slices/SellerSlice/createSeller";
 import loginSeller from "./store/Slices/SellerSlice/loginSeller";
 import updateSeller from "./store/Slices/SellerSlice/updateSeller";
 import getSeller from "./store/Slices/SellerSlice/getSeller";
-
+import logoutSeller from "./store/Slices/SellerSlice/logoutSeller";
 //customer Slice
 import customerReducer from "./store/Slices/CustomerSlice/CustomerSlice";
 import getAllSellerCustomers from "./store/Slices/CustomerSlice/getAllSellerCustomers";
@@ -97,6 +99,7 @@ export {
   giveAnswerToQuestion,
   customerReducer,
   getBalance,
+  logoutSeller,
   getTransactions,
   getAllSellerCustomers,
   orderReducer,
@@ -117,6 +120,7 @@ export {
   Divider,
   ProductForm,
   OrderHistoryPage,
+  CreateProductPage,
   WithdrawPage,
   WalletPage,
   DashboardPage,
@@ -130,6 +134,7 @@ export {
   ProfilePage,
   InputBox,
   Footer,
+  ProductDescriptionEditor,
   store,
   Input,
   Button,

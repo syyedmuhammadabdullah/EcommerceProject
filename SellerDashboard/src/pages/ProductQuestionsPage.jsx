@@ -8,22 +8,24 @@ const ProductQuestionsPage = () => {
     const {loading, error, productsQuestion } = useSelector((state) => state.productsQuestion);
     const [isReply, setIsReply] = useState("");
     const [answer,setAnswer] = useState("")
+    const filters = ["All", "Replied", "Unreplied"];
+    const [search, setSearch] = useState("");
+    const [selectedFilter, setSelectedFilter] = useState("all");
+    const handleFilterChange = (filter) => {
+        setSelectedFilter(filter);
+    };
     useEffect(() => {
-        dispatch(getProductsQuestion())
+        dispatch(getProductsQuestion({filter:selectedFilter,search,page:1,limit:10}))
         
-    },[]);
-    useEffect(() => {
-        console.log(productsQuestion);
-        
-    },[productsQuestion]);
+    },[search,selectedFilter]);
+
     const handleReply=(id)=>{
-        console.log("reply",id,answer);
         dispatch(giveAnswerToQuestion({productQuestionId:id,answer}))
         setIsReply("")
     }
   return (
     <section className="flex justify-center">
-    <div className="container lg:gap-xxl bg-white grid gap-xl px-p-md lg:p-p-xxl">
+    <div className="container lg:gap-xxl grid gap-xl px-p-md lg:p-p-xxl">
       <div className="top-menu">
       <div className="title ">
         <h4>Product Questions</h4>
@@ -33,41 +35,28 @@ const ProductQuestionsPage = () => {
 
       </div>
 
-      <div className="filter flex justify-between">
-        <div className="options rounded-md flex-wrap border-[#00000026] overflow-scroll no-scrollbar flex w-fit">
-          <Button
-            children="All"
-            className="option w-[76px] text-black text-center border-[#00000026] border px-p-md py-p-xxs"
-          />
-          <Button
-            children="All"
-            className="option w-[76px] text-black text-center border-[#00000026] border px-p-md py-p-xxs"
-          />
-          <Button
-            children="All"
-            className="option w-[76px] text-black text-center border-[#00000026] border px-p-md py-p-xxs"
-          />
-          <Button
-            children="All"
-            className="option w-[76px] text-black text-center border-[#00000026] border px-p-md py-p-xxs"
-          />
-          <Button
-            children="All"
-            className="option w-[76px] text-black text-center border-[#00000026] border px-p-md py-p-xxs"
-          />
-        </div>
-        <div className="search">
-          <Input placeholder="Search" icon={<SearchOutlined />} />
-        </div>
+      <div className="filter flex justify-between bg-white border-border-primary border p-p-sm rounded-md">
+                <div className="options rounded-md flex-wrap border-border-primary overflow-scroll no-scrollbar flex w-fit">
+                  {filters.map((filter,index) => (
+                    <Button key={index}
+                      children={filter}
+                      onClick={() => handleFilterChange(filter.toLowerCase())}
+                      className={`option ${selectedFilter === filter.toLowerCase() ? "bg-primary-base text-white" : "text-black"}  text-center  border-border-primary border px-p-md py-p-xxs`}
+                    />
+                  ))}
+                </div>
+                <div className="search">
+                  <Input placeholder="Search"  onChange={(e) => setSearch(e.target.value)} value={search} icon={<SearchOutlined  />} />
+                </div>
       </div>
-      <div className="content w-full overflow-scroll no-scrollbar">
+      <div className="content border border-border-primary rounded-md w-full overflow-scroll no-scrollbar">
 
      
       <div className="data w-full grid gap-lg overflow-scroll no-scrollbar">
         
         <table className="w-[1200px] xl:w-full border-collapse  border-spacing-4 overflow-x-scroll xl:overflow-visible no-scrollbar">
           {/* Table Header */}
-          <thead className="heading bg-gray-200">
+          <thead className="heading bg-gray-200 border border-border-primary">
             <tr className="h-[60px] ">
               <th>Customer Questions</th>
               <th>Customer Name</th>
@@ -76,7 +65,7 @@ const ProductQuestionsPage = () => {
           </thead>
 
           {/* Table Body */}
-          <tbody className="ProductContainer text-center">
+          <tbody className="ProductContainer text-center bg-white border border-border-primary">
  
              { productsQuestion?.map((product) => (
            <tr className="Product border-b-2" key={product?._id}>
@@ -85,7 +74,7 @@ const ProductQuestionsPage = () => {
                <p>{product?.question}</p>
 
                </div>
-           <div className="p-details w-[360px] bg-red-50 flex gap-xs">
+           <div className="p-details w-[360px]  flex gap-xs">
                <div className="img w-[70px] "><img src={product?.productId?.image} alt="img" /></div>
                <div className="name">
                <p>{product?.productId?.name.length>70 ? product?.productId?.name.slice(0,70)+"..." : product?.productId?.name}</p>

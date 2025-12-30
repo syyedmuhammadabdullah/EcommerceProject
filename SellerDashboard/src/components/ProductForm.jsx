@@ -547,9 +547,6 @@ const Step6 = () => {
     if (file) {
       // Create a new File instance with the modified name
       const modifiedFile = new File([file], "mainImage", { type: file.type });
-
-      console.log("The modified file is:", modifiedFile);
-
       // Update the images state with the new file
       setImages((prevImages) => [modifiedFile, ...prevImages]);
     }

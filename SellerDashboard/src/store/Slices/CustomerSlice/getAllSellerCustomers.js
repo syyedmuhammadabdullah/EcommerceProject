@@ -3,15 +3,19 @@ import axios from "axios";
 
 const getAllSellerCustomers = createAsyncThunk(
     "customer/getAllSellerCustomers",
-    async (_, { rejectWithValue }) => {
+    async ({search="",page=1,limit=10}, { rejectWithValue }) => {
         try {
             const { data } = await axios.get(
                 "http://localhost:3001/api/v1/customers/getAllSellerCustomers",
                 {
+                    params: {
+                        search,
+                        page,
+                        limit
+                    },
                     withCredentials: true,
                 }
             );
-            console.log(data);
             
             return data;
         } catch (error) {

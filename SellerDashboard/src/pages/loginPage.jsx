@@ -25,16 +25,16 @@ const LoginPage = () => {
   const { loading, seller, error } = useSelector(
     (state) => state.seller
   );
-useEffect(() => {
-  console.log(seller);
-  
-}, [seller]);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     dispatch(loginSeller({ email, password,device:string }));
-  };
+  if(seller) {
+  navigate("/dashboard");
+  }
+};
   return (
     <>
       <div

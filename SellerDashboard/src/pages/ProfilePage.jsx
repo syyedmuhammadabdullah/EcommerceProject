@@ -41,14 +41,8 @@ const ProfilePage = () => {
  
  
     const {seller,loading}=useSelector((state)=>state.seller)
+   
     useEffect(()=>{
-        dispatch(getSeller())
-      
-           
-        
-    },[])
-    useEffect(()=>{
-        console.log(seller);
         if (seller) {
             const form={
                 businessName:seller?.businessName,
@@ -102,6 +96,7 @@ const handleBannerUpload = (e) => {
     const handleBannerDrop=(e)=>{
         e.preventDefault();
         handleBannerUpload(e);
+
     }
 
     const handleBannerImageChange=()=>{
@@ -122,6 +117,7 @@ const handleBannerUpload = (e) => {
     }
 
     const handleProfileDrag=(e)=>{
+        
         e.preventDefault();
         e.stopPropagation();
     }
@@ -133,8 +129,6 @@ const handleBannerUpload = (e) => {
     const handleProfileImageChange=()=>{
         handleProfileClick();
     }
-
-
     const handleInputChange=(e)=>{
         const {name,value}=e.target;
         setSellerForm({...sellerForm,[name]:value})

@@ -1,13 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-const logoutUser = createAsyncThunk(
-    "auth/logout",
+const logoutSeller = createAsyncThunk(
+    "seller/logout",
     async (_, { rejectWithValue }) => {
         try {
-            const response = await axios.post("http://localhost:3001/api/v1/users/logout",_,{
-               params:{
-                    role:"user"
-               },
+          console.log("logout called");
+          
+            const response = await axios.post("http://localhost:3001/api/v1/users/logout",{
+              role: "seller"
+            },{
+             
                 withCredentials: true,
             });
             return response.data.data
@@ -18,4 +20,4 @@ const logoutUser = createAsyncThunk(
         }
     );
 
-export default logoutUser
+export default logoutSeller

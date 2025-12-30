@@ -18,8 +18,6 @@ const productQuestionSlice = createSlice({
             })
             .addCase(getProductsQuestion.fulfilled, (state, action) => {
                 state.loading = false;
-                console.log("action.payload", action.payload);
-                
                 state.productsQuestion = action.payload;
             })
             .addCase(getProductsQuestion.rejected, (state, action) => {

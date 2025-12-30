@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { Button, getBalance, getTransactions, Input, requestWithdraw } from '../index'
 import { BankOutlined } from '@ant-design/icons'
 import { useDispatch,useSelector } from 'react-redux'
+import {  useNavigate } from 'react-router-dom'
 
 const WithdrawPage = () => {
 
     const [withdrawRequested,setWithdrawRequested]=useState(false);
     const [withdrawAmount,setWithdrawAmount]=useState();
     const dispatch=useDispatch()
+    const navigate=useNavigate();
      const {transactions,walletBalance,loading,error}=useSelector((state)=>state.transaction)
+     const {seller}=useSelector((state)=>state.seller)
     useEffect(() => {
       dispatch(getBalance());
         dispatch(getTransactions());
@@ -101,13 +104,13 @@ const WithdrawPage = () => {
                     <p className='text-md font-bold'>Bank Transfer</p>
                    </div>
                    <div className="details">
-                    <p className='text-[13px] text-text-secondary'>Account Holder Name</p>
+                    <p className='text-[13px] text-text-secondary'>{seller?.bankDetails?.bankName}</p>
                    </div>
                    
                    </div>
                 
                 <div className="btn">
-                    <Button children={`${ ' "Setup": "Change" '}`} className='bg-primary-base p-p-sm text-white rounded-md'/>
+                    <Button onClick={() =>{ navigate('/settings')}} children={`${ !seller?.bankDetails?.bankName  ? 'Setup' : 'Change'}`} className='bg-primary-base p-p-sm text-white rounded-md'/>
                 </div>
             </div>
 

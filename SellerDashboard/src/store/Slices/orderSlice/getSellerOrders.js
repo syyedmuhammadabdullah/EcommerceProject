@@ -20,7 +20,6 @@ const getSellerOrders = createAsyncThunk(
                     params:filterData
                 }
             );
-            console.log(data);
             
             return data;
         } catch (error) {

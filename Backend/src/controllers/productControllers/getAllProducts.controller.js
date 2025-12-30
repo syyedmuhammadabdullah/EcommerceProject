@@ -3,7 +3,6 @@ import { apiError, apiResponse, asyncHandler, ProductModel } from "../../index.j
 
 const getAllProducts = asyncHandler(async (req, res) => {
     const {page,limit}=req.query
-    console.log(req.query);
     
     if(!page || !limit){
         throw new apiError(400,"All fields are required")

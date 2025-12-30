@@ -12,7 +12,6 @@ const loginSeller = createAsyncThunk(
                     withCredentials: true,
                 }
             );
-            console.log(data);
             
             return data;
         } catch (error) {

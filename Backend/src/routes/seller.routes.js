@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createSeller,loginSeller, updateSellerDetails, roleCheckMiddleware, authMiddleware,getSellerProductsQuestion,getAllSellerCustomers, apiResponse,getSeller, uploadMiddleware } from "../index.js";
+import { createSeller,loginSeller, updateSellerDetails, roleCheckMiddleware, authMiddleware,getSellerProductsQuestion,getAllSellerCustomers, apiResponse,getSeller, uploadMiddleware, updateSellerStatus } from "../index.js";
 const sellerRouter = Router();
 
 sellerRouter.post("/createSeller", createSeller);
@@ -11,5 +11,5 @@ sellerRouter.put("/test/rtr",(req,res)=>{
 sellerRouter.get("/getSellerProductsQuestion",authMiddleware,roleCheckMiddleware("seller"),getSellerProductsQuestion)
 sellerRouter.get("/getAllSellerCustomers",authMiddleware,roleCheckMiddleware("seller"),getAllSellerCustomers)
 sellerRouter.get("/getSeller",authMiddleware,roleCheckMiddleware("seller"),getSeller)
-
+sellerRouter.post("/updateSellerStatus",authMiddleware,roleCheckMiddleware("admin"),updateSellerStatus)
 export { sellerRouter };

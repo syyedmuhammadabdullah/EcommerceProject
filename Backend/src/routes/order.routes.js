@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authMiddleware, createOrder,getSellerOrdersDetail, getOrders,trackOrder,deliveredOrder, roleCheckMiddleware,getSellerOrders, getOneSellerOrder, updateOrderController } from "../index.js";
+import { authMiddleware, createOrder,getSellerOrdersDetail, getOrders,trackOrder,deliveredOrder, roleCheckMiddleware,getSellerOrders, getOneSellerOrder, updateOrderController, getAllOrders } from "../index.js";
 const orderRouter = Router();
 
 orderRouter.get("/getOrders", authMiddleware,roleCheckMiddleware("user"), getOrders);
@@ -10,4 +10,5 @@ orderRouter.post("/deliveredOrder",authMiddleware,roleCheckMiddleware("user"),de
 orderRouter.get("/getSellerOrders",authMiddleware,roleCheckMiddleware("seller"),getSellerOrders)
 orderRouter.get("/getOneSellerOrder",authMiddleware,roleCheckMiddleware("seller"),getOneSellerOrder)
 orderRouter.get("/getSellerOrdersDetail",authMiddleware,roleCheckMiddleware("seller"),getSellerOrdersDetail)
+orderRouter.get("/getAllOrders",authMiddleware,roleCheckMiddleware("admin"),getAllOrders)
 export { orderRouter }

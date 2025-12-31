@@ -89,6 +89,14 @@ app.use("/api/v1/customers",customerRouter)
 import { transactionRouter } from "./index.js";
 app.use("/api/v1/transactions",transactionRouter)
 
+//Coupon Routes
+import { couponRouter } from "./index.js";
+app.use("/api/v1/coupons",couponRouter)
+
+//Admin Routes
+import { adminRouter } from "./index.js";
+app.use("/api/v1/admin",adminRouter)
+
 app.use(errorHandler);
 
 export {app}

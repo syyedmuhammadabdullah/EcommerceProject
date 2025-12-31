@@ -1,7 +1,7 @@
 import { apiError, apiResponse, asyncHandler, UserModel, generateTokens, options, SellerWalletModel, SellerWithdrawalModel, SellerModel } from "../../index.js";
 import { validate } from "email-validator";
 
-const createSeller = asyncHandler(async (req, res) => {
+const createAdmin = asyncHandler(async (req, res) => {
     const { fullName, email, password, username,device } = req.body;
     const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 
@@ -29,39 +29,28 @@ const createSeller = asyncHandler(async (req, res) => {
                 email,
                 password,
                 username,
-                role: ["seller"], 
+                role: ["admin"], 
             });
-      
-        const seller = await SellerModel.create({
-            userId:user._id,
-        })
-       await SellerWalletModel.create({
-            sellerId:seller._id,
-        })
-
-       
 
         const sessionId = Date.now().toString();
-        const { accessToken, refreshToken } = await generateTokens({userId:user._id,role:"seller",sessionId:sessionId});
+        const { accessToken, refreshToken } = await generateTokens({adminId:user._id,role:"admin",sessionId:sessionId});
         const newSession={
             sessionId:sessionId,
             device: device,
             ip:ip,}
         
-        user.sellerSessions.push(newSession);
-        user.sellerId = seller._id;
-        
+        user.adminSessions.push(newSession);
         await user.save();
        
         
-        let loggedInSeller = await UserModel.findById(user._id).select("-password -refreshToken").populate("sellerId");
-        req.seller = loggedInSeller;
+        let loggedInAdmin = await UserModel.findById(user._id).select("-password -refreshToken")
+        req.admin = loggedInAdmin;
         
         res.status(201)
             .cookie("accessToken", accessToken, { options, maxAge: 24 * 60 * 60 * 1000 })
             .cookie("refreshToken", refreshToken, { options, maxAge: 10 * 24 * 60 * 60 * 1000 })
-            .json(new apiResponse(201, "Seller created successfully", loggedInSeller));
+            .json(new apiResponse(201, "Admin created successfully", loggedInAdmin));
         
 });
 
-export { createSeller };
+export { createAdmin };

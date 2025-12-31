@@ -16,9 +16,7 @@ export const requestWithdraw = asyncHandler(async (req, res) => {
         amount: amount,
         walletId: sellerWallet._id,
         sellerId: sellerId,
-        status: "completed",
+        status: "pending",
     });
-    sellerWallet.balance -= amount;
-    await sellerWallet.save();
     res.status(201).json(new apiResponse(201, "Withdrawal request created successfully", transaction));
 });

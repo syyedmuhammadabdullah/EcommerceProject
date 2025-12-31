@@ -62,6 +62,7 @@ import { getAllSellerProducts } from "./controllers/productControllers/getAllSel
 import { updateProductDetails } from "./controllers/productControllers/updateProductDetails.controller.js";
 import { deleteProduct } from "./controllers/productControllers/deleteProduct.controller.js";
 import { getOneSellerProduct } from "./controllers/productControllers/getOneSellerProduct.controller.js";
+import {updateProductStatus} from "./controllers/productControllers/updateProductStatus.controller.js"
 //AddressControllers
 import { createAddress } from "./controllers/addressControllers/createAddress.controller.js";
 import { deleteAddress } from "./controllers/addressControllers/deleteAddress.controller.js";
@@ -90,6 +91,7 @@ import { deliveredOrder } from "./controllers/orderControllers/deliveredOrder.co
 import { getSellerOrders } from "./controllers/orderControllers/getSellerOrders.js";
 import { getOneSellerOrder } from "./controllers/orderControllers/getOneSellerOrder.controller.js";
 import { getSellerOrdersDetail } from "./controllers/orderControllers/getSellerOrdersDetail.js";
+import {getAllOrders} from "./controllers/orderControllers/getAllOrders.controller.js"
 //Payment Controllers
 //Stripe
 import { createStripePayment } from "./controllers/paymentControllers/createStripePayment.controller.js";
@@ -127,15 +129,26 @@ import { loginSeller } from "./controllers/sellerController/loginSeller.controll
 import { updateSellerDetails } from "./controllers/sellerController/updateSellerDetails.controller.js";
 import { getSellerProductsQuestion } from "./controllers/sellerController/getSellerProductsQuestion.js";
 import { getSeller } from "./controllers/sellerController/getSeller.controller.js";
+import {getAllSellers} from "./controllers/sellerController/getAllSellers.controller.js"
+import {getSellerDetails} from "./controllers/sellerController/getSellerDetails.controller.js"
+import {updateSellerStatus} from "./controllers/sellerController/updateSellerStatus.controller.js"
 
+//Admin Controllers
+import { loginAdmin } from "./controllers/adminContollers/loginAdmin.controller.js";
+import { getAdmin } from "./controllers/adminContollers/getAdmin.controller.js";
+import { createAdmin } from "./controllers/adminContollers/createAdmin.controller.js";
 
 //Customer Controllers
 import { getAllSellerCustomers } from "./controllers/customerControllers/getAllSellerCustomers.js";
+import { getAllCustomers } from "./controllers/customerControllers/getAllCustomers.js";
 
 //Transcation Controllers
 import { getSellerTransaction } from "./controllers/sellerTransactionControllers/getSellerTransection.controller.js";
 import { getSellerBalance } from "./controllers/sellerTransactionControllers/getSellerBalance.controller.js";
 import { requestWithdraw } from "./controllers/sellerTransactionControllers/requestWithdraw.controller.js";
+import {updateWithdrawRequest} from "./controllers/sellerTransactionControllers/updateWithdrawRequest.controller.js"
+import {getSellerWithdrawHistory} from "./controllers/sellerTransactionControllers/getSellerWithdrawHistory.controller.js"
+import {getPendingWithdrawalRequest} from "./controllers/sellerTransactionControllers/getPendingWithdrawalRequest.controller.js"
 //Services
 import { geoNamesCountries, geoNamesStates, geoNamesCities, geoNamesTowns } from "./services/geoNamesService.js";
 
@@ -155,6 +168,7 @@ import { mainCategoryRouter, subMainCategoryRouter } from "./routes/category.rou
 import { customerRouter } from "./routes/customer.route.js";
 import { couponRouter } from "./routes/coupon.routes.js";
 import { transactionRouter } from "./routes/transaction.routes.js";
+import { adminRouter } from "./routes/admin.routes.js";
 
 //Others
 import { connectDB } from "./db/connectDB.js";
@@ -215,13 +229,16 @@ export {
 }; // End of User Controller Exports
 
 // Seller Controller Exports
-export { createSeller, loginSeller, updateSellerDetails, getSellerProductsQuestion, getSeller }; // End of Seller Controller Exports
+export { createSeller ,getAllSellers, getSellerDetails, updateSellerStatus, loginSeller, updateSellerDetails, getSellerProductsQuestion, getSeller }; // End of Seller Controller Exports
+
+//Admin Controller Exports
+export { loginAdmin, getAdmin, createAdmin };
 
 //Customer Controller Exports
-export { getAllSellerCustomers };
+export { getAllSellerCustomers, getAllCustomers };
 
 // Product Controller Exports
-export { createBasicProduct, getOneSellerProduct, getAllProducts, getOneProduct, productFilter, createProduct, getAllSellerProducts, updateProductDetails, deleteProduct }; // End of Product Controller Exports
+export { createBasicProduct, getOneSellerProduct, getAllProducts, getOneProduct, productFilter, createProduct, getAllSellerProducts, updateProductDetails,updateProductStatus, deleteProduct }; // End of Product Controller Exports
 
 // Address Controller Exports
 export { createAddress, editAddress, deleteAddress, getAllAddress, getSingleAddress, changeDefaultAddress }; // End of Address Controller Exports
@@ -240,7 +257,9 @@ export { createOrder,
          getSellerOrders,
          getOneSellerOrder,
          getSellerOrdersDetail,
-            updateOrderController
+            updateOrderController,
+            getAllOrders,
+
              }; // End of Order Controller Exports
 
 //Category Controller Exports
@@ -272,7 +291,7 @@ export {
 }; // End of Product Question Controller Exports
 
 //Seller Transaction Controller Exports
-export { getSellerTransaction, getSellerBalance, requestWithdraw };
+export { getSellerWithdrawHistory, getPendingWithdrawalRequest,getSellerTransaction, updateWithdrawRequest, getSellerBalance, requestWithdraw };
 
 //End of Controller Exports
 
@@ -293,6 +312,7 @@ export {
     subMainCategoryRouter,
     customerRouter,
     couponRouter,
+    adminRouter,
     transactionRouter
 }; // End of Route Exports
 

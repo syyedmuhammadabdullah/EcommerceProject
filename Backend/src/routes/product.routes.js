@@ -1,15 +1,15 @@
 import { Router } from "express";
-import { getAllProducts, getOneProduct,getAllSellerProducts,getOneSellerProduct, productFilter,createProduct,uploadMiddleware, authMiddleware,updateProductDetails, deleteProduct } from "../index.js";
+import { getAllProducts,updateProductStatus, getOneProduct,getAllSellerProducts,getOneSellerProduct, productFilter,createProduct,uploadMiddleware, authMiddleware,updateProductDetails, deleteProduct, roleCheckMiddleware } from "../index.js";
 const productRouter = Router();
 
 productRouter.get("/getProducts", getAllProducts)
 productRouter.get("/getOneProduct", getOneProduct)
-productRouter.post("/createProduct",authMiddleware,uploadMiddleware.any(), createProduct)
+productRouter.post("/createProduct",authMiddleware,roleCheckMiddleware("seller"),uploadMiddleware.any(), createProduct)
 productRouter.get("/productFilter", productFilter)
-productRouter.get("/getAllSellerProducts",authMiddleware,getAllSellerProducts)
-productRouter.post("/updateProductDetails",authMiddleware,uploadMiddleware.any(),updateProductDetails)
-productRouter.post("/deleteProduct",deleteProduct)
+productRouter.get("/getAllSellerProducts",authMiddleware,roleCheckMiddleware("seller"),getAllSellerProducts)
+productRouter.post("/updateProductDetails",authMiddleware,roleCheckMiddleware("seller"),uploadMiddleware.any(),updateProductDetails)
+productRouter.post("/deleteProduct",authMiddleware,roleCheckMiddleware("seller"), deleteProduct)
 productRouter.get("/getOneSellerProduct",getOneSellerProduct)
-
+productRouter.post("/updateProductStatus",authMiddleware,roleCheckMiddleware("seller","admin"),updateProductStatus)
 
 export { productRouter }

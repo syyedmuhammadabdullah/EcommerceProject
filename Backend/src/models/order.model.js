@@ -186,6 +186,6 @@ const OrderSchema = new Schema({
         isWalletUpdated: { type: Boolean, default: false }
 
         
-});
+},{timestamps:true});
 
 export const OrderModel = mongoose.model("OrderModel", OrderSchema);

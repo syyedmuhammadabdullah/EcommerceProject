@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BarsOutlined,CloseOutlined, DashboardOutlined, UpOutlined  } from '@ant-design/icons'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {useDispatch} from 'react-redux'
 import { logoutSeller } from '../index';
 const SidebarMenu = () => {
-
+const location=useLocation();
 const dispatch = useDispatch();
+
 
 const handleLogout = () => {   
     dispatch(logoutSeller());
@@ -13,7 +14,7 @@ const handleLogout = () => {
 
     const [sideBArToggle, setSideBArToggle] = useState(true);
     
-    const [isActive, setIsActive] = useState("")
+    const [isActive, setIsActive] = useState(location.pathname==="/"?"/dashboard":location.pathname);
    const links = [
       {name:"Dashboard",icon:<DashboardOutlined/> ,link:"/dashboard"},
       {name:"Orders",icon:<DashboardOutlined/>,link:"/order-history"},
@@ -41,11 +42,11 @@ const handleLogout = () => {
                 
 
             {links.map((link, index) => (
-               link.btn ?  <div className={`${isActive === index ? "bg-background-controlItemBgActive rounded-lg text-primary-base":""} px-p-lg h-[40px] items-center sidebarItem flex gap-xs cursor-pointer  whitespace-nowrap`} key={index} onClick={()=>link.btn()}>
+               link.btn ?  <div className={`${isActive === link.link  ? "bg-background-controlItemBgActive rounded-lg text-primary-base":""} px-p-lg h-[40px] items-center sidebarItem flex gap-xs cursor-pointer  whitespace-nowrap`} key={index} onClick={()=>link.btn()}>
                    <span className='hidden lg:block'>{link.icon}</span> {sideBArToggle && <p>{link.name}</p>}
                 </div>:
                < Link  to={link.link} key={index}>
-                <div className={`${isActive === index ? "bg-background-controlItemBgActive rounded-lg text-primary-base":""} px-p-lg h-[40px] items-center sidebarItem flex gap-xs cursor-pointer  whitespace-nowrap`} key={index} onClick={()=>setIsActive(index)}>
+                <div className={`${isActive === link.link ? "bg-background-controlItemBgActive rounded-lg text-primary-base":""} px-p-lg h-[40px] items-center sidebarItem flex gap-xs cursor-pointer  whitespace-nowrap`} key={index} onClick={() => setIsActive(link.link)}>
                    <span className='hidden lg:block'>{link.icon}</span> {sideBArToggle && <p>{link.name}</p>}
                 </div>
                </Link>

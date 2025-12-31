@@ -245,7 +245,7 @@ const OrderDetailPage = () => {
              <div className="stock border pl-[10px] min-w-[137px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >{product.quantity}</div>
              <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{product.priceAtPurchase}</div>
              <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{product.priceAtPurchase*product.quantity}</div>
-             <div className="action border pl-[10px] min-w-[111px] flex items-center border-[#0000000f] h-full" >{editMode?<div className="flex flex-col gap-sm"> <SelectMenu onClick={(status)=>setOrderStatus(status)} defaultValue={order?.status} options={statusOptions.slice(currentStatus-1)}/>
+             <div className="action relative border pl-[10px] min-w-[111px] flex items-center border-[#0000000f] h-full" >{editMode?<div className="flex z-10 absolute top-2 right-2 flex-col gap-sm"> <SelectMenu onClick={(status)=>setOrderStatus(status)} defaultValue={order?.status} options={statusOptions}/>
              
                 <Button onClick={() => handleStatusChange(order?._id)} children="Save" className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm text-white" />
              </div>

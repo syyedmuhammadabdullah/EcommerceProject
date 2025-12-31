@@ -1,15 +1,22 @@
 import React, { useEffect,useState } from 'react'
 import { MailOutlined, PhoneOutlined, SearchOutlined } from '@ant-design/icons'
-import { Button, Input,getAllSellerCustomers } from '../index'
+import { Button, Input,getAllSellerCustomers,useDebouncedHook } from '../index'
 import { useSelector, useDispatch } from 'react-redux'
 const CustomersPage = () => {
   const dispatch=useDispatch()
   const {loading, error, customers, totalCustomers } = useSelector((state) => state.customer);
   
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebouncedHook(search,500);
   useEffect(() => {
-    dispatch(getAllSellerCustomers({search,page:1,limit:10}))
-  },[search])
+    dispatch(getAllSellerCustomers({search:debouncedSearch,page:1,limit:10}))
+  },[debouncedSearch]);
+
+  const handleKeyDown = (e) => {    
+    if (e.key === 'Enter') {
+      dispatch(getAllSellerCustomers({debouncedSearch}));
+    }
+  };
 
   return (
     <section className="flex justify-center">
@@ -23,7 +30,7 @@ const CustomersPage = () => {
       </div>
       <div className="content w-full min-h-[90%] bg-white p-sm flex flex-col">
 <div className="searchCustomers mb-lg">
-  <Input value={search} onChange={(e)=>setSearch(e.target.value)}  placeholder='Search Customer' icon={<SearchOutlined   className='cursor-pointer'/>} />
+  <Input value={search} onChange={(e)=>setSearch(e.target.value)}  placeholder='Search Customer' icon={<SearchOutlined onKeyDown={handleKeyDown}  className='cursor-pointer'/>} />
 </div>
 
 <div className="mainCutomerContainer  min-h-[85%] flex-1 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-sm sm:px-sm"> 

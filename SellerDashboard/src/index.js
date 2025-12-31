@@ -13,8 +13,8 @@ import ProductContainer from "./components/ProductContainer";
 import StarRating from "./components/StarRating";
 import BillingFormCard from "./components/BillingFormCard";
 import TrackOrder from "./components/TrackOrder";
-import ProductForm from "./components/ProductForm";
 import ProductDescriptionEditor from "./components/ProductDescriptionEditor";
+import MyChart from "./components/MyChart";
 //Home Components
 import PromoSectionOne from "./components/Home/PromoSectionOne";
 import PopularProducts from "./components/Home/PopularProducts";
@@ -39,12 +39,10 @@ import CreateProductPage from "./pages/CreateProductPage";
 //layouts
 import MainLayout from "./layouts/MainLayout";
 //hooks
-import useProductFormData from "./hooks/useProductFormData";
+import useDebouncedHook from "./hooks/useDebouncedHook";
 
 //redux store
 // Slices
-import productFormReducer from "./store/productForm/productForm";
-import { updateProductFormData } from "./store/productForm/productForm";
 
 //product Slice
 import productReducer from "./store/slices/productSlice/productSlice";
@@ -87,10 +85,7 @@ import store from "./store/store";
 export {
   PrimaryBtn,
   DefaultBtn,
-  productFormReducer,
-  useProductFormData,
   requestWithdraw,
-  updateProductFormData,
   deleteProduct,
   updateProduct,
   getOneProduct,
@@ -118,7 +113,6 @@ export {
   createProduct,
   SearchBtn,
   Divider,
-  ProductForm,
   OrderHistoryPage,
   CreateProductPage,
   WithdrawPage,
@@ -139,7 +133,9 @@ export {
   Input,
   Button,
   CheckBox,
+  useDebouncedHook,
   SelectMenu,
+  MyChart,
   ProductContainer,
   StarRating,
   BillingFormCard,

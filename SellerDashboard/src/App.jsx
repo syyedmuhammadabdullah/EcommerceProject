@@ -1,8 +1,7 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import {
   OrderHistoryPage,
   ProductsPage,
-  ProductForm,
   LoginPage,
   RegisterPage,
   MainLayout,
@@ -29,12 +28,11 @@ function App() {
     dispatch(getSeller());
   }, []);
 const router = createBrowserRouter([
-
   // 🔓 Public
   {
-    path: "/",
     element: <MainLayout />,
     children: [
+      
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
     ],
@@ -61,8 +59,6 @@ const router = createBrowserRouter([
           { index: true, element: <DashboardPage /> },
           { path: "dashboard", element: <DashboardPage /> },
           { path: "products", element: <ProductsPage /> },
-          { path: "create-product", element: <ProductForm /> },
-          // { path: "edit-product/:id", element: <ProductForm /> },
           { path: "order-history", element: <OrderHistoryPage /> },
           { path: "order-details/:orderId", element: <OrderDetailPage /> },
           { path: "order-invoice/:orderId", element: <OrderInvoicePage /> },

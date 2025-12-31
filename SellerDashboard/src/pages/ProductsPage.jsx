@@ -2,7 +2,7 @@ import React, { useEffect,useState } from "react";
 import { Link } from "react-router-dom";
 import Input from "../components/Input";
 import { SearchOutlined } from "@ant-design/icons";
-import { Button,getAllProducts,deleteProduct } from "../index";
+import { Button,getAllProducts,deleteProduct,useDebouncedHook } from "../index";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -14,18 +14,28 @@ const ProductsPage = () => {
 const [selectedFilter, setSelectedFilter] =useState("all");
   const filters = ["All", "Active", "Inactive", "Out of Stock", "In Stock"];
 const [search, setSearch] = useState("");
+const debouncedSearch = useDebouncedHook(search,500);
 
 const handleFilterChange = (filter) => {
+  if (filter!==selectedFilter) {
+    dispatch(getAllProducts({filter}));
+  }
   setSelectedFilter(filter);
 };
 useEffect(() => {
-  dispatch(getAllProducts({filter:selectedFilter,search,page:1,limit:10}));  
-}, [search,selectedFilter,dispatch]);
+  dispatch(getAllProducts({filter:selectedFilter,search:debouncedSearch,page:1,limit:10}));  
+}, [debouncedSearch]);
 
 
 const handleEdit=(id)=>{
   navigate(`/edit-product/${id}`)
 }
+
+const handleKeyDown = (e) => {    
+  if (e.key === 'Enter') {
+    dispatch(getAllProducts({debouncedSearch}));
+  }
+};
 
 const handleDelete=(id)=>{
   dispatch(deleteProduct({productId:id}))
@@ -52,12 +62,12 @@ const handleDelete=(id)=>{
               <Button key={index}
                 children={filter}
                 onClick={() => handleFilterChange(filter.toLowerCase())}
-                className={`option ${selectedFilter === filter.toLowerCase() ? "bg-primary-base text-white" : "text-black"}  text-center  border-border-primary border px-p-md py-p-xxs`}
+                className={`option hover:bg-primary-hover hover:text-white ${selectedFilter === filter.toLowerCase() ? "bg-primary-base text-white" : "text-black"}  text-center  border-border-primary border px-p-md py-p-xxs`}
               />
             ))}
           </div>
           <div className="search">
-            <Input placeholder="Search"  onChange={(e) => setSearch(e.target.value)} value={search} icon={<SearchOutlined  />} />
+            <Input placeholder="Search"  onChange={(e) => setSearch(e.target.value)} value={search} icon={<SearchOutlined onKeyDown={handleKeyDown} />} />
           </div>
         </div>
         <div className="content border border-border-primary bg-white  w-full overflow-scroll no-scrollbar">

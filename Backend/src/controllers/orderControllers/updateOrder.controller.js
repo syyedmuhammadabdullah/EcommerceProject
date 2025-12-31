@@ -27,9 +27,7 @@ export const updateOrderController = asyncHandler(async (req, res) => {
   if (status === "delivered") {
 
     // ❌ invalid transition
-    if (order.status !== "pending") {
-        console.log("invalid",order.status==="pending", order.status, status);
-        
+    if (order.status !== "pending") {        
       throw new apiError( 400, "Order cannot be delivered");
     }
 
@@ -58,6 +56,7 @@ export const updateOrderController = asyncHandler(async (req, res) => {
         status: "completed",
       });
     }
+    order.paymentStatus = "completed";
   }
   /* =========================
      REFUND FLOW
@@ -90,6 +89,7 @@ export const updateOrderController = asyncHandler(async (req, res) => {
         status: "completed",
       });
     }
+    order.paymentStatus = "refunded";
   }
 
   // ✅ finally update order status

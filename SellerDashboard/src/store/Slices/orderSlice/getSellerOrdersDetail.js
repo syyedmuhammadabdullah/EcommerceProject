@@ -3,11 +3,12 @@ import axios from "axios";
 
 const getSellerOrdersDetail = createAsyncThunk(
     "order/getSellerOrdersDetail",
-    async (_, { rejectWithValue }) => {
+    async ({range}, { rejectWithValue }) => {
         try {
             const { data } = await axios.get(
                 "http://localhost:3001/api/v1/orders/getSellerOrdersDetail",
                 {
+                    params: { range },
                     withCredentials: true,
                 }
             );

@@ -1,6 +1,6 @@
 import { SearchOutlined } from '@ant-design/icons'
 import React, { useEffect, useState } from 'react'
-import {Input, Button, getProductsQuestion,giveAnswerToQuestion} from '../index'
+import {Input, Button, getProductsQuestion,giveAnswerToQuestion,useDebouncedHook} from '../index'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 const ProductQuestionsPage = () => {
@@ -11,18 +11,28 @@ const ProductQuestionsPage = () => {
     const filters = ["All", "Replied", "Unreplied"];
     const [search, setSearch] = useState("");
     const [selectedFilter, setSelectedFilter] = useState("all");
+    const debouncedSearch = useDebouncedHook(search,500);
     const handleFilterChange = (filter) => {
+        if (filter!==selectedFilter) {
+            dispatch(getProductsQuestion({filter}));
+        }
         setSelectedFilter(filter);
     };
     useEffect(() => {
-        dispatch(getProductsQuestion({filter:selectedFilter,search,page:1,limit:10}))
+        dispatch(getProductsQuestion({filter:selectedFilter,search:debouncedSearch,page:1,limit:10}))
         
-    },[search,selectedFilter]);
+    },[debouncedSearch,]);
 
     const handleReply=(id)=>{
         dispatch(giveAnswerToQuestion({productQuestionId:id,answer}))
         setIsReply("")
     }
+    const handleKeyDown = (e) => {    
+        if (e.key === 'Enter') {
+          dispatch(giveAnswerToQuestion({productQuestionId:isReply,answer}));
+        }
+      };
+      
   return (
     <section className="flex justify-center">
     <div className="container lg:gap-xxl grid gap-xl px-p-md lg:p-p-xxl">
@@ -41,12 +51,12 @@ const ProductQuestionsPage = () => {
                     <Button key={index}
                       children={filter}
                       onClick={() => handleFilterChange(filter.toLowerCase())}
-                      className={`option ${selectedFilter === filter.toLowerCase() ? "bg-primary-base text-white" : "text-black"}  text-center  border-border-primary border px-p-md py-p-xxs`}
+                      className={`option hover:bg-primary-hover hover:text-white ${selectedFilter === filter.toLowerCase() ? "bg-primary-base text-white" : "text-black"}  text-center  border-border-primary border px-p-md py-p-xxs`}
                     />
                   ))}
                 </div>
                 <div className="search">
-                  <Input placeholder="Search"  onChange={(e) => setSearch(e.target.value)} value={search} icon={<SearchOutlined  />} />
+                  <Input placeholder="Search"  onChange={(e) => setSearch(e.target.value)} value={search} icon={<SearchOutlined onKeyDown={handleKeyDown} className='cursor-pointer' />} />
                 </div>
       </div>
       <div className="content border border-border-primary rounded-md w-full overflow-scroll no-scrollbar">

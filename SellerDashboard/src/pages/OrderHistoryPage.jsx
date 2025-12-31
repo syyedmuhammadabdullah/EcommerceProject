@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Input from "../components/Input";
 import { SearchOutlined } from "@ant-design/icons";
-import { Button,getSellerOrders } from "../index";
+import { Button,getSellerOrders,useDebouncedHook } from "../index";
 import { useSelector,useDispatch } from "react-redux";
 
 const OrderHistoryPage = () => {
@@ -11,38 +11,32 @@ const OrderHistoryPage = () => {
   const [selectedFilter, setSelectedFilter] =useState("all");
   const filters = ["All", "Delivered", "Rejected", "Returned",, "Failed", "Shipped", "Pending"];
   const [search, setSearch] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState(search);
+  const debouncedSearch = useDebouncedHook(search,500);
 
   useEffect(() => {
-    dispatch(getSellerOrders({}));
+    dispatch(getSellerOrders({search:debouncedSearch}));
+  }, [debouncedSearch]);
+
+  useEffect(() => {
+    if (orders.length==0) {      
+      dispatch(getSellerOrders({}));
+    }
   }, []);
-
-
-useEffect(() => {
- 
-  let timeoutId;
-  if (search !== debouncedSearch) {
-    timeoutId = setTimeout(() => {
-      setDebouncedSearch(search);
-    },500); // Adjust the delay as needed
-  }
-
-  return () => clearTimeout(timeoutId);
-
-}, [search]);
-
-
   const handleFilterChange = (filter) => {
+   if (filter!==selectedFilter) {
+     dispatch(getSellerOrders({filter}));
+   }
     setSelectedFilter(filter);
-    dispatch(getSellerOrders({filter}));
     
   }
 
   const handleKeyDown = (e) => {    
     if (e.key === 'Enter') {
-      dispatch(getSellerOrders({search}));
+      dispatch(getSellerOrders({debouncedSearch}));
     }
   };
+
+  
   return (
     <section className="flex justify-center">
       <div className="container lg:gap-xxl  dark:bg-black grid gap-xl px-p-md lg:p-p-xxl">
@@ -56,7 +50,7 @@ useEffect(() => {
               <Button key={index}
                 children={filter}
                 onClick={() => handleFilterChange(filter.toLowerCase())}
-                className={`option ${selectedFilter === filter.toLowerCase() ? "bg-primary-base text-white" : "text-black"}  text-center  border-[#00000026] border px-p-md py-p-xxs`}
+                className={`option hover:bg-primary-hover hover:text-white ${selectedFilter === filter.toLowerCase() ? "bg-primary-base text-white" : "text-black"}  text-center  border-[#00000026] border px-p-md py-p-xxs`}
               />
             ))}
           </div>

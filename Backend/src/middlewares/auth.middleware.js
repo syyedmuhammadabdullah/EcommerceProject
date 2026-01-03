@@ -2,6 +2,7 @@ import { apiError, asyncHandler, UserModel, refreshAccessToken } from "../index.
 import jwt from "jsonwebtoken";
 
 const authMiddleware=asyncHandler(async(req,res,next)=>{
+   
     const accessToken=req.cookies.accessToken
        
        
@@ -53,8 +54,7 @@ const authMiddleware=asyncHandler(async(req,res,next)=>{
          req.admin=user     
      }
      await user.save()
- 
-
+     
      req.role=decodedToken.role
      req.sessionId=decodedToken.sessionId
      next()

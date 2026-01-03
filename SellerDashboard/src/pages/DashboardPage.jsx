@@ -74,7 +74,7 @@ const DashboardPage = () => {
                 </div>
 
             </div>
-            <div className="chart w-full sm:w-full h-content p-lg my-lg rounded-md border border-border-primary bg-white">
+            <div className="chart max-w-full  h-content p-lg my-lg rounded-md border border-border-primary bg-white">
                 <div className="title flex justify-between  w-full">
                     <div className="heading">
                         <h4>Chart</h4>

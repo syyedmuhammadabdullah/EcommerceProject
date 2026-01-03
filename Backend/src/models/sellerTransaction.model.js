@@ -29,6 +29,9 @@ const TransactionSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  updatedAt: {
+    type: Date,
+  },
 });
 
 export const SellerTransactionModel = mongoose.model("SellerTransactionModel", TransactionSchema);

@@ -4,8 +4,9 @@ const getAllCustomers=asyncHandler(async(req,res)=>{
 
     const page=req.query.page||1;
     const limit=req.query.limit||10;
+    const search=req.query.search || "";
 
-    const customers=await UserModel.find({role:"user"}).select(-"password").skip((page-1)*limit).limit(limit);
+    const customers=await UserModel.find({role:"user" , fullName: { $regex: search, $options: "i" }}).select(-"password").skip((page-1)*limit).limit(limit);
 
     if(!customers){
         return res.status(400).json(new apiError(400,"No customers found"));

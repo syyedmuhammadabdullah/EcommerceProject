@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllSellerCustomers, authMiddleware, roleCheckMiddleware, getAllCustomers } from "../index.js";
+import { getAllSellerCustomers, authMiddleware, roleCheckMiddleware, getAllCustomers, } from "../index.js";
 const customerRouter = Router();
 
 customerRouter.get("/getAllSellerCustomers",authMiddleware,roleCheckMiddleware("seller"),getAllSellerCustomers)

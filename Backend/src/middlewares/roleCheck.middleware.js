@@ -1,9 +1,9 @@
 import { apiError, asyncHandler } from "../index.js";
 
-const roleCheckMiddleware =(currentRole,secondRole)=> asyncHandler(async (req,_, next) => {
+const roleCheckMiddleware =(...roles)=> asyncHandler(async (req,_, next) => {
     const role = req.role;
     
-    if (role!==currentRole || role!==secondRole) {
+    if (!roles.includes(role)) {        
         throw new apiError(401, "UnAuthorized request");
     }
   

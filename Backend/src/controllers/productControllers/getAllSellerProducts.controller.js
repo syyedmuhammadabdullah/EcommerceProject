@@ -1,8 +1,20 @@
+import e from "express";
 import {apiError,apiResponse,asyncHandler,ProductModel} from "../../index.js";
+import mongoose from "mongoose";
 
 const getAllSellerProducts=asyncHandler(async(req,res)=>{
+    let seller;
+    if (req.query.sellerId) {
+        if (!mongoose.Types.ObjectId.isValid(req.query.sellerId)) {
+            throw new apiError(400, "Invalid seller id");
+        }
+        seller=new mongoose.Types.ObjectId(req.query.sellerId);
+    }else{
+        seller=req.seller.sellerId
+    }
+    
     let query={
-        seller:req.seller.sellerId,
+        seller,
     };
     if (req.query.filter && req.query.filter !== "all" && req.query.filter !== "undefined" && req.query.filter !== "null") {
 
@@ -17,12 +29,11 @@ const getAllSellerProducts=asyncHandler(async(req,res)=>{
         
       
   };
-  console.log(query);
   
   
     const totalProducts=await ProductModel.aggregate([
         {
-            $match:{seller:req.seller.sellerId}
+            $match:{seller}
         },
         {
             $count:"total"
@@ -39,9 +50,24 @@ const getAllSellerProducts=asyncHandler(async(req,res)=>{
                 name: { $regex: req.query.search, $options: "i" }
             } : {}
         },
+        
         {
             $sort:{createdAt:-1}
         },
+        {
+            $project:{
+                _id:1,
+                stockStatus:1,
+                category:1,
+                price:1,
+                name:1,
+                status:1,
+                image:1,
+                currentStock:1,
+                totalStock:1
+            }
+        },
+
         {
             $skip:(req.query.page-1)*req.query.limit
         },
@@ -52,10 +78,9 @@ const getAllSellerProducts=asyncHandler(async(req,res)=>{
     if(!products){
         throw new apiError(404,"Products not found");
         }
-    if (!products) {
-        throw new apiError(404,"Products not found");
-    }
-    res.status(200).json(new apiResponse(200,"Products found successfully",products,total))
+
+    
+    res.status(200).json(new apiResponse(200,"Products found successfully",{products,sellerId:seller},total))
 })
 
 export {getAllSellerProducts}

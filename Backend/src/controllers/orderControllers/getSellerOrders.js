@@ -1,12 +1,16 @@
 import {apiError,asyncHandler,apiResponse,OrderModel} from "../../index.js";
 
 const getSellerOrders=asyncHandler(async(req,res)=>{
-    let query={
-        sellerId:req.seller.sellerId,
-    };
+ 
+
+  let query={
+    sellerId:req.seller.sellerId
+  };
     if (req.query.filter && req.query.filter !== "all" && req.query.filter !== "undefined" && req.query.filter !== "null") {
       query.status = req.query.filter;  // Apply the filter to your query
   };
+  const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
     
 
     const totalOrders = await OrderModel.countDocuments(query);
@@ -25,7 +29,7 @@ const getSellerOrders=asyncHandler(async(req,res)=>{
         { $unwind: "$userId" }, // Flatten the userInfo array
         {
           $match: {
-            "userId.fullName": { $regex: req.query.search, $options: "i" }, // Case-insensitive name search
+            "userId.fullName": { $regex: req.query.search || "", $options: "i" }, // Case-insensitive name search
           },
         },
         {
@@ -40,8 +44,8 @@ const getSellerOrders=asyncHandler(async(req,res)=>{
             "totalPrice":1
           }, // Project only needed fields
         },
-        { $skip: 0 }, // Add pagination logic here if needed
-        { $limit: 10 },
+        { $skip: (page - 1) * limit }, // Add pagination logic here if needed
+        { $limit: limit },
       ]);
     if (!orders) {
         throw new apiError(404,"Orders not found");

@@ -4,7 +4,6 @@ import mongoose from "mongoose";
 const getAllSellerCustomers=asyncHandler(async(req,res)=>{
   const sellerId=req.seller.sellerId;
   const search=req.query.search || "";
-    console.log("get all seller customers runs",req.seller.sellerId);
 
     const totalCustomers = await OrderModel.aggregate([
       { $match: { sellerId } },

@@ -33,7 +33,7 @@ const createAdmin = asyncHandler(async (req, res) => {
             });
 
         const sessionId = Date.now().toString();
-        const { accessToken, refreshToken } = await generateTokens({adminId:user._id,role:"admin",sessionId:sessionId});
+        const { accessToken, refreshToken } = await generateTokens({userId:user_id ,role:"admin",sessionId:sessionId});
         const newSession={
             sessionId:sessionId,
             device: device,
@@ -43,7 +43,7 @@ const createAdmin = asyncHandler(async (req, res) => {
         await user.save();
        
         
-        let loggedInAdmin = await UserModel.findById(user._id).select("-password -refreshToken")
+        let loggedInAdmin = await UserModel.findById(user._id).select("-password ")
         req.admin = loggedInAdmin;
         
         res.status(201)

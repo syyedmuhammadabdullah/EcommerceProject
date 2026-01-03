@@ -108,8 +108,10 @@ userSchema.methods.passwordCheck = async function (password) {
 };
 
 userSchema.methods.createAccessToken = async function ({role,sessionId}) {
+    console.log(" role while generating token",role);
+    
     return jwt.sign(
-        { id: this._id, email: this.email, username: this.username ,sellerId: this.sellerId,adminId: this.adminId, role:role,sessionId: sessionId},
+        { id: this._id, email: this.email, username: this.username ,sellerId: this.sellerId, role:role,sessionId: sessionId},
 
         process.env.ACCESS_TOKEN_SECRET_KEY,
 
@@ -119,7 +121,7 @@ userSchema.methods.createAccessToken = async function ({role,sessionId}) {
 
 userSchema.methods.createRefreshToken = async function ({role,sessionId}) {
     return jwt.sign(
-        { id: this._id, email: this.email,sellerId: this.sellerId,adminId: this.adminId, username: this.username,role:role,sessionId: sessionId },
+        { id: this._id, email: this.email,sellerId: this.sellerId, username: this.username,role:role,sessionId: sessionId },
         process.env.REFRESH_TOKEN_SECRET_KEY,
         { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
     );

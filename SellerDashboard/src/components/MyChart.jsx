@@ -48,7 +48,7 @@ const MyChart = ({ orderstats }) => {
     };
   }, [orderstats]);
 
-  return <canvas ref={chartRef}></canvas>;
+  return <canvas className="max-w-[99%] h-[300px]" ref={chartRef}></canvas>;
 };
 
 export default MyChart;

@@ -92,6 +92,7 @@ import { getSellerOrders } from "./controllers/orderControllers/getSellerOrders.
 import { getOneSellerOrder } from "./controllers/orderControllers/getOneSellerOrder.controller.js";
 import { getSellerOrdersDetail } from "./controllers/orderControllers/getSellerOrdersDetail.js";
 import {getAllOrders} from "./controllers/orderControllers/getAllOrders.controller.js"
+import { getCustomerOrders } from "./controllers/orderControllers/getCustomerOrders.controller.js";
 //Payment Controllers
 //Stripe
 import { createStripePayment } from "./controllers/paymentControllers/createStripePayment.controller.js";
@@ -108,7 +109,7 @@ import { getProductQuestion } from "./controllers/productQuestionControllers/get
 import { deleteProductQuestion } from "./controllers/productQuestionControllers/deleteProductQuestion.controller.js";
 import { updateProductQuestion } from "./controllers/productQuestionControllers/updateProductQuestion.controller.js";
 import { updateAnswerToProductQuestion } from "./controllers/productQuestionControllers/updateAnswerToProductQuestion.controller.js";
-
+import { getAllProductsForAdmin } from "./controllers/productControllers/getAllProductsForAdmin.controller.js";
 //Main Category Controllers
 import { createMainCategory } from "./controllers/categoryControllers/mainCategory/createMainCategory.controller.js";
 import { getMainCategory } from "./controllers/categoryControllers/mainCategory/getMainCategory.controller.js";
@@ -132,7 +133,7 @@ import { getSeller } from "./controllers/sellerController/getSeller.controller.j
 import {getAllSellers} from "./controllers/sellerController/getAllSellers.controller.js"
 import {getSellerDetails} from "./controllers/sellerController/getSellerDetails.controller.js"
 import {updateSellerStatus} from "./controllers/sellerController/updateSellerStatus.controller.js"
-
+import { getSellerAllOrders } from "./controllers/orderControllers/getSellelrAllOrders.controller.js";
 //Admin Controllers
 import { loginAdmin } from "./controllers/adminContollers/loginAdmin.controller.js";
 import { getAdmin } from "./controllers/adminContollers/getAdmin.controller.js";
@@ -235,10 +236,10 @@ export { createSeller ,getAllSellers, getSellerDetails, updateSellerStatus, logi
 export { loginAdmin, getAdmin, createAdmin };
 
 //Customer Controller Exports
-export { getAllSellerCustomers, getAllCustomers };
+export { getAllSellerCustomers,getCustomerOrders, getAllCustomers };
 
 // Product Controller Exports
-export { createBasicProduct, getOneSellerProduct, getAllProducts, getOneProduct, productFilter, createProduct, getAllSellerProducts, updateProductDetails,updateProductStatus, deleteProduct }; // End of Product Controller Exports
+export { createBasicProduct,getAllProductsForAdmin, getOneSellerProduct, getAllProducts, getOneProduct, productFilter, createProduct, getAllSellerProducts, updateProductDetails,updateProductStatus, deleteProduct }; // End of Product Controller Exports
 
 // Address Controller Exports
 export { createAddress, editAddress, deleteAddress, getAllAddress, getSingleAddress, changeDefaultAddress }; // End of Address Controller Exports
@@ -259,6 +260,8 @@ export { createOrder,
          getSellerOrdersDetail,
             updateOrderController,
             getAllOrders,
+            getSellerAllOrders,
+            
 
              }; // End of Order Controller Exports
 

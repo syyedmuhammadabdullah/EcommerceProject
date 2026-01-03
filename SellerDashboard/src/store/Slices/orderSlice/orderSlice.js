@@ -46,7 +46,7 @@ const orderSlice = createSlice({
         })
         .addCase(getSellerOrdersDetail.fulfilled, (state, action) => {
             state.loading = false;
-            state.orderstats = action.payload;
+            state.orderstats = action.payload.chart;
         })
         .addCase(getSellerOrdersDetail.rejected, (state, action) => {
             state.loading = false;

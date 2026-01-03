@@ -29,7 +29,7 @@ transactionRouter.get("/getWithdrawRequests",
     roleCheckMiddleware("admin"),
     getSellerWithdrawHistory
 );
-transactionRouterget("/getPendingWithdrawRequest",
+transactionRouter.get("/getPendingWithdrawRequest",
     authMiddleware,
     roleCheckMiddleware("admin"),
     getPendingWithdrawalRequest

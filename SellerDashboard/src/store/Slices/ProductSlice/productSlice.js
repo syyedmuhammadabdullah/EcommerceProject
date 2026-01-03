@@ -41,7 +41,7 @@ const productSlice=createSlice({
             state.error=null
         }).
         addCase(getAllProducts.fulfilled,(state,action)=>{
-            state.products=action.payload.data,
+            state.products=action.payload.products,
             state.totalProducts=action.payload.totalCount
         }). 
         addCase(getAllProducts.rejected,(state,action)=>{

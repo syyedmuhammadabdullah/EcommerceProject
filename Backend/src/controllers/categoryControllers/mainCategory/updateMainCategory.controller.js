@@ -2,11 +2,11 @@ import {apiError,apiResponse,asyncHandler,MainCategoryModel} from "../../../inde
 
 
 const updateMainCategory=asyncHandler(async(req,res)=>{
-    const {mainCategoryId,name}=req.body;
-    if(!mainCategoryId || !name){
+    const {id,name}=req.body;
+    if(!id || !name){
         throw new apiError(400,"All fields are required")
     }
-    const mainCategory=await MainCategoryModel.findById(mainCategoryId)
+    const mainCategory=await MainCategoryModel.findById(id)
     if(!mainCategory){
         throw new apiError(404,"Main category not found")
     }

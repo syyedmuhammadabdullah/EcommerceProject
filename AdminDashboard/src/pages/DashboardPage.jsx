@@ -1,24 +1,28 @@
 import { ArrowDownOutlined, ArrowUpOutlined, } from '@ant-design/icons'
 import {useEffect, useRef, useState} from 'react'
 import { Link } from 'react-router-dom'
-import {Button,getSellerOrdersDetail,} from "../index"
+import {Button,getSellerDetailForAdmin,getSellerOrdersDetail,} from "../index"
 import { useSelector,useDispatch } from 'react-redux'
 import MyChart from '../components/MyChart'
 
 const DashboardPage = () => {
     const dispatch=useDispatch()
     const {orderstats,loading,orders,sellerWallet}=useSelector(state=>state.order)
+    const {seller}=useSelector(state=>state.seller)
     const [range,setRange]=useState("daily")
 
+
+    useEffect(() => {
+      dispatch(getSellerDetailForAdmin("695eb8e30dfd776c9a354c98"));
+    }, []);
   useEffect(() => {
-    console.log(orderstats);
     
-    if (!orderstats.delivered) {
-      console.log("getsellerOrderdetails rruns");
+    
+      console.log("getsellerOrderdetails rruns",seller);
+  
+       
       
-      dispatch(getSellerOrdersDetail({ range:"daily",sellerId:"694ff41845e3d9faf94b9ef3" }));
-    }
-  }, []);
+  }, [seller]);
  
     const filter = ["Daily", "Weekly", "Monthly","6 Months" ];
     const handleFilterClick = (filter) => {

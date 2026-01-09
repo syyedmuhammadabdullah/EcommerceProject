@@ -46,7 +46,6 @@ const transactionSlice = createSlice({
             .addCase(requestWithdraw.fulfilled, (state, action) => {
                 state.loading = false;
                 state.transactions.withdrawn.push(action.payload);
-                state.walletBalance -= action.payload.amount;
             })
             .addCase(requestWithdraw.rejected, (state, action) => {
                 state.loading = false;

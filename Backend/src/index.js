@@ -134,6 +134,7 @@ import {getAllSellers} from "./controllers/sellerController/getAllSellers.contro
 import {getSellerDetails} from "./controllers/sellerController/getSellerDetails.controller.js"
 import {updateSellerStatus} from "./controllers/sellerController/updateSellerStatus.controller.js"
 import { getSellerAllOrders } from "./controllers/orderControllers/getSellelrAllOrders.controller.js";
+import { getSellerDetailForAdmin } from "./controllers/sellerController/getSellerDetailForAdmin.controller.js";
 //Admin Controllers
 import { loginAdmin } from "./controllers/adminContollers/loginAdmin.controller.js";
 import { getAdmin } from "./controllers/adminContollers/getAdmin.controller.js";
@@ -165,7 +166,7 @@ import { orderRouter } from "./routes/order.routes.js";
 import { paymentRouter } from "./routes/payment.routes.js";
 import { productReviewRouter } from "./routes/productReview.routes.js";
 import { productQuestionRouter } from "./routes/productQuestion.routes.js";
-import { mainCategoryRouter, subMainCategoryRouter } from "./routes/category.routes.js";
+import { categoryRouter } from "./routes/category.routes.js";
 import { customerRouter } from "./routes/customer.route.js";
 import { couponRouter } from "./routes/coupon.routes.js";
 import { transactionRouter } from "./routes/transaction.routes.js";
@@ -230,7 +231,7 @@ export {
 }; // End of User Controller Exports
 
 // Seller Controller Exports
-export { createSeller ,getAllSellers, getSellerDetails, updateSellerStatus, loginSeller, updateSellerDetails, getSellerProductsQuestion, getSeller }; // End of Seller Controller Exports
+export { createSeller,getSellerDetailForAdmin ,getAllSellers, getSellerDetails, updateSellerStatus, loginSeller, updateSellerDetails, getSellerProductsQuestion, getSeller }; // End of Seller Controller Exports
 
 //Admin Controller Exports
 export { loginAdmin, getAdmin, createAdmin };
@@ -311,8 +312,7 @@ export {
     orderRouter,
     cartRouter,
     wishlistRouter,
-    mainCategoryRouter,
-    subMainCategoryRouter,
+    categoryRouter,
     customerRouter,
     couponRouter,
     adminRouter,

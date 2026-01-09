@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser"
 const app=express();
 // app.use(cors());
 app.use(cors({
-    origin:["http://localhost:5173", "http://localhost:5174"," http://192.168.10.3:5173"," http://192.168.10.3:5174"],
+    origin:["http://localhost:5173", "http://localhost:5174","http://localhost:5175"," http://192.168.10.3:5173"," http://192.168.10.3:5174",],
     credentials:true,	
 }));
 app.use(express.json());
@@ -77,9 +77,8 @@ import { productQuestionRouter } from "./index.js";
 app.use("/api/v1/productQuestions",productQuestionRouter)
 
 //Category Routes
-import { mainCategoryRouter, subMainCategoryRouter } from "./index.js";
-app.use("/api/v1/mainCategory",mainCategoryRouter)
-app.use("/api/v1/subMainCategory",subMainCategoryRouter)
+import { categoryRouter,  } from "./index.js";
+app.use("/api/v1/categories",categoryRouter)
 
 //Customer Routes
 import { customerRouter } from "./index.js";

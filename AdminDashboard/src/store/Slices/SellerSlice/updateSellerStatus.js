@@ -1,25 +1,24 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const updateProduct = createAsyncThunk(
-    "product/updateProduct",
-    async ({productId,status}, { rejectWithValue }) => {
+const updateSellerStatus = createAsyncThunk(
+    "seller/updateSellerStatus",
+    async ({ sellerId, status }, { rejectWithValue }) => {
         try {
             const { data } = await axios.post(
-                "http://localhost:3001/api/v1/products/updateProductStatus",
-                {productId,status},
+                `http://localhost:3001/api/v1/sellers/updateSellerStatus`,
+                {
+                    status,
+                    sellerId,
+                },
                 {
                     withCredentials: true,
-                  
                 }
             );
-            console.log(data);
-            
             return data.data;
         } catch (error) {
             return rejectWithValue(error);
         }
     }
 );
-export default updateProduct;
-    
+export default updateSellerStatus;

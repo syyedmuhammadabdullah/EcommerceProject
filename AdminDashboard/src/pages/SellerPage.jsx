@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react'
 import { MailOutlined, PhoneOutlined, SearchOutlined } from '@ant-design/icons'
-import { Button, Input,getAllCustomers,useDebouncedHook,getAllSellers } from '../index'
+import { Button, Input,getAllCustomers,useDebouncedHook,getAllSellers, SelectMenu,updateSellerStatus } from '../index'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 const SellerPage = () => {
@@ -9,6 +9,10 @@ const SellerPage = () => {
   const navigate=useNavigate()
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebouncedHook(search,500);
+  const [editId, setEditId] = useState(null);
+    const [status, setStatus] = useState("");
+  
+  
   useEffect(() => {
     
      if (!sellers || sellers.length === 0 || debouncedSearch !== search) {
@@ -21,6 +25,21 @@ const SellerPage = () => {
       dispatch(getAllSellers({debouncedSearch}));
     }
   };
+
+
+const handleEdit=(id)=>{
+setEditId(id)
+}
+
+const handleSave=(id)=>{
+  // dispatch update product action
+  dispatch(updateSellerStatus({sellerId:id,status}));
+  setEditId(null);
+}
+
+const handleCancel=()=>{
+  setEditId(null);
+}
 
   return (
     <section className="flex justify-center">
@@ -36,29 +55,38 @@ const SellerPage = () => {
 <div className="searchCustomers mb-lg">
   <Input value={search} onChange={(e)=>setSearch(e.target.value)}  placeholder='Search Customer' icon={<SearchOutlined onKeyDown={handleKeyDown}  className='cursor-pointer'/>} />
 </div>
+<div className="data bg-white w-full border border-border-primary grid overflow-scroll no-scrollbar ">
+      <div className="head h-[54px] grid grid-cols-[48px_minmax(389px,1fr)_minmax(150px,1fr)_minmax(137px,1fr)_minmax(137px,1fr)_minmax(137px,1fr)_minmax(170px,1fr)]  items-center bg-[#00000005]">
 
-<div className="mainCutomerContainer  min-h-[85%] flex-1 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-sm sm:px-sm"> 
-
-{sellers?.map((customer)=>(
-  <div className="cutomer rounded-md border-border-primary flex flex-col justify-around items-center border h-[161px] sm:h-[180px] max-w-[332px] " key={customer?._id}>
-  <div className="details flex gap-lg p-lg">
-    <div className="profile rounded-full w-[32px] h-[32px]">
-      <img src={customer?.storeDetails?.storeLogo} alt=""  className='w-full h-full rounded-full'/>
-    </div>
-    <div className="data ">
-      <h4>{customer?.storeDetails?.storeName}</h4>
-    </div>
-  </div>
-  <div className='flex gap-md'>
-
-  <Button onClick={()=>navigate(`/orders/seller/?sellerId=${customer?._id}&storeName=${customer?.storeDetails?.storeName}`)} children="View Orders" className='text-left mx-auto self-start rounded-md hover:bg-primary-hover px-p-md py-p-xs  bg-primary-base text-white text-text-secondary'/>
-  <Button onClick={()=>navigate(`/products/seller/?sellerId=${customer?._id}&storeName=${customer?.storeDetails?.storeName}`)} children="View Products" className='text-left mx-auto self-start rounded-md hover:bg-primary-hover px-p-md py-p-xs  bg-primary-base text-white text-text-secondary'/>
-  </div>
+    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >No:</div>
+    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >Seller Name</div>
+    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >View Products</div>
+    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >View Orders</div>
+    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >View Details</div>
+    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >Status</div>
+    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >Actions</div>
 
 </div>
+
+ {sellers?.map((seller,index)=>(
+  <div key={seller?._id} className="body h-[54px] grid grid-cols-[48px_minmax(389px,1fr)_minmax(150px,1fr)_minmax(137px,1fr)_minmax(137px,1fr)_minmax(137px,1fr)_minmax(170px,1fr)] items-center bg-[#00000005]">
+    
+     <div className="border pl-[10px] flex items-center border-border-primary h-full"  >{index+1}</div>
+    <div className="border pl-[10px] flex items-center border-border-primary h-full"  > {seller?.storeDetails?.storeName}</div>
+    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >  <Button onClick={()=>navigate(`/products/seller/?sellerId=${seller?._id}&storeName=${seller?.storeDetails?.storeName}`)} children="View Products" className='text-left  rounded-sm px-p-md py-p-xxs hover:bg-primary-hover   bg-primary-base text-white text-text-secondary'/>
+</div>
+    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >  <Button onClick={()=>navigate(`/orders/seller/?sellerId=${seller?._id}&storeName=${seller?.storeDetails?.storeName}`)} children="View Orders" className='text-left px-p-md py-p-xxs rounded-sm hover:bg-primary-hover  bg-primary-base text-white text-text-secondary'/>
+</div>
+    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >  <Button onClick={()=>navigate(`/orders/seller/?sellerId=${seller?._id}&storeName=${seller?.storeDetails?.storeName}`)} children="View Details" className='text-left px-p-md py-p-xxs rounded-sm hover:bg-primary-hover  bg-primary-base text-white text-text-secondary'/>
+</div>
+    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >{editId===seller._id? <SelectMenu defaultValue={seller.accountStatus.status} options={["active", "inactive", "suspended"]} onClick={(value)=>setStatus(value)}/>:  seller.accountStatus.status}</div>
+               <div className="action border pl-[10px] min-w-[170px] flex gap-sm items-center border-border-primary h-full" >{editId===seller._id? <Button children="Save" className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm text-white" onClick={()=>handleSave(seller._id)} />: <Button children="Edit" className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm text-white" onClick={()=>handleEdit(seller._id)} />} {editId===seller._id? <Button children="Cancel" className="bg-warning-base w-fit px-p-md py-p-xxs rounded-sm text-white" onClick={()=>handleCancel(seller._id)} />:<Button children="Delete" className="bg-warning-base w-fit px-p-md py-p-xxs rounded-sm text-white" onClick={()=>handleDelete(seller._id)} />}</div>
+ 
+  </div>
+
 ))}
-</div>
 
+</div>
 
 
       </div>

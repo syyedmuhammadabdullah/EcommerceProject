@@ -8,9 +8,7 @@ const SellerWithdrawRequests = () => {
     const {pendingTransactions} = useSelector(state => state.transaction)
     const [editId,setEditId] = useState(null)
     const [status,setStatus] = useState(null)
-    const filters = ["All", "Replied", "Unreplied"];
     const [search, setSearch] = useState("");
-    const [selectedFilter, setSelectedFilter] = useState("all");
     const debouncedSearch = useDebouncedHook(search,500);
     const handleFilterChange = (filter) => {
         if (filter!==selectedFilter) {
@@ -62,21 +60,13 @@ const handleCancel=()=>{
 
       </div>
 
-      <div className="filter flex justify-between bg-white border-border-primary border p-p-sm rounded-md">
-                <div className="options rounded-md flex-wrap border-border-primary overflow-scroll no-scrollbar flex w-fit">
-                  {filters.map((filter,index) => (
-                    <Button key={index}
-                      children={filter}
-                      onClick={() => handleFilterChange(filter.toLowerCase())}
-                      className={`option hover:bg-primary-hover hover:text-white ${selectedFilter === filter.toLowerCase() ? "bg-primary-base text-white" : "text-black"}  text-center  border-border-primary border px-p-md py-p-xxs`}
-                    />
-                  ))}
-                </div>
+      <div className="filter bg-white border-border-primary border p-p-sm rounded-md">
+                
                 <div className="search">
                   <Input placeholder="Search"  onChange={(e) => setSearch(e.target.value)} value={search} icon={<SearchOutlined onKeyDown={handleKeyDown} className='cursor-pointer' />} />
                 </div>
       </div>
-      <div className="content border border-border-primary rounded-md w-full overflow-scroll no-scrollbar">
+      <div className="content bg-white border border-border-primary rounded-md w-full overflow-scroll no-scrollbar">
 
      
        <div className="data w-full grid overflow-scroll no-scrollbar">

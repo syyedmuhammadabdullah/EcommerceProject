@@ -4,6 +4,8 @@ import { validate } from "email-validator";
 const createAdmin = asyncHandler(async (req, res) => {
     const { fullName, email, password, username,device } = req.body;
     const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+    console.log("create admin runs", req.body);
+    
 
     if ([fullName, email, password, username].some((field) => field.trim() === "")) {
         throw new apiError(400, "All fields are required");
@@ -33,11 +35,13 @@ const createAdmin = asyncHandler(async (req, res) => {
             });
 
         const sessionId = Date.now().toString();
-        const { accessToken, refreshToken } = await generateTokens({userId:user_id ,role:"admin",sessionId:sessionId});
-        const newSession={
-            sessionId:sessionId,
-            device: device,
-            ip:ip,}
+        
+      const { accessToken, refreshToken } = await generateTokens({userId:user._id,role:"admin",sessionId:sessionId});
+    const newSession={
+        sessionId:sessionId,
+        device: device || "unknown",
+        ip:ip,}
+            
         
         user.adminSessions.push(newSession);
         await user.save();

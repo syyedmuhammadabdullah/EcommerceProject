@@ -12,20 +12,18 @@ import{
 
 
 
-const mainCategoryRouter=Router()
+const categoryRouter=Router()
 
-mainCategoryRouter.get("/getAll",getMainCategory);
-mainCategoryRouter.post("/createMainCategory",createMainCategory);
-mainCategoryRouter.post("/updateMainCategory",updateMainCategory);
-mainCategoryRouter.post("/deleteMainCategory",deleteMainCategory);
+categoryRouter.get("/getMainCategories",getMainCategory);
+categoryRouter.post("/createMainCategory",createMainCategory);
+categoryRouter.post("/updateMainCategory",updateMainCategory);
+categoryRouter.delete("/deleteMainCategory/:id",deleteMainCategory);
 
-export {mainCategoryRouter}
 
-const subMainCategoryRouter=Router()
 
-subMainCategoryRouter.get("/getAll",getSubMainCategory);
-subMainCategoryRouter.post("/createSubMainCategory",createSubMainCategory);
-subMainCategoryRouter.post("/updateSubMainCategory",updateSubMainCategory);
-subMainCategoryRouter.post("/deleteSubMainCategory",deleteSubMainCategory);
+categoryRouter.get("/getSubCategories",getSubMainCategory);
+categoryRouter.post("/createSubCategory",createSubMainCategory);
+categoryRouter.post("/updateSubCategory",updateSubMainCategory);
+categoryRouter.delete("/deleteSubCategory/:id",deleteSubMainCategory);
 
-export {subMainCategoryRouter}
+export {categoryRouter}

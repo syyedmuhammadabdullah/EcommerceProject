@@ -17,6 +17,7 @@ import {
   CreateCouponPage,
   CreateProductPage,
   getAdmin,
+  CategoryPage,
   SellerPage
 } from "./index";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -64,6 +65,8 @@ const router = createBrowserRouter([
           {path:"/orders/customer",element:<OrderHistoryPage/>},
           {path:"/orders/seller",element:<OrderHistoryPage/>},
           {path:"/products/seller",element:<ProductsPage/>},
+          {path:"/categories/main",element:<CategoryPage/>},
+          {path:"/categories/submain",element:<CategoryPage/>},
         ],
       },
     ],

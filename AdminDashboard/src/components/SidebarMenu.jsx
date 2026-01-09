@@ -1,5 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { BarsOutlined,CloseOutlined, DashboardOutlined, UpOutlined  } from '@ant-design/icons'
+import {
+    BarsOutlined,
+    CloseOutlined,
+
+  DashboardOutlined,
+  ShoppingCartOutlined,
+  ProductOutlined,
+  UserOutlined,
+  TeamOutlined,
+  AppstoreOutlined,
+  ApartmentOutlined,
+  DollarOutlined,
+  GiftOutlined,
+  WalletOutlined,
+  SettingOutlined,
+  LogoutOutlined,
+  UpOutlined,
+} from "@ant-design/icons";
+
 import { Link, useLocation } from 'react-router-dom';
 import {useDispatch} from 'react-redux'
 import { logoutAdmin } from '../index';
@@ -17,16 +35,18 @@ const handleLogout = () => {
     const [isActive, setIsActive] = useState(location.pathname==="/"?"/dashboard":location.pathname);
    const links = [
       {name:"Dashboard",icon:<DashboardOutlined/> ,link:"/dashboard"},
-      {name:"Orders",icon:<DashboardOutlined/>,link:"/order-history"},
-      {name:"Products",icon:<DashboardOutlined/>,link:"/products"},
-      {name:"Customers",icon:<DashboardOutlined/>,link:"/customers"},
-      {name:"Sellers",icon:<DashboardOutlined/>,link:"/sellers"},
-      {name:"Seller Withdrawals",icon:<DashboardOutlined/>,link:"/seller-withdraw-requests"},
-      {name:"Withdrawals",icon:<DashboardOutlined/>,link:"/withdrawals"},
-      {name:"Coupons",icon:<DashboardOutlined/>,link:"/coupons"},
-      {name:"Wallet",icon:<DashboardOutlined/>,link:"/wallet"},
-      {name:"Settings",icon:<DashboardOutlined/>,link:"/settings"},
-      {name:"Logout",icon:<UpOutlined/>,link:"", btn:handleLogout},
+      {name:"Orders",icon:<ShoppingCartOutlined/>,link:"/order-history"},
+      {name:"Products",icon:<ProductOutlined/>,link:"/products"},
+      {name:"Customers",icon:<UserOutlined/>,link:"/customers"},
+      {name:"Sellers",icon:<TeamOutlined/>,link:"/sellers"},
+      {name:"Main Categories",icon:<AppstoreOutlined/>,link:"/categories/main"},
+      {name:"Sub Categories",icon:<ApartmentOutlined/>,link:"/categories/submain"},
+      {name:"Seller Withdrawals",icon:<DollarOutlined/>,link:"/seller-withdraw-requests"},
+      {name:"Withdrawals",icon:<DollarOutlined/>,link:"/withdrawals"},
+      {name:"Coupons",icon:<GiftOutlined/>,link:"/coupons"},
+      {name:"Wallet",icon:<WalletOutlined/>,link:"/wallet"},
+      {name:"Settings",icon:<SettingOutlined/>,link:"/settings"},
+      {name:"Logout",icon:<LogoutOutlined/>,link:"", btn:handleLogout},
 
    ]
 

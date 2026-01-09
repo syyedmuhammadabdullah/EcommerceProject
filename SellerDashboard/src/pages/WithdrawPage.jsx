@@ -13,11 +13,18 @@ const WithdrawPage = () => {
      const {transactions,walletBalance,loading,error}=useSelector((state)=>state.transaction)
      const {seller}=useSelector((state)=>state.seller)
     useEffect(() => {
-      dispatch(getBalance());
-        dispatch(getTransactions());
+        if (!walletBalance) {
+            dispatch(getBalance());
+        }
+        
+            dispatch(getTransactions());
+        
        
     }, [])
-    
+    useEffect(() => {
+        console.log(walletBalance);
+        
+    },[transactions])
 
   return (
     <section className='flex justify-center'>
@@ -64,14 +71,15 @@ const WithdrawPage = () => {
 
             <div className="data bg-white border border-border-primary rounded-md w-full grid overflow-scroll no-scrollbar">
         
-        <div className="head h-[54px] grid grid-cols-[137px_minmax(137px,_1fr)_minmax(137px,_1fr)] items-center bg-[#00000005]">
+        <div className="head h-[54px] grid grid-cols-[137px_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)] items-center bg-[#00000005]">
        <div className="id border pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >Transaction ID</div>
        <div className="name border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Amount</div>
        <div className="stock border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Date</div>
+       <div className="stock border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Status</div>
       </div>
    {
        transactions?.withdrawn?.map((item)=>(
-         <div key={item._id} className="body grid grid-cols-[137px_minmax(137px,_1fr)_minmax(137px,_1fr)] items-center  h-[72px]  ">
+         <div key={item._id} className="body grid grid-cols-[137px_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)] items-center  h-[72px]  ">
         <div className="id border text-text-secondary pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >{item._id.slice(0,8)}</div>
          <div className="Amount border text-text-secondary gap-xs pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >
           RS  {item.amount}
@@ -84,6 +92,7 @@ const WithdrawPage = () => {
     minute: "2-digit",
     hour12: true,
   })}</div>
+         <div className="date border text-text-secondary pl-[10px] min-w-[137px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >{item.status}</div>
         </div>
        ))
      }

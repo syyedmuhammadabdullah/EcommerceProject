@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createSeller,loginSeller, updateSellerDetails, roleCheckMiddleware, authMiddleware,getSellerProductsQuestion,getAllSellerCustomers, apiResponse,getSeller, uploadMiddleware, updateSellerStatus, getAllSellers } from "../index.js";
+import { createSeller,loginSeller, updateSellerDetails, roleCheckMiddleware, authMiddleware, getSellerDetailForAdmin,getSellerProductsQuestion,getAllSellerCustomers, apiResponse,getSeller, uploadMiddleware, updateSellerStatus, getAllSellers } from "../index.js";
 const sellerRouter = Router();
 
 sellerRouter.post("/createSeller", createSeller);
@@ -13,4 +13,5 @@ sellerRouter.get("/getAllSellerCustomers",authMiddleware,roleCheckMiddleware("se
 sellerRouter.get("/getSeller",authMiddleware,roleCheckMiddleware("seller"),getSeller)
 sellerRouter.post("/updateSellerStatus",authMiddleware,roleCheckMiddleware("admin"),updateSellerStatus)
 sellerRouter.get("/getAllSellers",authMiddleware,roleCheckMiddleware("admin"),getAllSellers)
+sellerRouter.get("/getSellerDetailForAdmin",authMiddleware,roleCheckMiddleware("admin"),getSellerDetailForAdmin)
 export { sellerRouter };

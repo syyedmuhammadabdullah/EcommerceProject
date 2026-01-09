@@ -1,52 +1,169 @@
 import mongoose from "mongoose";
-import {apiError,apiResponse,asyncHandler,OrderModel,SellerWalletModel} from "../../index.js";
+import {
+  apiError,
+  apiResponse,
+  asyncHandler,
+  OrderModel,
+  SellerWalletModel
+} from "../../index.js";
 
-const orginizeChart=(chartStats)=>{
-const labelsSet = new Set();
-const delivered = {};
-const pending = {};
-const refunded = {};
-let totalItems = 0;
-let totalPendingOrders = 0;
-let totalDeliveredOrders = 0;
 
-chartStats.forEach(item => {
-  const date = item._id.date;
-  const status = item._id.status;
+const generateLabels = (range, startDate) => {
+  const labels = [];
+  const current = new Date(startDate);
 
-  labelsSet.add(date);
-  totalItems +=item.count
-  if (status === "delivered") {
-    delivered[date] = (delivered[date] || 0) + item.amount;
-    totalDeliveredOrders += item.count
+  // const pad = (n) => String(n).padStart(2, "0");
+  const pad = (n) => (n < 10 ? '0' + n : n);
+  const pad2 = (n) => ( n);
+
+  if (range === "daily") {
+    // 24 hours
+    for (let i = 0; i < 24; i++) {
+      labels.push(
+        `${pad(current.getDate())}-${pad(current.getHours())}`
+      );
+      current.setHours(current.getHours() + 1);
+    }
   }
 
-  if (status === "pending") {
-    pending[date] = (pending[date] || 0) + item.amount;
-    totalPendingOrders += item.count
+  else if (range === "weekly") {
+    // 7 days
+    for (let i = 0; i < 7; i++) {
+      labels.push(
+        `${current.getFullYear()}-${pad(current.getMonth()+1)}-${pad(current.getDate())}`
+      );
+      current.setDate(current.getDate() + 1);
+    }
   }
 
-  if (status === "refunded") {
-    refunded[date] = (refunded[date] || 0) + item.amount;
+  else if (range === "monthly") {
+    // 30 days
+    for (let i = 0; i < 30; i++) {
+      labels.push(
+        `${current.getFullYear()}-${pad(current.getMonth()+1)}-${pad2(current.getDate())}`
+      );
+      current.setDate(current.getDate() + 1);
+    }
   }
-});
 
-const labels = [...labelsSet].sort();
+  else if (range === "6 months") {
+    // 6 months
+    for (let i = 0; i < 6; i++) {
+      labels.push(
+        `${current.getFullYear()}-${pad(current.getMonth()+1)}`
+      );
+      current.setMonth(current.getMonth() + 1);
+    }
+  }
 
-
-const response = {
-  labels,
-  totalItems,
-  totalPendingOrders,
-  totalDeliveredOrders,
-  delivered: labels.map(d => delivered[d] || 0),
-  pending: labels.map(d => pending[d] || 0),
-  refunded: labels.map(d => refunded[d] || 0)
+  return labels;
 };
 
-return response
 
-}
+
+/* -------------------- ORGANIZE CHART -------------------- */
+// const orginizeChart = (chartStats) => {
+//   const labelsSet = new Set();
+//   const delivered = {};
+//   const pending = {};
+//   const refunded = {};
+
+//   let totalItems = 0;
+//   let totalPendingOrders = 0;
+//   let totalDeliveredOrders = 0;
+
+//   chartStats.forEach(item => {
+//     const date = item._id.date;
+//     const status = item._id.status;
+
+//     labelsSet.add(date);
+//     totalItems += item.count;
+
+//     if (status === "delivered") {
+//       delivered[date] = (delivered[date] || 0) + item.amount;
+//       totalDeliveredOrders += item.count;
+//     }
+
+//     if (status === "pending") {
+//       pending[date] = (pending[date] || 0) + item.amount;
+//       totalPendingOrders += item.count;
+//     }
+
+//     if (status === "refunded") {
+//       refunded[date] = (refunded[date] || 0) + item.amount;
+//     }
+//   });
+
+//   const labels = [...labelsSet].sort();
+
+//   return {
+//     labels,
+//     totalItems,
+//     totalPendingOrders,
+//     totalDeliveredOrders,
+//     delivered: labels.map(d => delivered[d] || 0),
+//     pending: labels.map(d => pending[d] || 0),
+//     refunded: labels.map(d => refunded[d] || 0)
+//   };
+// };
+
+
+
+
+const fillSeries = (labels, map) =>{
+  
+ return labels.map(label => map[label] || 0)}
+
+
+const orginizeChart = (chartStats, range, startDate) => {
+  const delivered = [];
+  const pending = {};
+  const refunded = {};
+
+  let totalItems = 0;
+  let totalPendingOrders = 0;
+  let totalDeliveredOrders = 0;
+
+  chartStats.forEach(item => {
+    const { date, status } = item._id;
+
+    totalItems += item.count;
+    console.log(item);
+    
+
+    if (status === "delivered") {
+      
+      delivered[date] = (delivered[date] || 0) + item.amount;
+      totalDeliveredOrders += item.count;
+    }
+
+    if (status === "pending") {
+      pending[date] = (pending[date] || 0) + item.amount;
+      totalPendingOrders += item.count;
+    }
+
+    if (status === "refunded") {
+      console.log("refunded", item);
+      
+      refunded[date] = (refunded[date] || 0) + item.amount;
+    }
+  });
+
+  const labels = generateLabels(range, startDate);
+
+  return {
+    labels,
+    totalItems,
+    totalPendingOrders,
+    totalDeliveredOrders,
+    delivered: fillSeries(labels, delivered),
+    pending: fillSeries(labels, pending),
+    refunded: fillSeries(labels, refunded)
+  };
+};
+
+
+/* -------------------- RANGE FORMAT -------------------- */
 
 const rangeFormat=(range)=>{
   let groupFormat;
@@ -55,13 +172,13 @@ const rangeFormat=(range)=>{
 switch (range) {
   case"daily":
   
-  groupFormat = "%Y-%m-%d %H";
+  groupFormat = "%d-%H";
   break;
   case "weekly":
     groupFormat = "%Y-%m-%d";
     break;
     case "monthly":
-      groupFormat = "%Y-%U"; // week number
+      groupFormat = "%Y-%U-%w"; // week number
       break;
       case "6 months":
     groupFormat = "%Y-%m";
@@ -72,7 +189,7 @@ switch (range) {
 const now = new Date();
 
 if (range === "daily") {
- return {startDate: new Date(now.setHours(now.getHours() - 24)), groupFormat }
+ return {startDate: new Date(now.setDate(now.getDate() - 1)), groupFormat }
 }else if (range === "weekly") {
  return {startDate:new Date(now.setDate(now.getDate() -7)), groupFormat}; // last 7 days
 }
@@ -84,24 +201,25 @@ else if (range === "6 months") {
 }
 }
 
-const getSellerOrdersDetail=asyncHandler(async(req,res)=>{
+/* -------------------- CONTROLLER -------------------- */
+const getSellerOrdersDetail = asyncHandler(async (req, res) => {
 
   let sellerId;
   if (req?.query?.sellerId) {
-    if (!mongoose.Types.ObjectId.isValid(req?.query?.sellerId)) {
-        throw new apiError(400, "Invalid seller id");
+    if (!mongoose.Types.ObjectId.isValid(req.query.sellerId)) {
+      throw new apiError(400, "Invalid seller id");
     }
-    sellerId=new mongoose.Types.ObjectId(req.query?.sellerId);
-  }else{
-    sellerId=req?.seller?.sellerId
+    sellerId = new mongoose.Types.ObjectId(req.query.sellerId);
+  } else {
+    sellerId = req.seller.sellerId;
   }
 
-const{  startDate, groupFormat} = rangeFormat(req.query.range);
+  const { startDate, groupFormat } = rangeFormat(req.query.range);
 
- const chartStats = await OrderModel.aggregate([
+const chartStats = await OrderModel.aggregate([
   {
     $match: {
-      sellerId:sellerId,
+      sellerId,
       orderDate: { $gte: startDate }
     }
   },
@@ -111,27 +229,55 @@ const{  startDate, groupFormat} = rangeFormat(req.query.range);
         date: {
           $dateToString: {
             format: groupFormat,
-            date: "$updatedAt"
+            date: "$updatedAt" 
           }
         },
         status: "$status"
       },
       count: { $sum: 1 },
-      amount: { $sum: "$totalPrice" }
+      amount: {
+  $sum: {
+    
+        $subtract: [
+          { $ifNull: ["$totalPrice", 0] },
+          { $ifNull: ["$commissionAmount", 0] }
+        ]
+      
+  }
+},
+    netEarning: {
+  $sum: {
+    
+        $subtract: [
+          { $ifNull: ["$totalPrice", 0] },
+          { $ifNull: ["$commissionAmount", 0] }
+        ]
+      
+  }
+}
     }
   },
   { $sort: { "_id.date": 1 } }
-]).catch((error) => {
-  console.error("Error fetching chart stats:", error);
-  throw new apiError(500, "Failed to fetch chart stats",error);
+]);
+
+
+  let wallet = null;
+  if (req.role === "admin" && sellerId) {
+    wallet = await SellerWalletModel
+      .findOne({ sellerId })
+      .select("balance -_id");
+  }
+
+  res.status(200).json(
+    new apiResponse(
+      200,
+      "Order found successfully",
+      {
+        chart: orginizeChart(chartStats, req.query.range,startDate),
+        wallet
+      }
+    )
+  );
 });
-let wallet;
-if (req.role==="admin", sellerId) {
-  wallet=await SellerWalletModel.findOne({sellerId}).select("balance -_id");
-}
-const response={chart:orginizeChart(chartStats),wallet};
 
-
-    res.status(200).json(new apiResponse(200,"Order found successfully",response))
-})
-export {getSellerOrdersDetail}
+export { getSellerOrdersDetail };

@@ -40,6 +40,7 @@ const getSellerOrders=asyncHandler(async(req,res)=>{
             status: 1,
             "userId.fullName": 1,
             "userId._id": 1,
+            "commissionAmount": 1,
             "totalItems":1,
             "totalPrice":1
           }, // Project only needed fields

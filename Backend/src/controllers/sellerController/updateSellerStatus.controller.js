@@ -6,6 +6,9 @@ const updateSellerStatus=asyncHandler(async(req,res)=>{
     if(!seller){
         return res.status(400).json(new apiError(400,"Seller not found"));
     }
+    if(seller.accountStatus.status===status){
+        return res.status(400).json(new apiError(400,"Seller status already updated"));
+    }
     seller.accountStatus.status=status;
     seller.accountStatus.updatedAt=Date.now();
     await seller.save();

@@ -2,14 +2,14 @@ import {apiError, apiResponse, asyncHandler, SellerTransactionModel} from "../..
 
 const getPendingWithdrawalRequest = asyncHandler(async (req, res) => {
     console.log("get pending withdraw runs");
+    const {page=1,limit=10,search=""}=req.query
+ 
     
-    const page = req.query.page || 1;
-    const limit = req.query.limit || 10;
         const pendingWithdrawals = await SellerTransactionModel.aggregate([
             {
                 $match: {
                     type: "withdrawal",
-                    status: "pending",
+                    status:"pending",
                 },
             },
             {
@@ -22,6 +22,11 @@ const getPendingWithdrawalRequest = asyncHandler(async (req, res) => {
             },
             {
                 $unwind: "$sellerId",
+            },
+            {
+                $match: {
+                    "sellerId.storeDetails.storeName": { $regex: search, $options: "i" }
+                }
             },
             {
                 $project: {

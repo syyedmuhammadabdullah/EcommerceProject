@@ -37,6 +37,7 @@ import ProfilePage from "./pages/ProfilePage";
 import CreateCouponPage from "./pages/CreateCouponPage";
 import CreateProductPage from "./pages/CreateProductPage";
 import SellerPage from "./pages/SellerPage.jsx";
+import CategoryPage from "./pages/CategoryPage.jsx";
 //layouts
 import MainLayout from "./layouts/MainLayout";
 //hooks
@@ -80,6 +81,7 @@ import getCustomerOrders from "./store/Slices/orderSlice/getCustomerOrders.js";
 import updateOrderStatus from "./store/Slices/orderSlice/updateOderStatus";
 import getSellerOrdersDetail from "./store/Slices/orderSlice/getSellerOrdersDetail";
 import getSellerOrders from "./store/Slices/orderSlice/getSellerOrders.js";
+import getSellerDetailForAdmin from "./store/Slices/SellerSlice/getSellerDetailForAdmin.js";
 
 //transaction
 
@@ -93,6 +95,20 @@ import updateWithdrawRequest from "./store/Slices/TransactionSlice/updateWithdra
 //sellerSlice
 import sellerReducer from "./store/Slices/SellerSlice/SellerSlice";
 import getAllSellers from "./store/Slices/SellerSlice/getAllSellers.js";
+import updateSellerStatus from "./store/Slices/SellerSlice/updateSellerStatus";
+
+//categorySlice
+import categoryReducer from "./store/Slices/CategorySlice/CategorySlice";
+import getMainCategories from "./store/Slices/CategorySlice/getMainCategories";
+import createMainCategory from "./store/Slices/CategorySlice/createMainCategory";
+import updateMainCategory from "./store/Slices/CategorySlice/updateMainCategory";
+import deleteMainCategory from "./store/Slices/CategorySlice/deleteMainCategory";
+import createSubCategory from "./store/Slices/CategorySlice/createSubCategory.js";
+import getSubCategories from "./store/Slices/CategorySlice/getSubCategories";
+import deleteSubCategory from "./store/Slices/CategorySlice/deleteSubCategory";
+import updateSubCategory from "./store/Slices/CategorySlice/updateSubCategory";
+// import getOneCategory from "./store/Slices/CategorySlice/getOneCategory";
+
 // store
 import store from "./store/store";
 export {
@@ -111,10 +127,12 @@ export {
   getTransactions,
   getAllCustomers,
   orderReducer,
+  getSellerDetailForAdmin,
   transationReducer,
   updateWithdrawRequest,
   getPendingWithdrawRequest,
   getAllSellers,
+  updateSellerStatus,
   sellerReducer,
   getSellerAllProducts,
   getSellerOrdersDetail,
@@ -129,6 +147,16 @@ export {
   getAllProducts,
   loginAdmin,
   updateAdmin,
+  createMainCategory,
+  updateMainCategory,
+  deleteMainCategory,
+  getMainCategories,
+  createSubCategory,
+  getSubCategories,
+  deleteSubCategory,
+  updateSubCategory,
+
+  categoryReducer,
   getAdmin,
   adminReducer,
   createProduct,
@@ -143,6 +171,7 @@ export {
   SellerWithdrawRequests,
   CouponPage,
   CustomersPage,
+  CategoryPage,
   OrderDetailPage,
   ProductsPage,
   OrderInvoicePage,

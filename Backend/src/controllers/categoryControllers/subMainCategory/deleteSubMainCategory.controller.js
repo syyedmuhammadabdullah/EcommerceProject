@@ -2,11 +2,11 @@ import {apiError,apiResponse,asyncHandler,SubMainCategoryModel} from "../../../i
 
 
 const deleteSubMainCategory=asyncHandler(async(req,res)=>{
-    const {subMainCategoryId}=req.body;
-    if(!subMainCategoryId){
+    const {id}=req.params;
+    if(!id){
         throw new apiError(400,"Sub main category id is required");
     }
-    await SubMainCategoryModel.findByIdAndDelete(subMainCategoryId)
-    res.status(200).json(new apiResponse(200,"Sub main category deleted successfully",null))
+  const subMainCategory=  await SubMainCategoryModel.findByIdAndDelete(id)
+    res.status(200).json(new apiResponse(200,"Sub main category deleted successfully",subMainCategory))
 })
 export {deleteSubMainCategory}

@@ -183,7 +183,14 @@ const OrderSchema = new Schema({
           type: mongoose.Schema.Types.ObjectId,
           ref: 'AddressModel',
         },
-        isWalletUpdated: { type: Boolean, default: false }
+        commissionAmount: {
+          type: Number,
+          default: 0
+        },
+        commissionPercentage: {
+          type: Number,
+          default: 10
+        },
 
         
 },{timestamps:true});

@@ -228,7 +228,7 @@ const OrderDetailPage = () => {
            <div className="stock border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Quantity</div>
            <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Price</div>
            <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Total</div>
-           <div className="action border pl-[10px] min-w-[111px] flex items-center border-[#0000000f]  h-full" >Status / {order?.status}</div>
+           <div className="status border pl-[10px] min-w-[111px] flex items-center border-[#0000000f]  h-full" >Status </div>
           </div>
          {order?.products?.map((product,index)=>(
             <div key={product._id} className="body grid grid-cols-[48px_minmax(389px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(111px,_1fr)] items-center  h-[72px]  ">
@@ -245,11 +245,7 @@ const OrderDetailPage = () => {
              <div className="stock border pl-[10px] min-w-[137px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >{product.quantity}</div>
              <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{product.priceAtPurchase}</div>
              <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{product.priceAtPurchase*product.quantity}</div>
-             <div className="action relative border pl-[10px] min-w-[111px] flex items-center border-[#0000000f] h-full" >{editMode?<div className="flex z-10 absolute top-2 right-2 flex-col gap-sm"> <SelectMenu onClick={(status)=>setOrderStatus(status)} defaultValue={order?.status} options={statusOptions}/>
-             
-                <Button onClick={() => handleStatusChange(order?._id)} children="Save" className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm text-white" />
-             </div>
-             :<Button onClick={() => setEditMode(true)} children="Edit" className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm text-white" />}</div>
+             <div className="status relative border pl-[10px] min-w-[111px] flex items-center border-[#0000000f] h-full" >{order.status}</div>
                
             </div>
          ))}

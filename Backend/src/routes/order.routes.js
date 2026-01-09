@@ -8,7 +8,7 @@ orderRouter.post("/createOrder",authMiddleware,roleCheckMiddleware("user"),creat
 orderRouter.post("/updateOrder/:orderId",authMiddleware,roleCheckMiddleware("seller"),updateOrderController);
 orderRouter.post("/deliveredOrder",authMiddleware,roleCheckMiddleware("user"),deliveredOrder)
 orderRouter.get("/getSellerOrders",authMiddleware,roleCheckMiddleware("seller"),getSellerOrders)
-orderRouter.get("/getOneSellerOrder",authMiddleware,roleCheckMiddleware("seller"),getOneSellerOrder)
+orderRouter.get("/getOneSellerOrder",authMiddleware,roleCheckMiddleware("seller","admin"),getOneSellerOrder)
 orderRouter.get("/getSellerOrdersDetail",authMiddleware,roleCheckMiddleware("seller","admin"),getSellerOrdersDetail)
 orderRouter.get("/getAllOrders",authMiddleware,roleCheckMiddleware("admin"),getAllOrders)
 orderRouter.get("/getCustomerOrders",authMiddleware,roleCheckMiddleware("admin"),getCustomerOrders)

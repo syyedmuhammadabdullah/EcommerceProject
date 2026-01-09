@@ -34,6 +34,7 @@ const getSellerAllOrders=asyncHandler(async(req,res)=>{
                 "_id":1,
                 "userId.fullName":1,
                 "sellerId":1,
+                "commissionAmount":1,
                 "status":1,
                 "totalItems":1,
                 "totalPrice":1

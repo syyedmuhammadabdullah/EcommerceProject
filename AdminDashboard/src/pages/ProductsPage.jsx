@@ -74,14 +74,14 @@ const columns = {
     { key: "product", label: "Product Name", width: "minmax(389px,1fr)" },
     { key: "seller", label: "Store Name", width: "minmax(200px,1fr)" },
     { key: "amount", label: "Total Amount", width: "minmax(137px,1fr)" },
-    { key: "status", label: "Order Status", width: "minmax(179px,1fr)" },
+    { key: "status", label: "Status", width: "minmax(179px,1fr)" },
     { key: "action", label: "Action", width: "minmax(170px,1fr)" },
   ],
   seller: [
     { key: "id", label: "ID", width: "48px" },
     { key: "product", label: "Produict Name", width: "minmax(389px,1fr)" },
     { key: "amount", label: "Total Amount", width: "minmax(137px,1fr)" },
-    { key: "status", label: "Order Status", width: "minmax(179px,1fr)" },
+    { key: "status", label: "Status", width: "minmax(179px,1fr)" },
     { key: "action", label: "Action", width: "minmax(170px,1fr)" },
   ],
 };

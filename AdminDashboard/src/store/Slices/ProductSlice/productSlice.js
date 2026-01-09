@@ -55,8 +55,10 @@ const productSlice=createSlice({
             state.error=null
         }).
         addCase(updateProduct.fulfilled,(state,action)=>{
-            state.products=[action.payload,...state.products.filter((product)=>product._id!==action.payload._id)]
-        }). 
+            state.loading=false;
+            state.products=state.products.map((product)=>product._id===action.payload._id?action.payload:product)
+            state.sellerProducts=state.sellerProducts.map((product)=>product._id===action.payload._id?action.payload:product)
+        }).
         addCase(updateProduct.rejected,(state,action)=>{
             state.loading=false;
             state.error=action.error.message

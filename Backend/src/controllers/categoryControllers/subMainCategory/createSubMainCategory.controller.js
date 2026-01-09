@@ -9,6 +9,8 @@ const createSubMainCategory=asyncHandler(async(req,res)=>{
         mainCategoryId,
         name
     })
+    await subMainCategory.populate({path:"mainCategoryId",select:"name -_id"})
+
     res.status(201).json(new apiResponse(201,"Sub main category created successfully",subMainCategory))
 })
 export {createSubMainCategory}

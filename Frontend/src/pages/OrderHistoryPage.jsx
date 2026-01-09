@@ -32,7 +32,7 @@ const OrderHistoryPage = () => {
                         <div key={order._id} className="order  bg-white border border-border-primary p-p-lg rounded-md">
 
                         <div className="seller border-b py-p-md border-border-primary flex items-center gap-xs ">
-                            <div className="logo h-[50px] w-[50px] rounded-full border border-border-primary">{order?.sellerId?.storeDetails?.storeLogo}</div>
+                            <div className="logo h-[50px] w-[50px] rounded-full border border-border-primary"><img className='rounded-full w-full h-full' src={order?.sellerId?.storeDetails?.storeLogo} alt="" /></div>
                             <div className="name">{order?.sellerId?.storeDetails?.storeName}</div>
                         </div>
         
@@ -41,7 +41,14 @@ const OrderHistoryPage = () => {
                             <div className="order-info flex-col lg:flex-row gap-md flex justify-between items-center border-b py-p-md border-border-primary"> 
                                 <div className="date">
                                 <p className='text-md'>Order Id: #{order._id}</p>
-                                <p className='text-text-secondary '>Order Date: {order?.orderDate} </p>
+                                <p className='text-text-secondary '>Order Date: {new Date(order?.orderDate).toLocaleString("en-PK", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })} </p>
                                 </div>
                                 <div className="manage">
                                 <Link to="/order-details">
@@ -53,7 +60,7 @@ const OrderHistoryPage = () => {
                                  <div className="product flex-col lg:flex-row items-center lg:items-start flex gap-md border border-border-primary bg-white  py-p-md">
                                  <div className="basic flex-col lg:flex-row flex gap-md">
          
-                                 <div className="img h-[150px] w-[150px] bg-red-100"><img src={product?.image} alt="" /></div>
+                                 <div className="img h-[150px] w-[150px] bg-red-100"><img className='w-full h-full' src={product?.image} alt="" /></div>
                                  <div className="name  sm:w-[200px] h-[150px] overflow-hidden">{product?.name} </div>
                                  </div>
                                  <div className="additional items-center lg:items-start flex-col lg:flex-row flex gap-md lg:justify-between px-md w-full">

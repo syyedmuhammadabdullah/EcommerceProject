@@ -9,6 +9,7 @@ const generateTokens = async ({userId,role,sessionId}) => {
     const user = await UserModel.findById(userId);
     const accessToken = await user.createAccessToken({role,sessionId});
     const refreshToken = await user.createRefreshToken({role,sessionId});
+    
     return { accessToken, refreshToken };
 };
 

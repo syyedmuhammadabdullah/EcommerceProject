@@ -16,11 +16,6 @@ const DashboardPage = () => {
       dispatch(getSellerOrders({}));
     }
   },[])
- 
-useEffect(()=>{
-  console.log(orderstats);
-  
-},[orderstats])
 
     const filter = ["Daily", "Weekly", "Monthly","6 Months" ];
     const handleFilterClick = (filter) => {

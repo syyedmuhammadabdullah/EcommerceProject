@@ -17,6 +17,7 @@ const MyChart = ({ orderstats }) => {
       chart.data.datasets[0].data = orderstats.delivered;
       chart.data.datasets[1].data = orderstats.pending;
       chart.data.datasets[2].data = orderstats.refunded;
+      chart.data.datasets[3].data = orderstats.cancelled;
       chart.update();
     } 
     // Nahi hai → create new chart
@@ -29,6 +30,7 @@ const MyChart = ({ orderstats }) => {
             { label: "Delivered", data: orderstats.delivered, borderColor: "green", backgroundColor: "rgba(0,128,0,0.2)", tension: 0.4 },
             { label: "Pending", data: orderstats.pending, borderColor: "orange", backgroundColor: "rgba(255,165,0,0.2)", tension: 0.4 },
             { label: "Refunded", data: orderstats.refunded, borderColor: "red", backgroundColor: "rgba(255,0,0,0.2)", tension: 0.4 },
+            { label: "Cancelled", data: orderstats.cancelled, borderColor: "blue", backgroundColor: "rgba(0,0,255,0.2)", tension: 0.4 },
           ]
         },
         options: {

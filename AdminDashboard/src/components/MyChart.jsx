@@ -15,7 +15,7 @@ const MyChart = ({ orderstats }) => {
       const chart = chartInstanceRef.current;
       chart.data.labels = orderstats.labels;
       chart.data.datasets[0].data = orderstats.delivered;
-      chart.data.datasets[1].data = orderstats.pending;
+      chart.data.datasets[1].data = orderstats.cancelled;
       chart.data.datasets[2].data = orderstats.refunded;
       chart.update();
     } 
@@ -27,7 +27,7 @@ const MyChart = ({ orderstats }) => {
           labels: orderstats.labels,
           datasets: [
             { label: "Delivered", data: orderstats.delivered, borderColor: "green", backgroundColor: "rgba(0,128,0,0.2)", tension: 0.4 },
-            { label: "Pending", data: orderstats.pending, borderColor: "orange", backgroundColor: "rgba(255,165,0,0.2)", tension: 0.4 },
+            { label: "Cancelled", data: orderstats.cancelled, borderColor: "orange", backgroundColor: "rgba(255,165,0,0.2)", tension: 0.4 },
             { label: "Refunded", data: orderstats.refunded, borderColor: "red", backgroundColor: "rgba(255,0,0,0.2)", tension: 0.4 },
           ]
         },
@@ -35,6 +35,7 @@ const MyChart = ({ orderstats }) => {
           responsive: true,
           maintainAspectRatio: true,
           scales: { y: { beginAtZero: true } },
+           aspectRatio: 2
         },
       });
     }
@@ -48,7 +49,7 @@ const MyChart = ({ orderstats }) => {
     };
   }, [orderstats]);
 
-  return <canvas ref={chartRef}></canvas>;
+  return <canvas className="max-w-[99%]  max-h-[300px] sm:max-h-[400px] lg:max-h-[500px]" ref={chartRef}></canvas>;
 };
 
 export default MyChart;

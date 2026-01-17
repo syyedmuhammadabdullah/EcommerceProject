@@ -30,9 +30,9 @@ const uploadOnCloudinary = async (filePath) => {
 const deleteOnCloudinary = async (publicId) => {
     try {
         if (!publicId) return null;
-        //upload the file on cloudinary
+        // delete the file on cloudinary
         const response = await cloudinary.uploader.destroy(publicId);
-        // file has been uploaded successfull
+        // file has been deleted successfull
         return response;
     } catch (error) {
         return error;

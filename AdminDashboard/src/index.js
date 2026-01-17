@@ -38,6 +38,7 @@ import CreateCouponPage from "./pages/CreateCouponPage";
 import CreateProductPage from "./pages/CreateProductPage";
 import SellerPage from "./pages/SellerPage.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
+import SellerDetailPage from "./pages/SellerDetailPage.jsx";
 //layouts
 import MainLayout from "./layouts/MainLayout";
 //hooks
@@ -172,6 +173,7 @@ export {
   CouponPage,
   CustomersPage,
   CategoryPage,
+  SellerDetailPage,
   OrderDetailPage,
   ProductsPage,
   OrderInvoicePage,

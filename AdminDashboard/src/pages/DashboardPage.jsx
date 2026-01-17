@@ -13,7 +13,7 @@ const DashboardPage = () => {
 
 
     useEffect(() => {
-      dispatch(getSellerDetailForAdmin("695eb8e30dfd776c9a354c98"));
+      dispatch(getSellerDetailForAdmin({sellerId:"695eb8e30dfd776c9a354c98",range}));
     }, []);
   useEffect(() => {
     
@@ -27,7 +27,7 @@ const DashboardPage = () => {
     const filter = ["Daily", "Weekly", "Monthly","6 Months" ];
     const handleFilterClick = (filter) => {
       if (filter!==range) {
-        dispatch(getSellerOrdersDetail({ range:filter.toLowerCase(),sellerId:"694ff41845e3d9faf94b9ef3" }));
+        dispatch(getSellerDetailForAdmin({ range:filter.toLowerCase(),sellerId:"695eb8e30dfd776c9a354c98" }));
       }
       setRange(filter);
     };
@@ -43,41 +43,68 @@ const DashboardPage = () => {
           <div className="content w-full">
 
             <div className="stats  items-center grid pt-lg gap-lg grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+               <div className="totalSales grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border border-border-primary rounded-md  bg-white col-span-full">
+                   
+                    <div className="con h-[150px] flex flex-col gap-sm p-lg">
+                    <div className="t-sale text-text-description"><p>Store Name</p></div>
+                    <div className="sale "><p className=' font-bold'>{seller?.seller?.storeDetails?.storeName}</p></div>
+                    </div>
+                    <div className="con h-[150px] flex flex-col gap-sm p-lg">
+                    <div className="t-sale text-text-description"><p>Bussiness Email</p></div>
+                    <div className="sale "><p className=' font-bold'>{seller?.seller?.businessEmail}</p></div>
+                    </div>
+                    <div className="con h-[150px] flex flex-col gap-sm p-lg">
+                    <div className="t-sale text-text-description"><p>Status</p></div>
+                    <div className="sale "><p className=' font-bold'>{seller?.seller?.accountStatus?.status}</p></div>
+                    </div>
+                    <div className="con h-[150px] flex flex-col gap-sm p-lg">
+                    <div className="t-sale text-text-description"><p>Joined Date</p></div>
+                    <div className="sale "><p className=' font-bold'>{seller?.seller?.createdAt}</p></div>
+                    </div>
+                    
 
+
+                </div>
                 <div className="totalSales border border-border-primary rounded-md  h-[187px] bg-white ">
                     <div className="con h-[150px] flex flex-col gap-sm p-lg">
                     <div className="t-sale text-text-description"><p>Total Sales</p></div>
-                    <div className="sale "><p className='text-xl font-bold'>Rs {orderstats?.delivered?.reduce((acc, curr) => acc + curr, 0) || 0}</p></div>
+                    <div className="sale "><p className='text-xl font-bold'>Rs {seller?.chart?.delivered.reduce((a, b) => a + b, 0) || 0}</p></div>
                     <div className="res"><p>per month <ArrowUpOutlined/> 12% per year  <ArrowDownOutlined/> 2%</p></div>
                     </div>
                     <div className="date h-[36px] mt-auto flex px-lg items-center   border-t border-border-primary"><p>date for the year 2025</p></div>
                 </div>
-                <div className="totalSales border border-border-primary rounded-md  h-[187px] bg-white ">
-                    <div className="con h-[150px] flex justify-between gap-sm p-lg">
+                <div className="totalSales border border-border-primary rounded-md  min-h-[187px] bg-white ">
+                    <div className="con grid grid-cols-2 justify-between gap-md p-lg">
                       <div className="t-order">
                     <div className="t-orders text-text-description"><p>Total Orders</p></div>
-                    <div className="percent "><p className='text-xl font-bold'>{orderstats?.totalItems || 0}</p></div>
+                    <div className="percent "><p className='text-xl font-bold'>{seller?.chart?.totalItems || 0}</p></div>
                       </div>
                       <div className="p-order">
-                    <div className="t-orders text-text-description"><p>Pending Orders</p></div>
-                    <div className="percent "><p className='text-xl font-bold'>{orderstats?.totalPendingOrders || 0}</p></div>
-
+                    <div className="t-orders text-text-description"><p>Delivered Orders</p></div>
+                    <div className="percent "><p className='text-xl font-bold'>{seller?.chart?.totalDeliveredOrders || 0}</p></div>
+                      </div>
+                      <div className="t-order">
+                    <div className="t-orders text-text-description"><p>Refunded Orders</p></div>
+                    <div className="percent "><p className='text-xl font-bold'>{seller?.chart?.totalRefundedOrders || 0}</p></div>
+                      </div>
+                      <div className="p-order">
+                    <div className="t-orders text-text-description"><p>cancelled Orders</p></div>
+                    <div className="percent "><p className='text-xl font-bold'>{seller?.chart?.totalCancelledOrders || 0}</p></div>
                       </div>
                     
                     </div>
-                    <div className="date h-[36px] mt-auto flex px-lg items-center   border-t border-border-primary"><p>per month <ArrowUpOutlined/> 12% per year  <ArrowDownOutlined/> 2%</p></div>
                 </div>
                 <div className="totalSales border border-border-primary rounded-md  h-[187px] bg-white ">
                     <div className="con h-[150px] flex flex-col gap-sm p-lg">
-                    <div className="t-order text-text-description"><p>Balance</p></div>
-                    <div className="sale "><p className='text-xl font-bold'>Rs {sellerWallet && sellerWallet|| 0}</p></div>
+                    <div className="t-order text-text-description"><p>Wallet Balance</p></div>
+                    <div className="sale "><p className='text-xl font-bold'>Rs {seller &&seller?.wallet?.balance|| 0}</p></div>
                    
                     </div>
                     <div className="date h-[36px] mt-auto flex px-lg items-center   border-t border-border-primary"><p>per month <ArrowUpOutlined/> 12% per year  <ArrowDownOutlined/> 2%</p></div>
                 </div>
 
             </div>
-            <div className="chart w-full sm:w-full h-content p-lg my-lg rounded-md border border-border-primary bg-white">
+            <div className="chart max-w-full  min-h-content p-lg my-lg rounded-md border border-border-primary bg-white">
                 <div className="title flex justify-between  w-full">
                     <div className="heading">
                         <h4>Chart</h4>
@@ -88,7 +115,7 @@ const DashboardPage = () => {
           filter.map((item,index)=><Button
               key={index}
               children={item}
-              className={`option ${range?.toLowerCase()===item?.toLowerCase() && "bg-primary-base text-white"} min-w-[80px] text-black text-center border-[#00000026] border px-p-md py-p-xxs hover:bg-primary-hover hover:text-white`}
+              className={`option ${range?.toLowerCase()===item?.toLowerCase() && "bg-primary-base text-white"} -[80px] text-black text-center border-[#00000026] border px-p-md py-p-xxs hover:bg-primary-hover hover:text-white`}
               onClick={()=>handleFilterClick(item)}
             />)
          }
@@ -98,48 +125,10 @@ const DashboardPage = () => {
           
         </div>
                 </div>
-                    <MyChart orderstats={orderstats} />
+                    <MyChart orderstats={seller?.chart} />
             
             </div>
-            <div className="recentOrders w-screen sm:w-full  py-lg">
-
-            <div className="data bg-white border border-border-primary w-full rounded-md px-lg pb-lg  grid ">
-                <div className="title my-lg">
-                    <h4>Recent Orders</h4>
-                </div>
-        <div className="orders w-full flex flex-col overflow-scroll no-scrollbar">
-            <div className="head h-[54px] grid grid-cols-[48px_minmax(389px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(111px,_1fr)] items-center bg-[#00000005]  ">
-           <div className="id border pl-[10px] w-[48px] flex items-center border-border-primary h-full" >ID</div>
-           <div className="name border pl-[10px] min-w-[389px] flex items-center border-border-primary h-full" >Customer Name</div>
-           <div className="stock border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >No. of Products</div>
-           <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >Total Amount</div>
-           <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >Order Status</div>
-           <div className="action border pl-[10px] min-w-[111px] flex items-center border-border-primary h-full" >Action</div>
-          </div>
-         {orders?.slice(0,5)?.map((order,index)=>(
-            <div key={order._id} className="body grid grid-cols-[48px_minmax(389px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(111px,_1fr)] items-center  h-[72px] border-b border-border-primary ">
-            <div className="id border pl-[10px] w-[48px] flex items-center border-border-primary h-full" >{index+1}</div>
-             <div className="name border text-text-secondary gap-xs pl-[10px] min-w-[389px] flex items-center border-border-primary h-full" >
-              {order?.userId?.fullName}
-              </div>
-             <div className="stock border pl-[10px] min-w-[137px] flex flex-col gap-xs justify-center border-border-primary h-full" >{order?.totalItems}</div>
-             <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >{order?.totalPrice}</div>
-             <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >{order?.status}</div>
-             <div className="action border pl-[10px] min-w-[111px] flex items-center border-border-primary h-full" >
-             <Link to={`/order-details/${order._id}`}>
-                <Button
-                  children="View Order"
-                  className="option  hover:bg-primary-hover hover:text-white text-black text-center border-border-primary border px-p-md py-p-xxs" />
-                </Link>
-             </div>
-               
-            </div>
-         ))}
-        </div>
-        </div>
-
-
-            </div>
+       
 
         </div>
 

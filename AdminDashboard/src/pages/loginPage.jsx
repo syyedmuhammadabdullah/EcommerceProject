@@ -22,13 +22,14 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loading, admin, error } = useSelector(
+  const { loading, admin, error, isAuthenticated } = useSelector(
     (state) => state.admin
   );
 useEffect(() => {
 console.log(admin);
-
-}, [admin]);
+if( isAuthenticated) {
+navigate("/dashboard");}
+}, [isAuthenticated]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

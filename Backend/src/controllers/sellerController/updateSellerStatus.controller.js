@@ -1,4 +1,4 @@
-import {apiError,apiResponse,asyncHandler,SellerModel} from "../../index.js";
+import {apiError,apiResponse,asyncHandler,io,NotificationModel,SellerModel} from "../../index.js";
 
 const updateSellerStatus=asyncHandler(async(req,res)=>{
     const {sellerId,status}=req.body;
@@ -12,6 +12,20 @@ const updateSellerStatus=asyncHandler(async(req,res)=>{
     seller.accountStatus.status=status;
     seller.accountStatus.updatedAt=Date.now();
     await seller.save();
+
+    const message=status==="approved"?"Congratulations! Your seller account has been approved. You can now start listing your products and selling on our platform.":"We regret to inform you that your seller account has been rejected. For more information, please contact our support team.";
+    // Send notification to seller about status update
+    const notification =await NotificationModel.create({
+        recipientModel:"Seller",
+        recipient:sellerId,
+        type:"account",
+        title:"Account Status Update",
+        message,
+        redirect:false,
+        data:{}
+    });
+    io.to(sellerId.toString()).emit("notification",notification);
+
     res.status(200).json(new apiResponse(200,"Seller status updated successfully",seller));
 })
 export {updateSellerStatus}

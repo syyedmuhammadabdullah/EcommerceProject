@@ -1,10 +1,17 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import getSeller from "../store/Slices/SellerSlice/getSeller";
 
 const AuthProtectedRoute = () => {
 const { isAuthenticated, seller, loading } = useSelector(state => state.seller);
-
+const dispatch = useDispatch();
+  useEffect(() => {
+    if (isAuthenticated) {
+      return;
+    }
+    dispatch(getSeller());
+  }, []);
   
 useEffect(() => {
 }, [loading,seller])

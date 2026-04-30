@@ -88,6 +88,6 @@ const SellerSchema = new Schema({
       },
    
     
-},{timestamps:true});
+});
 export const SellerModel=mongoose.model("SellerModel",SellerSchema)
 

@@ -1,6 +1,7 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '../index'
+import { useState } from 'react';
+import TinyEditor from '../components/RichTextEditor';
 
 const CouponPage = () => {
     return (
@@ -74,6 +75,9 @@ const CouponPage = () => {
           </div>
         </section>
       );
-}
+
+
+
+  }
 
 export default CouponPage

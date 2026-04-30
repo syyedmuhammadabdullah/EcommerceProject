@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {useDispatch, useSelector } from "react-redux";
 import authCheck from './store/slices/userSlice/authCheck'
 import { RouterProvider } from 'react-router-dom';
@@ -31,21 +31,57 @@ import {
   getOrders,
   MyReviewPage,
   deliveredOrder,
-  getUserProductReview
+  getUserProductReview,
+  socket,
+  TrackOrder,
+  getAllCategories
 } from "./index";
 import { createBrowserRouter } from "react-router-dom";
+import { toast } from 'react-toastify';
 function App() {
+  const [nuser,setnuser]=useState("")
 const dispatch=useDispatch()
-const {user}=useSelector(state=>state.auth)
+const {user,loading,isAuthenticated}=useSelector(state=>state.auth)
 useEffect(()=>{
-  dispatch(authCheck())
-  dispatch(getAllAddress())
+ dispatch(authCheck())
+ 
+ dispatch(getAllAddress())
   dispatch(getUserCart({userId:user?._id}))
   dispatch(getWishlist())
   dispatch(getOrders())
   dispatch(deliveredOrder())
   dispatch(getUserProductReview())
+  dispatch(getAllCategories())
 },[])
+
+useEffect(() => {
+socket.connect();
+socket.on("connect", () => {
+  console.log("Connected");
+}); 
+},[])
+
+useEffect(() => {
+  if (!user?._id) return;   // 🔥 wait until user exists
+
+socket.emit("joinRoom", user._id);
+  const handleNotification = (data) => {
+    console.log("LIVE MESSAGE:", data);
+    toast.success(data.message);
+  };
+socket.on("disconnect", (reason) => {
+  console.log("Disconnected:", reason);
+});
+
+socket.on("connect_error", (err) => {
+  console.log("Error:", err.message);
+})
+  socket.on("notification", handleNotification);
+  return () => {
+    socket.off("notification", handleNotification); // ❌ no disconnect
+  };
+}, [user?._id]);
+
 
 
 const router = createBrowserRouter([
@@ -61,6 +97,14 @@ const router = createBrowserRouter([
       {
         path: "products",
         element: <ProductPage />,
+      },
+      {
+        path:"products/:category",
+        element:<ProductPage/>
+      },
+      {
+        path:"products/subCategory/:subCategory",
+        element:<ProductPage/>
       },
       {
         path: "product-filter",
@@ -146,7 +190,11 @@ const router = createBrowserRouter([
         element:<OrderHistoryPage/>
       },
       {
-        path:"track-order",
+        path:"track-order/",
+        element:<TrackOrder/>
+      },
+      {
+        path:"track-order/:trackingNumber",
         element:<TrackOrderPage/>
       },
       {

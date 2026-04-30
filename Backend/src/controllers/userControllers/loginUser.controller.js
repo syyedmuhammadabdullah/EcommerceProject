@@ -1,10 +1,8 @@
-import { apiError , apiResponse,asyncHandler,UserModel,generateTokens,options} from "../../index.js";
+import { apiError , apiResponse,asyncHandler,UserModel,generateTokens,options, NotificationModel, io} from "../../index.js";
 import { validate } from "email-validator";
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password,device } = req.body;
     const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
-    console.log("Client IP:", ip);
-   console.log(email, password);
    
     if (!(email || password || device || ip)) {
         throw new apiError(400, "All fields are required");
@@ -38,7 +36,16 @@ const loginUser = asyncHandler(async (req, res) => {
     await user.save();
 
     req.user=user
-
+        const notification=await NotificationModel.create({
+        recipientModel: "User",
+        recipient: user._id,
+        message: "New login detected from device: "+device,
+        type: "login",
+        title: "Login Notification",
+        redirect: true,
+        data: { userId: user._id },
+    })
+    io.to(user._id.toString()).emit("notification",notification)
     res.status(200)
     .cookie("accessToken", accessToken, { options, maxAge: 24 * 60 * 60 * 1000 })
         .cookie("refreshToken", refreshToken, { options, maxAge: 10 * 24 * 60 * 60 * 1000 })

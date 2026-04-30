@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import Input from '../components/Input'
 import { SearchOutlined } from '@ant-design/icons'
-import {Button } from "../index";
+import {Button,Input } from "../index";
 import { useSelector } from 'react-redux';
 
 const OrderHistoryPage = () => {
@@ -40,7 +39,7 @@ const OrderHistoryPage = () => {
         
                             <div className="order-info flex-col lg:flex-row gap-md flex justify-between items-center border-b py-p-md border-border-primary"> 
                                 <div className="date">
-                                <p className='text-md'>Order Id: #{order._id}</p>
+                                <p className='text-md'>Tracking Id: #{order.trackingNumber}</p>
                                 <p className='text-text-secondary '>Order Date: {new Date(order?.orderDate).toLocaleString("en-PK", {
     day: "2-digit",
     month: "short",
@@ -51,7 +50,7 @@ const OrderHistoryPage = () => {
   })} </p>
                                 </div>
                                 <div className="manage">
-                                <Link to="/order-details">
+                                <Link to={`/user-account/order-detail/${order._id}`}>
                                     <Button children="Manage Order" className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm text-white" />
                                 </Link>
                                 </div>

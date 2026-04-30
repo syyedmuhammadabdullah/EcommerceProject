@@ -4,9 +4,11 @@ const Button = ({
   onClick = () => {},
   children = "Button",
   className = "",
+  disabled = false,
 }) => {
   return (
     <button
+    disabled={disabled}
       onClick={onClick}
       className={` text-base ${className}`}
     >

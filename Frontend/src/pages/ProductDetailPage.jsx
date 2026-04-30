@@ -33,7 +33,6 @@ const ProductDetailPage = () => {
   const [question, setQuestion] = React.useState("");
   const [quantity,setQuantity]=React.useState(1)
   const [selectedImage,setSelectedImage]=useState("")
-  const [magnifiedImage,setMagnifiedImage]=useState("")
   useEffect(() => {
     dispatch(getProductDetails(productId));
     dispatch(getProductQuestion(productId));
@@ -41,7 +40,6 @@ const ProductDetailPage = () => {
   
   }, []);
   useEffect(() => {
-    console.log("product?.seller?._id ", product?.seller?._id);
     if (product && product.additionalImages?.length > 0) {
       setSelectedImage(product.additionalImages[0].url);
     }
@@ -73,8 +71,6 @@ const ProductDetailPage = () => {
   };
 
   const handleQuestion = () => {
-    console.log("handle question runs");
-    
     dispatch(
       createProductQuestion({ productId, question,sellerId:product?.seller?._id })
     );
@@ -87,25 +83,10 @@ const ProductDetailPage = () => {
     }
    navigate("/checkout",{state:{product,quantity:quantity}})
   };
-
-
-  useEffect(() => {
-    console.log(productQuestions);
-    
-    // console.log(productReviews);
-    console.log();
-    
-    
-
-  }, [productQuestions,productReviews]);
   const handleImageClick=(url)=>{
     setSelectedImage(url)
   }
-  const handleImageHover=(url)=>{
-    console.log(url);
-    setMagnifiedImage(url)
-    
-  }
+ 
 
   return (
     <section className="flex justify-center">
@@ -113,11 +94,8 @@ const ProductDetailPage = () => {
         <div className="container  flex-col gap-xxl py-p-lg">
           <div className="product  grid grid-cols-1 xl:grid-cols-[1fr_2fr_1fr]">
             <div className="productImg ">
-              <div className={`imgHover ${magnifiedImage===""?"hidden":""} z-10 left-[450px] absolute w-[600px] h-[400px]`}>
-                <img src={magnifiedImage} className="w-full h-full"  alt="" />
-              </div>
-              <div className="imgplaceholder cursor-grab w-full h-screen xl:h-[400px]">
-                <img className="w-full h-full" src={selectedImage} alt=""  onMouseLeave={() => setMagnifiedImage("")} onMouseEnter={(e) => handleImageHover(e.target.src)}/>
+              <div className="imgplaceholder  w-full h-screen xl:h-[400px]">
+                <img className="w-full h-full" src={selectedImage} alt=""  />
               </div>
 
               <div className="slider hidden  overflow-x-scroll w-[400px] h-[70px] items-center px-xs xl:flex gap-sm no-scrollbar">
@@ -270,13 +248,13 @@ const ProductDetailPage = () => {
               <h5>Product Details of {product.name}</h5>
             </div>
 
-            <div className="details">
-              <div dangerouslySetInnerHTML={{ __html: product.description }}></div>
+           <div className="details prose max-w-none prose-ul:list-disc">
+              <div className="" dangerouslySetInnerHTML={{ __html: product.description }}></div>
         
             </div>
           </div>
 
-          <div className="productReviews grid gap-xl p-md">
+          <div className="productReviews border border-border-primary grid gap-xl p-md">
             <div className="title">
               <h5>Product Review & Ratings</h5>
             </div>
@@ -437,7 +415,7 @@ const ProductDetailPage = () => {
               )}
             <div className="contentContainer grid gap-md">
               {productQuestions?.length > 0 ? productQuestions?.map((question,i) => (
-              <div key={i}   className="content flex gap-sm flex-col shadow-secondary p-md">
+              <div key={i}   className="content flex gap-sm flex-col  p-md">
                 <div className="question flex gap-md">
                   <div className="icon">Q</div>
                   <div className="quest">

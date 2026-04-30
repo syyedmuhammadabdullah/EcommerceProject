@@ -1,3 +1,4 @@
+
 //Utlis imports
 import { asyncHandler } from "./utlis/asyncHandler.js";
 import { apiError } from "./utlis/apiError.js";
@@ -32,6 +33,7 @@ import { SellerModel } from "./models/seller.model.js";
 import { SellerWalletModel } from "./models/sellerWallet.model.js";
 import { SellerTransactionModel } from "./models/sellerTransaction.model.js";
 import { SellerWithdrawalModel } from "./models/sellerWidthdraw.model.js";
+import { NotificationModel } from "./models/notification.model.js";
 //Controllers
 
 //UserControllers
@@ -64,7 +66,7 @@ import { getAllSellerProducts } from "./controllers/productControllers/getAllSel
 import { updateProductDetails } from "./controllers/productControllers/updateProductDetails.controller.js";
 import { deleteProduct } from "./controllers/productControllers/deleteProduct.controller.js";
 import { getOneSellerProduct } from "./controllers/productControllers/getOneSellerProduct.controller.js";
-import {updateProductStatus} from "./controllers/productControllers/updateProductStatus.controller.js"
+import { updateProductStatus } from "./controllers/productControllers/updateProductStatus.controller.js"
 //AddressControllers
 import { createAddress } from "./controllers/addressControllers/createAddress.controller.js";
 import { deleteAddress } from "./controllers/addressControllers/deleteAddress.controller.js";
@@ -93,8 +95,9 @@ import { deliveredOrder } from "./controllers/orderControllers/deliveredOrder.co
 import { getSellerOrders } from "./controllers/orderControllers/getSellerOrders.js";
 import { getOneSellerOrder } from "./controllers/orderControllers/getOneSellerOrder.controller.js";
 import { getSellerOrdersDetail } from "./controllers/orderControllers/getSellerOrdersDetail.js";
-import {getAllOrders} from "./controllers/orderControllers/getAllOrders.controller.js"
+import { getAllOrders } from "./controllers/orderControllers/getAllOrders.controller.js"
 import { getCustomerOrders } from "./controllers/orderControllers/getCustomerOrders.controller.js";
+import { updateItemStatus } from "./controllers/orderControllers/updateItemStatus.controller.js";
 //Payment Controllers
 //Stripe
 import { createStripePayment } from "./controllers/paymentControllers/createStripePayment.controller.js";
@@ -117,7 +120,7 @@ import { createMainCategory } from "./controllers/categoryControllers/mainCatego
 import { getMainCategory } from "./controllers/categoryControllers/mainCategory/getMainCategory.controller.js";
 import { deleteMainCategory } from "./controllers/categoryControllers/mainCategory/deleteMainCategory.controller.js";
 import { updateMainCategory } from "./controllers/categoryControllers/mainCategory/updateMainCategory.controller.js";
-
+import { getAllCategories } from "./controllers/categoryControllers/getAllCategories.controller.js";
 //Sub Category Controllers
 import { createSubMainCategory } from "./controllers/categoryControllers/subMainCategory/createSubMainCategory.controller.js";
 import { getSubMainCategory } from "./controllers/categoryControllers/subMainCategory/getSubMainCategory.controller.js";
@@ -132,9 +135,9 @@ import { loginSeller } from "./controllers/sellerController/loginSeller.controll
 import { updateSellerDetails } from "./controllers/sellerController/updateSellerDetails.controller.js";
 import { getSellerProductsQuestion } from "./controllers/sellerController/getSellerProductsQuestion.js";
 import { getSeller } from "./controllers/sellerController/getSeller.controller.js";
-import {getAllSellers} from "./controllers/sellerController/getAllSellers.controller.js"
-import {getSellerDetails} from "./controllers/sellerController/getSellerDetails.controller.js"
-import {updateSellerStatus} from "./controllers/sellerController/updateSellerStatus.controller.js"
+import { getAllSellers } from "./controllers/sellerController/getAllSellers.controller.js"
+import { getSellerDetails } from "./controllers/sellerController/getSellerDetails.controller.js"
+import { updateSellerStatus } from "./controllers/sellerController/updateSellerStatus.controller.js"
 import { getSellerAllOrders } from "./controllers/orderControllers/getSellelrAllOrders.controller.js";
 import { getSellerDetailForAdmin } from "./controllers/sellerController/getSellerDetailForAdmin.controller.js";
 //Admin Controllers
@@ -150,9 +153,15 @@ import { getAllCustomers } from "./controllers/customerControllers/getAllCustome
 import { getSellerTransaction } from "./controllers/sellerTransactionControllers/getSellerTransection.controller.js";
 import { getSellerBalance } from "./controllers/sellerTransactionControllers/getSellerBalance.controller.js";
 import { requestWithdraw } from "./controllers/sellerTransactionControllers/requestWithdraw.controller.js";
-import {updateWithdrawRequest} from "./controllers/sellerTransactionControllers/updateWithdrawRequest.controller.js"
-import {getSellerWithdrawHistory} from "./controllers/sellerTransactionControllers/getSellerWithdrawHistory.controller.js"
-import {getPendingWithdrawalRequest} from "./controllers/sellerTransactionControllers/getPendingWithdrawalRequest.controller.js"
+import { updateWithdrawRequest } from "./controllers/sellerTransactionControllers/updateWithdrawRequest.controller.js"
+import { getSellerWithdrawHistory } from "./controllers/sellerTransactionControllers/getSellerWithdrawHistory.controller.js"
+import { getPendingWithdrawalRequest } from "./controllers/sellerTransactionControllers/getPendingWithdrawalRequest.controller.js"
+
+//Notification Controllers
+import { getNotifications, getNotificationCount } from "./controllers/NotificationControllers/getNotifications.controller.js";
+import { markNotificationAsRead } from "./controllers/NotificationControllers/markNotificationAsRead.controller.js";
+import { markAllNotificationsAsRead } from "./controllers/NotificationControllers/markAllNotificationsAsRead.controller.js";
+import { clearAllNotifications } from "./controllers/NotificationControllers/clearAllNotifications.controller.js";
 //Services
 import { geoNamesCountries, geoNamesStates, geoNamesCities, geoNamesTowns } from "./services/geoNamesService.js";
 
@@ -173,17 +182,20 @@ import { customerRouter } from "./routes/customer.route.js";
 import { couponRouter } from "./routes/coupon.routes.js";
 import { transactionRouter } from "./routes/transaction.routes.js";
 import { adminRouter } from "./routes/admin.routes.js";
+import { notificationRouter } from "./routes/notification.routes.js";
 
 //Others
 import { connectDB } from "./db/connectDB.js";
 import { app } from "./app.js";
 
+import { io } from "./utlis/socket.js";
 
 // Exports
-
+// Other Exports
+export { connectDB, app, }; // End of Other Exports
 
 // Utils Exports
-export { asyncHandler, apiError, apiResponse, uploadOnCloudinary, deleteOnCloudinary, generateTokens, refreshAccessToken, options, transformAttributes,orginizeChart,generateLabels, rangeFormat }; // End of Utils Exports
+export { io, asyncHandler, apiError, apiResponse, uploadOnCloudinary, deleteOnCloudinary, generateTokens, refreshAccessToken, options, transformAttributes, orginizeChart, generateLabels, rangeFormat }; // End of Utils Exports
 
 // Constants Export
 export { dbName }; // End of Constants Export
@@ -208,6 +220,7 @@ export {
     SellerWalletModel,
     SellerTransactionModel,
     SellerWithdrawalModel,
+    NotificationModel,
 }; // End of Model Exports
 
 //Controller Exports
@@ -233,16 +246,16 @@ export {
 }; // End of User Controller Exports
 
 // Seller Controller Exports
-export { createSeller,getSellerDetailForAdmin ,getAllSellers, getSellerDetails, updateSellerStatus, loginSeller, updateSellerDetails, getSellerProductsQuestion, getSeller }; // End of Seller Controller Exports
+export { createSeller, getSellerDetailForAdmin, getAllSellers, getSellerDetails, updateSellerStatus, loginSeller, updateSellerDetails, getSellerProductsQuestion, getSeller }; // End of Seller Controller Exports
 
 //Admin Controller Exports
 export { loginAdmin, getAdmin, createAdmin };
 
 //Customer Controller Exports
-export { getAllSellerCustomers,getCustomerOrders, getAllCustomers };
+export { getAllSellerCustomers, getCustomerOrders, getAllCustomers };
 
 // Product Controller Exports
-export { createBasicProduct,getAllProductsForAdmin, getOneSellerProduct, getAllProducts, getOneProduct, productFilter, createProduct, getAllSellerProducts, updateProductDetails,updateProductStatus, deleteProduct }; // End of Product Controller Exports
+export { createBasicProduct, getAllProductsForAdmin, getOneSellerProduct, getAllProducts, getOneProduct, productFilter, createProduct, getAllSellerProducts, updateProductDetails, updateProductStatus, deleteProduct }; // End of Product Controller Exports
 
 // Address Controller Exports
 export { createAddress, editAddress, deleteAddress, getAllAddress, getSingleAddress, changeDefaultAddress }; // End of Address Controller Exports
@@ -254,35 +267,42 @@ export { addItemToCart, getUserCart, removeItemFromCart, updateCartItem }; // En
 export { addItemToWishlist, removeItemFromWishlist, getWishlist }; // End of Wishlist Controller Exports
 
 //Order Controller Exports
-export { createOrder,
-         getOrders,
-         trackOrder,
-         deliveredOrder,
-         getSellerOrders,
-         getOneSellerOrder,
-         getSellerOrdersDetail,
-            updateOrderController,
-            getAllOrders,
-            getSellerAllOrders,
-            
+export {
+    createOrder,
+    getOrders,
+    trackOrder,
+    deliveredOrder,
+    getSellerOrders,
+    getOneSellerOrder,
+    getSellerOrdersDetail,
+    updateOrderController,
+    getAllOrders,
+    getSellerAllOrders,
+    updateItemStatus
 
-             }; // End of Order Controller Exports
+
+}; // End of Order Controller Exports
 
 //Category Controller Exports
-export { createMainCategory, 
-         getMainCategory, 
-         deleteMainCategory, 
-         updateMainCategory, 
-         createSubMainCategory,
-         getSubMainCategory,
-         deleteSubMainCategory,
-         updateSubMainCategory 
-        };
+export {
+    createMainCategory,
+    getMainCategory,
+    deleteMainCategory,
+    updateMainCategory,
+    createSubMainCategory,
+    getSubMainCategory,
+    deleteSubMainCategory,
+    updateSubMainCategory,
+    getAllCategories
+};
+
+//Notification Controller Exports
+export { getNotifications, clearAllNotifications, getNotificationCount,markNotificationAsRead, markAllNotificationsAsRead }; // End of Notification Controller Exports
 
 //Payment Controller Exports
 
 //Stripe
-export { createStripePayment };
+export { createStripePayment }; // End of Payment Controller Exports
 
 //Product Review Controller Exports
 export { createProductReview, getProductReview, getUserProductReview, updateProductReview }; // End of Product Review Controller Exports
@@ -297,7 +317,7 @@ export {
 }; // End of Product Question Controller Exports
 
 //Seller Transaction Controller Exports
-export { getSellerWithdrawHistory, getPendingWithdrawalRequest,getSellerTransaction, updateWithdrawRequest, getSellerBalance, requestWithdraw };
+export { getSellerWithdrawHistory, getPendingWithdrawalRequest, getSellerTransaction, updateWithdrawRequest, getSellerBalance, requestWithdraw };
 
 //End of Controller Exports
 
@@ -318,13 +338,12 @@ export {
     customerRouter,
     couponRouter,
     adminRouter,
-    transactionRouter
+    transactionRouter,
+    notificationRouter,
 }; // End of Route Exports
 
 // Service Exports
 export { geoNamesCountries, geoNamesStates, geoNamesCities, geoNamesTowns }; // End of Service Exports
 
-// Other Exports
-export { connectDB, app,  }; // End of Other Exports
 
 //End of Exports

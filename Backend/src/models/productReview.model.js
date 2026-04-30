@@ -12,5 +12,5 @@ const ProductReviewSchema = new Schema({
     comment: { type: String },
     createdAt: { type: Date, default: Date.now },
 });
-
+ProductReviewSchema.index({ productId: 1, userId: 1 }, { unique: true });
 export const ProductReviewModel = mongoose.model("ProductReviewModel", ProductReviewSchema);

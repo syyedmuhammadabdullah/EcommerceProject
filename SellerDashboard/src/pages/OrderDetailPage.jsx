@@ -1,15 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector,useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom';
-import { Button,getOneSellerOrder,SelectMenu,updateOrderStatus } from '../index.js';
+import { Button,getOneSellerOrder,SelectMenu,updateOrderStatus,updateItemStatus } from '../index.js';
+import { CloseCircleOutlined } from '@ant-design/icons';
 const OrderDetailPage = () => {
     const dispatch = useDispatch();
     const {loading,error,order}=useSelector(state=>state.order)
     const {orderId}=useParams();
     const [orderStatus, setOrderStatus] = useState(order?.orderStatus);
     const [editMode, setEditMode] = useState(false);
-    const statusOptions = ["pending", "processing","cancelled","delivered", "refunded"];
-    const currentStatus = statusOptions.findIndex((status) => status === order?.orderStatus);
+    const statusOptions = ["pending","shipped","out for delivery","confirmed","processing","cancelled","delivered", "refunded"];
+    // const currentStatus = statusOptions.findIndex((status) => status === order?.orderStatus);
+    const [itemStatus, setItemStatus] = useState("");
+    const [itemId, setItemId] = useState("");
+
+    const handleItemStatusChange=(orderId,itemId)=>{
+        //dispatch update order status action
+        dispatch(updateItemStatus({orderId,itemId,status:itemStatus}));
+        setItemId(null);
+    }
+
     const handleStatusChange=(orderId)=>{
         //dispatch update order status action
         dispatch(updateOrderStatus({orderId,status:orderStatus}));        
@@ -221,17 +231,21 @@ const OrderDetailPage = () => {
     {/* </div> */}
 
 
-    <div className="data w-full grid overflow-scroll no-scrollbar">
+    <div  className="data w-full grid overflow-scroll no-scrollbar">
     <div className="head h-[54px] grid grid-cols-[48px_minmax(389px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(111px,_1fr)] items-center bg-[#00000005]">
            <div className="id border pl-[10px] w-[48px] flex items-center border-[#0000000f] h-full" >ID</div>
            <div className="name border pl-[10px] min-w-[389px] flex items-center border-[#0000000f] h-full" >Product Name</div>
            <div className="stock border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Quantity</div>
            <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Price</div>
            <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Total</div>
-           <div className="action border pl-[10px] min-w-[111px] flex items-center border-[#0000000f]  h-full" >Status / {order?.status}</div>
+           <div className="action relative border pl-[10px] min-w-[111px] flex items-center border-[#0000000f]  h-full" >Action{editMode?<div className="flex z-10 absolute top-2 right-2 flex-row gap-sm"> <SelectMenu onClick={(status)=>setOrderStatus(status)} defaultValue={order?.status} options={statusOptions}/>
+             
+                <Button onClick={() => handleStatusChange(order?._id)} children="Save" className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm text-white" />
+             </div>
+             :<Button onClick={() => setEditMode(true)} children="Edit" className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm text-white" />}</div>
           </div>
          {order?.products?.map((product,index)=>(
-            <div key={product._id} className="body grid grid-cols-[48px_minmax(389px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(111px,_1fr)] items-center  h-[72px]  ">
+            <div key={product.productId} className="body grid grid-cols-[48px_minmax(389px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(111px,_1fr)] items-center  h-[72px]  ">
             <div className="id border pl-[10px] w-[48px] flex items-center border-[#0000000f] h-full" >{index+1}</div>
              <div className="name border text-text-secondary gap-xs text-sm pl-[10px] min-w-[389px] flex items-center border-[#0000000f] h-full" >
              <div className="img w-[40px] h-[40px]">
@@ -245,11 +259,12 @@ const OrderDetailPage = () => {
              <div className="stock border pl-[10px] min-w-[137px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >{product.quantity}</div>
              <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{product.priceAtPurchase}</div>
              <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{product.priceAtPurchase*product.quantity}</div>
-             <div className="action relative border pl-[10px] min-w-[111px] flex items-center border-[#0000000f] h-full" >{editMode?<div className="flex z-10 absolute top-2 right-2 flex-col gap-sm"> <SelectMenu onClick={(status)=>setOrderStatus(status)} defaultValue={order?.status} options={statusOptions}/>
+             <div className="action relative border pl-[10px] min-w-[111px] flex items-center border-[#0000000f] h-full" >{itemId===product.productId?<div className="flex z-10 absolute top-2 right-2 flex-row gap-sm"> <SelectMenu onClick={(status)=>setItemStatus(status)} defaultValue={order?.status} options={['pending', 'shipped', 'delivered', 'cancelled',"confirmed", ,'rejected']}/>
              
-                <Button onClick={() => handleStatusChange(order?._id)} children="Save" className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm text-white" />
+                <Button onClick={() => handleItemStatusChange(order?._id,product?.productId)} children="Save" className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm text-white" />
              </div>
-             :<Button onClick={() => setEditMode(true)} children="Edit" className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm text-white" />}</div>
+             :<Button onClick={() => {setItemId(product.productId);console.log(product.productId)
+             }} children="Edit" className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm text-white" />}/{product.status}</div>
                
             </div>
          ))}

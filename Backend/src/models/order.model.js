@@ -1,4 +1,5 @@
 import mongoose,{Schema} from "mongoose";
+import { type } from "os";
 
 
 // Tracking Schema for each product
@@ -122,7 +123,22 @@ const ProductSchema = new Schema({
   },
   image: {
     type: String
-  }
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'shipped', 'out for delivery', 'delivered', 'cancelled',"confirmed", 'rejected'],
+    default: 'pending'
+  },
+  refundStatus: {
+    type: String,
+    enum: ['pending', 'approved',"requested","cancelled","processing","refunded", 'rejected'],
+    default: 'pending'
+  },
+  refundAmount: {
+    type: Number,
+    default: 0
+  },
+ 
 },{_id:false});
 
 const OrderSchema = new Schema({
@@ -149,9 +165,33 @@ const OrderSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'shipped', 'delivered', 'cancelled', 'processing', 'refunded','rejected'],
+    enum: ['pending', 'shipped', 'out for delivery', 'delivered', 'cancelled', 'processing',"confirmed", 'refunded','rejected'],
     default: 'pending'
   },
+  statusHistory: [
+  {
+    status: {
+      type: String,
+      enum: [
+        "pending",
+        "confirmed",
+        "processing",
+        "shipped",
+        "out for delivery",
+        "delivered",
+        "cancelled",
+        "refunded",
+        "rejected"
+      ],
+      default: "pending"
+    },
+    timestamp: {
+      type: Date,
+      default: Date.now
+    }
+  }
+],
+    
   paymentMethod: {
     type: String,
     enum: ['cod', 'credit card', 'paypal', 'stripe'],
@@ -175,13 +215,12 @@ const OrderSchema = new Schema({
     type: String
   },
   shippingAddress: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'AddressModel',
+         type:Object,
           required: true
         },
         billingAddress: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'AddressModel',
+          type:Object,
+          required: true
         },
         commissionAmount: {
           type: Number,

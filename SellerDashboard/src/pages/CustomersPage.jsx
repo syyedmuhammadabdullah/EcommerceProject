@@ -1,11 +1,17 @@
 import React, { useEffect,useState } from 'react'
 import { MailOutlined, PhoneOutlined, SearchOutlined } from '@ant-design/icons'
-import { Button, Input,getAllSellerCustomers,useDebouncedHook } from '../index'
+import { Button, Input,getAllSellerCustomers,socket,useDebouncedHook } from '../index'
 import { useSelector, useDispatch } from 'react-redux'
 const CustomersPage = () => {
   const dispatch=useDispatch()
   const {loading, error, customers, totalCustomers } = useSelector((state) => state.customer);
-  
+  useEffect(() => {
+  socket.on("notification", (data) => {
+    console.log("LIVE MESSAGE:", data.message);
+  });
+
+  return () => socket.off("notification");
+}, []);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebouncedHook(search,500);
   useEffect(() => {

@@ -44,6 +44,9 @@ import MyReviewPage from "./pages/MyReviewsPage";
 import SettingLayout from "./layouts/SettingLayout";
 import MainLayout from "./layouts/MainLayout";
 
+//socket
+import { socket } from "./socket/socket";
+
 //Slices
 
 //User Slice
@@ -76,6 +79,8 @@ import productReducer from "./store/slices/productSlice/productSlice";
 import getProductDetails from "./store/slices/productSlice/getProductDetails";
 import filterProduct from "./store/slices/productSlice/filterProduct";
 import { setSearchProduct } from "./store/slices/productSlice/productSlice";
+import getAllCategories from "./store/slices/productSlice/getAllCategories";
+import getProducts from "./store/slices/productSlice/getProducts";
 // import ProductContainer from "./components/ProductContainer";
 // import ProductWithCategory from "./components/Home/ProductWithCategory";
 // import PopularProducts from "./components/Home/PopularProducts";
@@ -105,6 +110,8 @@ import getOrders from "./store/slices/orderSlice/getOrders";
 import trackOrder from "./store/slices/orderSlice/trackOrder";
 import deliveredOrder from "./store/slices/orderSlice/deliveredOrder";
 import { clearOrders } from "./store/slices/orderSlice/orderSlice";
+import updateItemStatus from "./store/slices/orderSlice/updateItemStatus";
+import updateOderStatus from "./store/slices/orderSlice/updateOderStatus";
 //Payment Slice
 import paymentReducer from "./store/slices/paymentSlice/paymentSlice";
 import createStripePayment from "./store/slices/paymentSlice/stripePayment/createStripePayment";
@@ -172,6 +179,8 @@ export {
   //Layouts
   SettingLayout,
   MainLayout,
+  //socket
+  socket,
 
   //Slices
 
@@ -207,7 +216,8 @@ export {
   addProductReview,
   filterProduct,
   setSearchProduct,
-
+  getAllCategories,
+  getProducts,
   //Cart Slice
   cartReducer,
   addItemToCart,
@@ -230,6 +240,8 @@ export {
   trackOrder,
   clearOrders,
   deliveredOrder,
+  updateItemStatus,
+  updateOderStatus,
 
   //Payment Slice
   paymentReducer,

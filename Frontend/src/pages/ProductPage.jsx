@@ -1,28 +1,27 @@
 import React,{useEffect, useRef,useState} from 'react'
-import {ProductContainer} from "../index"
+import {ProductContainer,getProducts,filterProduct} from "../index"
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate,useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 const ProductPage = () => {
 const [pageNum,setPageNum]=useState(1)
-const [data,setData]=useState([])
 const [limit,setLimit]=useState(10)
 const navigat=useNavigate()
+const dispatch=useDispatch()
+const {products,filteredProducts} = useSelector((state) => state.product);
+const {category,subCategory}=useParams()
 
+const data=category || subCategory ? filteredProducts : products
+useEffect(()=>{  
+  console.log(category,subCategory);
+  
+  if (category || subCategory) {
+    dispatch(filterProduct({ category, subCategory, pageNum, limit }));
+  } else {
+    dispatch(getProducts({ pageNum, limit }));
+  }
+}, [pageNum, limit,category,subCategory,dispatch]);
 
-useEffect(()=>{
-
-  axios.get(`http://localhost:3001/api/v1/products/getProducts?page=${pageNum}&limit=${limit}`)
-  .then(res=>{
-    console.log(res.data.data);
-    
-    setData(res.data.data)
-
-  })
-  .catch(err=>{
-    console.log(err)
-  })
-
-},[])
   return (
     <section className='grid place-items-center'>
         <div className="container grid justify-center sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3  gap-xl md:gap-xxl py-p-xxl px-0 sm:p-xl md:p-xxl">

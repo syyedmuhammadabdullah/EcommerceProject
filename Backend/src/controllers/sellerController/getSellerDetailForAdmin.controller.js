@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import { OrderModel, SellerWalletModel, SellerModel, rangeFormat,apiError,apiResponse,asyncHandler,orginizeChart } from "../../index.js";
 
 export const getSellerDetailForAdmin =asyncHandler( async (req, res) => {
-    console.log("getSellerDetailForAdmin runs", req.query);
 
   // 1️⃣ Seller basic info
   
@@ -19,7 +18,7 @@ export const getSellerDetailForAdmin =asyncHandler( async (req, res) => {
   }
 
   const seller = await SellerModel.findById(sellerId).select(
-    "storeDetails.storeName businessEmail accountStatus.status createdAt"
+    "storeDetails.storeName businessEmail accountStatus.status accountStatus.createdAt"
   );
 
   if (!seller) {
@@ -118,8 +117,4 @@ export const getSellerDetailForAdmin =asyncHandler( async (req, res) => {
       }
     )
   );
-  // 4️⃣ Final response
-  // res.status(200).json({
-  
-  // });
 });

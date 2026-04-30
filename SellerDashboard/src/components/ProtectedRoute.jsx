@@ -1,11 +1,18 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import getSeller from "../store/Slices/SellerSlice/getSeller";
 
 const ProtectedRoute = () => {
   const { isAuthenticated, seller, loading } = useSelector(state => state.seller);
 
-  
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (isAuthenticated) {
+      return;
+    }
+    dispatch(getSeller());
+  }, []);
 
   // 1️⃣ Not logged in
   if (loading) {

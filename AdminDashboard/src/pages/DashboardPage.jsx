@@ -13,7 +13,7 @@ const DashboardPage = () => {
 
 
     useEffect(() => {
-      dispatch(getSellerDetailForAdmin({sellerId:"695eb8e30dfd776c9a354c98",range}));
+      dispatch(getSellerDetailForAdmin({sellerId:"694ff41845e3d9faf94b9ef3",range}));
     }, []);
   useEffect(() => {
     
@@ -27,7 +27,7 @@ const DashboardPage = () => {
     const filter = ["Daily", "Weekly", "Monthly","6 Months" ];
     const handleFilterClick = (filter) => {
       if (filter!==range) {
-        dispatch(getSellerDetailForAdmin({ range:filter.toLowerCase(),sellerId:"695eb8e30dfd776c9a354c98" }));
+        dispatch(getSellerDetailForAdmin({ range:filter.toLowerCase(),sellerId:"694ff41845e3d9faf94b9ef3" }));
       }
       setRange(filter);
     };
@@ -59,7 +59,7 @@ const DashboardPage = () => {
                     </div>
                     <div className="con h-[150px] flex flex-col gap-sm p-lg">
                     <div className="t-sale text-text-description"><p>Joined Date</p></div>
-                    <div className="sale "><p className=' font-bold'>{seller?.seller?.createdAt}</p></div>
+                    <div className="sale "><p className=' font-bold'>{seller?.seller?.accountStatus?.createdAt}</p></div>
                     </div>
                     
 

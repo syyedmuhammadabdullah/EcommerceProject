@@ -11,10 +11,7 @@ const DashboardPage = () => {
   const {orders,}=useSelector(state=>state.order)
 const address= adressBook?.find((address)=>address?.isDefaultShipping)
 const billingAddress= adressBook?.find((address)=>address?.isDefaultBilling)
-useEffect(()=>{
 
-  console.log(user);
-},[user])
   return (
     <section className="flex justify-center">
       <div className="container flex flex-col gap-xl py-p-xxl px-p-xl sm:p-xxl">

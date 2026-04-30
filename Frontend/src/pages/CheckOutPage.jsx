@@ -81,6 +81,8 @@ useEffect(() => {
   
     }
     if (selectedPaymentMethod === "cod") {
+      console.log( "COD order placing",selectedShippingInfo,selectedBillingInfo);
+      
       dispatch(
         createOrder({
           shippingAddress: selectedShippingInfo,
@@ -98,9 +100,7 @@ useEffect(() => {
      
     }
   };
-  useEffect(() => {
-    console.log(latestOrder);
-    
+  useEffect(() => {    
     if (latestOrder) {
       navigate("/user-account/order-history");
     }
@@ -133,7 +133,7 @@ useEffect(() => {
                       </div>
                       <div className="info flex flex-col gap-xs">
                         <div className="name">
-                          <p>Username</p>
+                          <p>{address.fullName}</p>
                         </div>
 
                         <div className="address flex gap-xxs">
@@ -158,7 +158,7 @@ useEffect(() => {
                           </div>
                           <div className="content">
                             {" "}
-                            <p>User@mail.com</p>{" "}
+                            <p>{address?.email}</p>{" "}
                           </div>
                         </div>
                       </div>
@@ -327,7 +327,7 @@ useEffect(() => {
                       </div>
                       <div className="info flex flex-col gap-xs">
                         <div className="name">
-                          <p>Username</p>
+                          <p>{address.fullName}</p>
                         </div>
 
                         <div className="address flex gap-xxs">

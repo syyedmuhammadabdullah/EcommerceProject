@@ -1,4 +1,4 @@
-import {apiError,apiResponse,asyncHandler,SellerWalletModel,SellerTransactionModel} from '../../index.js'
+import {apiError,apiResponse,asyncHandler,SellerWalletModel,SellerTransactionModel, NotificationModel, io} from '../../index.js'
 
 export const requestWithdraw = asyncHandler(async (req, res) => {
    
@@ -18,5 +18,15 @@ export const requestWithdraw = asyncHandler(async (req, res) => {
         sellerId: sellerId,
         status: "pending",
     });
+    const notification=await NotificationModel.create({
+        recipientModel:"Seller",
+        recipient:sellerId,
+        title:"Withdrawal Request",
+        redirect:false,
+        type:"withdrawal",
+        data:{transactionId:transaction._id},
+        message:`Your withdrawal request of amount RS ${amount} has been received and is being processed.`
+    })
+    io.to(sellerId.toString()).emit("notification", notification);
     res.status(201).json(new apiResponse(201, "Withdrawal request created successfully", transaction));
 });

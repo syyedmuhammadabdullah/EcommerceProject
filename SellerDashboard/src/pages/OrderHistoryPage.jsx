@@ -6,23 +6,25 @@ import { Button,getSellerOrders,useDebouncedHook } from "../index";
 import { useSelector,useDispatch } from "react-redux";
 
 const OrderHistoryPage = () => {
-  const { orders,totalOrders } = useSelector((state) => state.order);
+  const { orders,totalOrders,loading } = useSelector((state) => state.order);
   const dispatch = useDispatch();
   const [selectedFilter, setSelectedFilter] =useState("all");
-  const filters = ["All", "Delivered", "Rejected", "Returned",, "Failed", "Shipped", "Pending"];
+  const filters = ["All", "Delivered", "Rejected", "Refunded",, "Failed", "Shipped", "Pending"];
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebouncedHook(search,500);
+useEffect(() => {
 
-  useEffect(() => {
-    dispatch(getSellerOrders({search:debouncedSearch}));
-    
-  }, [debouncedSearch]);
 
-  useEffect(() => {
-    if (orders.length==0) {      
-      dispatch(getSellerOrders({}));
-    }
-  }, []);
+  // ✅ agar data already loaded hai → skip
+  if (orders.length > 0 && debouncedSearch === "") return;
+
+  dispatch(
+    getSellerOrders({
+      search: debouncedSearch || undefined,
+    })
+  );
+
+}, [debouncedSearch,]);
   const handleFilterChange = (filter) => {
    if (filter!==selectedFilter) {
      dispatch(getSellerOrders({filter}));

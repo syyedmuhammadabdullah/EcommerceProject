@@ -2,8 +2,8 @@ import {apiResponse,asyncHandler,ProductModel} from "../../index.js"
 
 const productFilter=asyncHandler(async(req,res)=>{
 
-    const { category, search,minPrice, maxPrice, rating, inStock, sortBy, page = 1, limit = 10 } = req.query;
-    console.log(search,category,minPrice,maxPrice,rating,inStock,sortBy,page,limit);
+    const { category,subCategory, search,minPrice, maxPrice, rating, inStock, sortBy, page = 1, limit = 10 } = req.query;
+    console.log(search,category,subCategory,minPrice,maxPrice,rating,inStock,sortBy,page,limit);
     
     const pipeline = [];
 
@@ -11,6 +11,7 @@ const productFilter=asyncHandler(async(req,res)=>{
     const match = {};
   
     if (category) match.category = { $regex: category, $options: "i" };
+    if (subCategory) match.subCategory = { $regex: subCategory, $options: "i" };
  // Search Stage
  if (search) {
   match.$or = [

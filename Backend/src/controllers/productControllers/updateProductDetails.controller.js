@@ -1,5 +1,5 @@
 import e from "express";
-import { apiError, apiResponse, asyncHandler, deleteOnCloudinary, ProductModel,transformAttributes, uploadOnCloudinary } from "../../index.js";
+import { apiError, apiResponse, asyncHandler, deleteOnCloudinary, io, NotificationModel, ProductModel,transformAttributes, uploadOnCloudinary } from "../../index.js";
 
 const convertImage=(req)=>{
     // assume req.body me aa raha hai:
@@ -100,6 +100,16 @@ const updateProductDetails = asyncHandler(async (req, res) => {
         }
    product.set(productData);
    await product.save();
+   const notification=await NotificationModel.create({
+    recipientModel:"Seller",
+    recipient:req.seller.sellerId,
+    title:"Product Updated",
+    type:"product",
+    data:{productId:product._id},
+    redirect:true,
+    message:`Your product ${product.name.slice(0,10)} has been updated`
+   });
+   io.to(req.seller.sellerId.toString()).emit("notification",notification);
     res.status(200)
     .json(new apiResponse(200,"The product has been updated successfully",product ))
 

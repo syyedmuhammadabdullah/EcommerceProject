@@ -1,4 +1,4 @@
-import { apiError, apiResponse, asyncHandler, ProductModel, uploadOnCloudinary, deleteOnCloudinary,transformAttributes } from "../../index.js";
+import { apiError, apiResponse, asyncHandler, ProductModel, uploadOnCloudinary, deleteOnCloudinary,transformAttributes, NotificationModel, io } from "../../index.js";
 
 const createProduct = asyncHandler(async (req, res) => {
     const images = req.files;
@@ -33,6 +33,16 @@ const createProduct = asyncHandler(async (req, res) => {
            }
             throw new apiError(500, "Failed to create product"); 
                 });
+                const notification=await NotificationModel.create({
+                    recipientModel:"Seller",
+                    recipient: req.seller.sellerId,
+                    title: "New Product Created",
+                    type: "product",
+                    data: { productId: product._id },
+                    redirect:true,
+                    message: `A new product has been created: ${product.name}`
+                });
+                io.to(req.seller.sellerId.toString()).emit("notification", notification);
         res.status(200).json(new apiResponse(200, "Product created successfully", product));
     });
 export { createProduct };

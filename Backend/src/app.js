@@ -96,6 +96,10 @@ app.use("/api/v1/coupons",couponRouter)
 import { adminRouter } from "./index.js";
 app.use("/api/v1/admin",adminRouter)
 
+//Notification Routes
+import { notificationRouter } from "./index.js";
+app.use("/api/v1/notifications",notificationRouter)
+
 app.use(errorHandler);
 
 export {app}

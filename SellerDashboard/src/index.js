@@ -40,6 +40,10 @@ import CreateProductPage from "./pages/CreateProductPage";
 import MainLayout from "./layouts/MainLayout";
 //hooks
 import useDebouncedHook from "./hooks/useDebouncedHook";
+import useDebouncedAPI from "./hooks/useDebounceAPI";
+import useNotificationClick from "./hooks/useNotificationClick";
+//socket
+import { socket } from "./socket/socket";
 
 //redux store
 // Slices
@@ -80,6 +84,16 @@ import transationReducer from "./store/Slices/TransactionSlice/transactionSlice"
 import getBalance from "./store/Slices/TransactionSlice/getBalance";
 import getTransactions from "./store/Slices/TransactionSlice/getTransaction";
 import requestWithdraw from "./store/Slices/TransactionSlice/requestWithdraw";
+import updateItemStatus from "./store/Slices/orderSlice/updateItemStatus";
+
+//Notification Slice
+import notificationReducer from "./store/Slices/NotificationSlice/NotificationSlice";
+import getNotifications from "./store/Slices/NotificationSlice/getNotifications";
+import getNotificationCount from "./store/Slices/NotificationSlice/NotificationCount";
+import {addNotification} from "./store/Slices/NotificationSlice/NotificationSlice";
+import { markAllNotificationAsRead } from "./store/Slices/NotificationSlice/markAllNotificationAsRead";
+import { markNotificationAsRead } from "./store/Slices/NotificationSlice/markNotificationAsRead";
+import { clearAllNotifications } from "./store/Slices/NotificationSlice/clearAllNotication";
 // store
 import store from "./store/store";
 export {
@@ -102,14 +116,25 @@ export {
   getSellerOrdersDetail,
   updateOrderStatus,
   getSellerOrders,
+  useDebouncedAPI,
   getOneSellerOrder,
   productReducer,
   createSeller,
+  updateItemStatus,
   getAllProducts,
   loginSeller,
   updateSeller,
+  notificationReducer,
+  getNotifications,
+  getNotificationCount,
+  addNotification,
   getSeller,
+  markAllNotificationAsRead,
+  markNotificationAsRead,
+  socket,
   sellerReducer,
+  clearAllNotifications,
+  useNotificationClick,
   createProduct,
   SearchBtn,
   Divider,

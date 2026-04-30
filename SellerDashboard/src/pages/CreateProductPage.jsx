@@ -4,6 +4,8 @@ import { useDispatch,useSelector } from 'react-redux';
 import { TailSpin } from 'react-loader-spinner';
 import { UploadOutlined ,CloseCircleOutlined } from '@ant-design/icons';
 import { serialize } from 'object-to-formdata';
+import TinyEditor from '../components/RichTextEditor';
+
 import {  useNavigate, useParams } from 'react-router-dom';
 
 const CreateProductPage = () => {
@@ -178,7 +180,8 @@ const handleInputChange = (e) => {
 
   <div className="col-span-full">
     <label>Description</label>
-    <Input name="description" value={productForm.description} onChange={handleInputChange} placeholder="Product description" />
+   <TinyEditor value={productForm.description} onChange={(content)=>setProductForm(prev=>({...prev,description:content}))} placeholder="Product description" />
+    {/* <Input name="description" value={productForm.description} onChange={handleInputChange} placeholder="Product description" /> */}
   </div>
 </div>
 

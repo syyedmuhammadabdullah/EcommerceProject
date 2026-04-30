@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit"
-import {createOrder,getOrders,trackOrder,deliveredOrder} from "../../../index"
+import {createOrder,getOrders,trackOrder,deliveredOrder,updateItemStatus,updateOderStatus} from "../../../index"
 const initialState={
     loading:false,
     error:null,
@@ -64,6 +64,30 @@ const orderSlice=createSlice({
             state.deliveredOrder=action?.payload
         })
         .addCase(deliveredOrder.rejected,(state,action)=>{
+            state.loading=false,
+            state.error=action.error.message
+        })
+        .addCase(updateItemStatus.pending,(state)=>{
+            state.loading=true,
+            state.error=null
+        })
+        .addCase(updateItemStatus.fulfilled,(state,action)=>{
+            state.loading=false,
+            state.trackedOrder=action?.payload
+        })
+        .addCase(updateItemStatus.rejected,(state,action)=>{
+            state.loading=false,
+            state.error=action.error.message
+        })
+        .addCase(updateOderStatus.pending,(state)=>{
+            state.loading=true,
+            state.error=null
+        })
+        .addCase(updateOderStatus.fulfilled,(state,action)=>{
+            state.loading=false,
+            state.trackedOrder=action?.payload
+        })
+        .addCase(updateOderStatus.rejected,(state,action)=>{
             state.loading=false,
             state.error=action.error.message
         })

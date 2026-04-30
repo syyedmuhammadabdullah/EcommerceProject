@@ -1,43 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { LeftOutlined } from "@ant-design/icons";
 import {Button} from "../../../index"
-
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 const DropDownMenu = ({
   mainCategoryName,
   setCategoryClick,
   categoryClick,
 }) => {
-
-const categories=[{
-  _id: '1',
-  name: 'Electronics',
-  description: 'Devices and gadgets',
-  subcategories: [
-    { _id: '1-1', name: 'Mobile Phones' },
-    { _id: '1-2', name: 'Laptops' },
-    { _id: '1-3', name: 'Cameras' },
-  ],
-},
-{
-  _id: '2',
-  name: 'Fashion',
-  description: 'Clothing and accessories',
-  subcategories: [
-    { _id: '2-1', name: 'Men' },
-    { _id: '2-2', name: 'Women' },
-    { _id: '2-3', name: 'Kids' },
-  ],
-},
-{
-  _id: '3',
-  name: 'Home & Garden',
-  description: 'Furniture and appliances',
-  subcategories: [
-    { _id: '3-1', name: 'Furniture' },
-    { _id: '3-2', name: 'Kitchen' },
-    { _id: '3-3', name: 'Outdoor' },
-  ],
-},]
+  const {categories}=useSelector(state=>state.product)
+  const navigate=useNavigate()
 const [selectedCategory,setSelectedCategory]=useState([...categories[0].subcategories])
 const [activeCategory,setActiveCategory]=useState(categories[0]._id)
 
@@ -58,7 +30,7 @@ const [activeCategory,setActiveCategory]=useState(categories[0]._id)
        className={`w-full px-p-md text-text-default ${activeCategory===category._id && "border-b-2 border-b-primary-base"}`}
         key={category._id}
         onClick={() => {setSelectedCategory(category.subcategories); setActiveCategory(category._id)}}>
-          {category.name}
+          {category.name}22
         </Button>
     ))}
     </div>

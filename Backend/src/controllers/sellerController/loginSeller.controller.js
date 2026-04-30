@@ -1,4 +1,4 @@
-import {apiError,apiResponse,asyncHandler,SellerModel,generateTokens,UserModel,options} from "../../index.js";
+import {apiError,apiResponse,asyncHandler,SellerModel,generateTokens,UserModel,options, NotificationModel, io} from "../../index.js";
 import {validate} from "email-validator";
 
 const loginSeller = asyncHandler(async (req, res) => {
@@ -34,6 +34,16 @@ const loginSeller = asyncHandler(async (req, res) => {
     
     seller.sellerSessions.push(newSession);
     seller.save();
+    const notification=await NotificationModel.create({
+        recipientModel:"Seller",
+        recipient:seller._id,
+        type:"login",
+        title:"New Login Detected",
+        message:`A new login to your account was detected from device: ${device || "unknown"}, IP: ${ip} at ${new Date().toLocaleString()}. If this was you, you can safely ignore this message. If not, please secure your account immediately.`,
+        redirect:true,
+        data:{sessionId:sessionId}
+    })
+    io.to(seller._id.toString()).emit("notification", notification);
     const loggedInSeller = await UserModel.findById(seller._id).select("-password -refreshToken").populate("sellerId");
     req.seller = loggedInSeller;
     res.status(200)

@@ -7,7 +7,8 @@ import{
     getSubMainCategory,
     updateMainCategory,
     updateSubMainCategory,
-    deleteSubMainCategory
+    deleteSubMainCategory,
+    getAllCategories
 }from "../index.js";
 
 
@@ -25,5 +26,5 @@ categoryRouter.get("/getSubCategories",getSubMainCategory);
 categoryRouter.post("/createSubCategory",createSubMainCategory);
 categoryRouter.post("/updateSubCategory",updateSubMainCategory);
 categoryRouter.delete("/deleteSubCategory/:id",deleteSubMainCategory);
-
+categoryRouter.get("/getAllCategories",getAllCategories);
 export {categoryRouter}

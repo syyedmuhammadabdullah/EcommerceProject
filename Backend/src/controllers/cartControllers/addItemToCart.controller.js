@@ -1,4 +1,4 @@
-import {apiError,apiResponse,asyncHandler,CartModel,CartItemModel, ProductModel} from "../../index.js";
+import {apiError,apiResponse,asyncHandler,CartModel,CartItemModel, ProductModel, io, NotificationModel} from "../../index.js";
 
 const addItemToCart = asyncHandler(async (req, res) => {
     const { productId, quantity, userId, unitPrice, sellerId } = req.body;
@@ -69,11 +69,22 @@ const addItemToCart = asyncHandler(async (req, res) => {
       cart.totalPrice = cart.items.reduce((acc, seller) => acc + seller.totalPrice, 0);
       await cart.save();
     }
-  
-    const updatedCart = await CartModel.findOne({ userId });
-    res.status(200).json(new apiResponse(200, "Product added to cart", updatedCart));
+  const notification = await NotificationModel.create({
+    recipient: userId,
+    recipientModel: "User",
+    type: "cart",
+    title: "Cart Updated",
+    message: "Product added to cart",
+    redirect: false,
+    data: {
+      cartId: cart._id,
+    },
   });
-  
+  io.to(userId.toString()).emit("notification", notification);
+  const updatedCart = await CartModel.findOne({ userId });
+  res.status(200).json(new apiResponse(200, "Product added to cart", updatedCart));
+});
+
 
 
 export {addItemToCart}

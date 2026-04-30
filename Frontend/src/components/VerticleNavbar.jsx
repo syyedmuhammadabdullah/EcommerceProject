@@ -21,7 +21,7 @@ const navigate=useNavigate()
   }
 
   return (
-    <div className={`sidebar w-full transition-all duration-300 ${menuExpand? "lg:w-[230px]":"lg:w-[35px]" } relative lg:sticky border-2 lg:h-screen flex justify-between flex-col`}>
+    <div className={`sidebar w-full transition-all duration-300 ${menuExpand? "lg:w-[230px]":"lg:w-[35px]" } relative lg:sticky border-2 lg:h-full flex justify-between flex-col`}>
 
    <nav className='lg:h-full w-full overflow-scroll lg:overflow-hidden flex items-center lg:block '>
 

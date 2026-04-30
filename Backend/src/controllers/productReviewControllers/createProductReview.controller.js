@@ -1,18 +1,23 @@
-import {asyncHandler,apiError,apiResponse,ProductReviewModel, ProductModel} from "../../index.js";
+import {asyncHandler,apiError,apiResponse,ProductReviewModel, ProductModel, io, NotificationModel} from "../../index.js";
 
 
 const createProductReview=asyncHandler(async(req,res)=>{
     const {productId,rating,comment}=req.body;
-    console.log(typeof rating);
     if(!productId || !rating ){
         throw new apiError(400,"All fields are required")
     }
-    const productReview=await ProductReviewModel.create({
-        productId,
-        rating,
-        comment:comment ? comment : undefined,
-        userId:req.user._id
-    })
+    await ProductReviewModel.updateOne(
+  { productId, userId: req.user._id }, // filter
+  {
+    $setOnInsert: {
+      productId,
+      rating,
+      comment: comment || undefined,
+      userId: req.user._id
+    }
+  },
+  { upsert: true }
+);
     const product = await ProductModel.findById(productId);
 
 // Increment totalRating and ratingCount
@@ -39,7 +44,20 @@ switch (rating) {
 
 }
 product.save()
-
+    const notificationMessage = `Your product "${product.name}" has received a new review with a rating of ${rating} stars.`;
+    const notification = await NotificationModel.create({
+        recipientModel: "Seller",
+        recipient: product.seller,
+        type: "review",
+        title: "New Product Review",
+        message: notificationMessage,
+        redirect: true,
+        data: {
+            productId: product._id,
+            reviewId: productReview._id,
+        },
+    });
+    io.to(product.seller.toString()).emit("notification", notification);
     res.status(201).json(new apiResponse(201,"Product review created successfully",productReview))
 })
 export {createProductReview}

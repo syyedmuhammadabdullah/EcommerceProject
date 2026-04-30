@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom'
 const PromoSectionOne = () => {
   return (
     <main className='PromoSectionOne flex justify-center'>
-       <div className="container grid grid-cols-1 min-h-screen text-white">
+       <div className="container grid grid-cols-1  text-white">
 
        
-        <div className='main-image-Text bg-cover relative bg-no-repeat px-p-xxs py-p-xxl sm:p-xxl  bg-[url("https://th.bing.com/th/id/OIP.lL8q3_g3XfsiT81fTSjRQgHaDt?rs=1&pid=ImgDetMain")]  grid place-items-center'>
+        <div className='main-image-Text min-h-screen bg-cover relative bg-no-repeat px-p-xxs py-p-xxl sm:p-xxl  bg-[url("https://th.bing.com/th/id/OIP.lL8q3_g3XfsiT81fTSjRQgHaDt?rs=1&pid=ImgDetMain")]  grid place-items-center'>
          <div className="bgwrapper w-full h-full absolute top-0 bg-[#000000bf]"></div>
         
          <div className='z-10 text-center  items-center flex flex-col gap-lg max-w-[810px]'>

@@ -1,134 +1,304 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { DeliveredProcedureOutlined } from '@ant-design/icons'
-import { useParams } from 'react-router-dom'
-import { Button, StarRating, trackOrder,addProductReview } from '../index'
 
-const OrderDetailPage = () => {
-    const dispatch=useDispatch()
+
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import {Button,trackOrder,updateItemStatus,updateOderStatus} from "../index"
+import ReviewComponent from '../components/ReviewComponent'
+
+const TrackOrderPage = () => {
     const {trackedOrder,error}=useSelector(state=>state.order)
+    const [formattedDate,setFormattedDate]=useState("loading...")
+    const [isReview,setIsReview]=useState('')
     const {orderId}=useParams();
-    const [starRating, setStarRating] = useState(0);
-    const [review,setReview]=useState('')
-    const createdDate=trackedOrder && new Date(trackedOrder[0]?.createdAt)
+    const dispatch=useDispatch()
+
+    useEffect(()=>{
+        if(trackedOrder?._id===orderId) return;
+
+
+        dispatch(trackOrder({orderId}))
+    },[orderId,dispatch])
 
     useEffect(() => {
-
-        dispatch(trackOrder({trackingNumber:orderId}))
-        console.log("the tracked order is ",trackedOrder);
-
-    
-    }, [orderId]);
-    const handleClick=(index)=>{
-        console.log(index);
-        setStarRating(index)
-    }
-    const handleReviewSubmit=()=>{
-        const productId=trackedOrder[0].products[0].productId;
-        const reviewData={
-            productId,
-            comment:review,
-            rating:starRating
+        if (trackedOrder?.createdAt) { // Check if createdAt exists
+          const createdAt = new Date(trackedOrder.createdAt);
+          if (!isNaN(createdAt)) { // Ensure the date is valid
+            const formattedDate = new Intl.DateTimeFormat('en-US', {
+              month: 'long',
+              day: 'numeric',
+              year: 'numeric',
+            }).format(createdAt);
+            setFormattedDate(formattedDate);
+          }
         }
-        console.log(reviewData);
-    dispatch(addProductReview(reviewData))
-    }
-  return (
-    
-   
-    <section className='flex justify-center'>
-        <div className="container w-full lg:gap-xxl  bg-white grid gap-xl px-p-md lg:p-p-xxl">
-        <div className="title">
-                <h3>Order Details</h3>
+      }, [trackedOrder]);
+
+        const handleCancelOrder=()=>{
+            // Implement cancel order functionality here
+            dispatch(updateOderStatus({orderId,status:"cancelled"}))
+        console.log("cancel called");
+        }
+        const handleProductCancel=(itemId)=>{
+            // Implement cancel order functionality here
+            dispatch(updateItemStatus({orderId,itemId,status:"cancelled"}))
+        console.log("cancel called");
+        }
+        const handleReview=(productId)=>{
+            setIsReview(productId)
+            // Implement cancel order functionality here
+            console.log("review called for product id ",productId);
+        }
+
+    return (
+        <section className='flex relative justify-center'>
+        <div className="container flex flex-col gap-xxl py-p-xxl px-p-xl sm:p-xxl">
+            <div className="content flex justify-between items-center">
+                <h3>Order Detail</h3>
+             <Button disabled={trackedOrder?.status!=="pending"} onClick={handleCancelOrder} children="Cancel" className={`text-white rounded-md py-xs px-xxl bg-warning-base ${trackedOrder?.status!=="pending" && "cursor-not-allowed"}`}></Button>
+                {/* <Link to="/user-account/order-history" className='text-primary-base'>Back to orders</Link> */}
             </div>
 
-            <div className="content flex flex-col gap-md">
+        <div className="item grid gap-lg">
 
-            <div className="details grid gap-xs grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5  py-p-sm">
+        <div className="payment flex md:gap-xxl flex-col md:flex-row gap-xs md:items-center">
 
-<div className="name py-sm px-xs flex flex-col gap-base">
-    <h5>Order place date:</h5>
-    <p>17 Nov 2024</p>
-</div>
-<div className="name py-sm px-xs flex flex-col gap-base">
-    <h5>Order status:</h5>
-    <p>Delivered</p>
-</div>
-<div className="name py-sm px-xs flex flex-col gap-base">
-    <h5>Delivery partner:</h5>
-    <p>Fedex</p>
-</div>
-<div className="name py-sm px-xs flex flex-col gap-base">
-    <h5>Payment:</h5>
-    <p>Paypal</p>
-</div>
-<div className="name py-sm px-xs flex flex-col gap-base">
-    <h5>Amount:</h5>
-    <p>$100</p>
-</div>
-
+            <div className="paymentTitle">
+                <h4>Payment</h4>
             </div>
 
-            <div className="reviewOrderStatus grid grid-cols-1 md:grid-cols-2 gap-lg">
-
-                <div className="left flex flex-col gap-lg">
-                    <h3>Order Status</h3>
-                    <div className="status flex flex-col gap-lg">
-                        <div className="item flex items-center gap-sm">
-                            <div className="icon"><DeliveredProcedureOutlined className='text-primary-base'/></div>
-                            <div className="text">
-                                <h4>Order Placed</h4>
-                                <p>17 Nov 2024</p>
-                            </div>
-                        </div>
-                        <div className="item flex items-center gap-sm">
-                            <div className="icon"><DeliveredProcedureOutlined className='text-primary-base'/></div>
-                            <div className="text">
-                                <h4>Order Placed</h4>
-                                <p>17 Nov 2024</p>
-                            </div>
-                        </div>
-                        <div className="item flex items-center gap-sm">
-                            <div className="icon"><DeliveredProcedureOutlined className='text-primary-base'/></div>
-                            <div className="text">
-                                <h4>Order Placed</h4>
-                                <p>17 Nov 2024</p>
-                            </div>
-                        </div>
-                        <div className="item flex items-center gap-sm">
-                            <div className="icon"><DeliveredProcedureOutlined className='text-primary-base'/></div>
-                            <div className="text">
-                                <h4>Order Placed</h4>
-                                <p>17 Nov 2024</p>
-                            </div>
-                        </div>
-                        <div className="item flex items-center gap-sm">
-                            <div className="icon"><DeliveredProcedureOutlined className='text-primary-base'/></div>
-                            <div className="text">
-                                <h4>Order Placed</h4>
-                                <p>17 Nov 2024</p>
-                            </div>
-                        </div>
-                    </div>
+                <div className="orderStatus flex gap-xs ">
+                    <p>Fullfillment Status:</p>
+                    <p>{trackedOrder?.status}</p>
                 </div>
 
-                <div className="reviewBox bg-yellow-100">
-                    <h3>Review</h3>
-                    <StarRating size="text-xl cursor-pointer" rating={starRating} onClick={handleClick}/>
-                    <textarea name="reveiw" cols="30" rows="4"  id="" placeholder='Write a review' value={review} onChange={(e)=>setReview(e.target.value)} maxLength={560} minLength={10} className='border-2 w-full h-[270px] resize-none border-b-border-primary outline-none rounded-md'></textarea>
-
-                    <Button text='Submit Review' className='bg-primary-base text-white rounded-md px-xl py-2' onClick={handleReviewSubmit}/>
-                </div>
-
+            <div className="paymentStatus flex gap-xs">
+                <p>Payment status:</p>
+                <p>{trackedOrder?.paymentStatus}</p>
             </div>
-                </div>
-    
         </div>
-    
-    </section>
-  )
- 
+
+        <div className="paymentOptions grid md:grid-cols-2 gap-4">
+
+        <div className="paymentMethod flex flex-col w-full gap-xs">
+
+            <div className="title">
+                <h5>Payment method</h5>
+            </div>
+
+            <div className="method flex gap-xs">
+                <p className='text-[#000000a6]'>Payment By:</p>
+                <p>{trackedOrder?.paymentMethod}</p>
+            </div>
+
+            {
+                trackedOrder?.paymentMethod!=="cod"&&
+                <div className="transcationId flex gap-xs">
+                <p className='text-[#000000a6]'>Transcaion id:</p>
+                <p>#67575755</p>
+            </div>
+            }
+           
+            <div className="price flex gap-xs">
+                <p className='text-[#000000a6]'>Amount:</p>
+                <p>RS {trackedOrder?.totalPrice}</p>
+            </div>
+        </div>
+
+        <div className="shippingtMethod flex flex-col w-full gap-xs">
+
+            <div className="title">
+                <h5>Shipping method</h5>
+            </div>
+
+            <div className="method flex gap-xs">
+                <p className='text-[#000000a6]'>Order Placed:</p>
+                <p>{formattedDate}</p>
+            </div>
+
+            <div className="transcationId flex gap-xs">
+                <p className='text-[#000000a6]'>Transcaion id:</p>
+                <p>#67575755</p>
+            </div>
+            <div className="price flex gap-xs">
+                <p className='text-[#000000a6]'>Amount:</p>
+                <p>RS 2300</p>
+            </div>
+        </div>
+
+        </div>
+        <div className="shippingOptions grid md:grid-cols-2 gap-4">
+
+        <div className="shippingAddress flex flex-col w-full gap-xs">
+
+            <div className="title">
+                <h5>Shipping Address</h5>
+            </div>
+
+            <div className="f-name flex gap-xs">
+                <p className='text-[#000000a6]'>First Name:</p>
+                <p>{trackedOrder?.shippingAddress?.fullName}</p>
+            </div>
+
+            <div className="l-name flex gap-xs">
+                <p className='text-[#000000a6]'>Last Name:</p>
+                <p>{trackedOrder?.shippingAddress?.lastName}</p>
+            </div>
+            
+            <div className="Country flex gap-xs">
+                <p className='text-[#000000a6]'>Country:</p>
+                <p>{trackedOrder?.shippingAddress?.country}</p>
+            </div>
+
+            <div className="state flex gap-xs">
+                <p className='text-[#000000a6]'>State:</p>
+                <p>{trackedOrder?.shippingAddress?.state}</p>
+            </div>
+
+            <div className="city flex gap-xs">
+                <p className='text-[#000000a6]'>City:</p>
+                <p>{trackedOrder?.shippingAddress?.city}</p>
+            </div>
+
+            <div className="address flex gap-xs">
+                <p className='text-[#000000a6]'>Address:</p>
+                <div>
+
+                <p>{trackedOrder?.shippingAddress?.addressOne}</p>
+                <p>{trackedOrder?.shippingAddress?.addressTwo}</p>
+                </div>
+            </div>
+
+            <div className="email flex gap-xs">
+                <p className='text-[#000000a6]'>Postal code:</p>
+                <p>{trackedOrder?.shippingAddress?.postalCode}</p>
+            </div>
+
+            <div className="phone flex gap-xs">
+                <p className='text-[#000000a6]'>Phone:</p>
+                <p>{trackedOrder?.shippingAddress?.phone}</p>
+            </div>
+
+        </div>
+        <div className="billingAddress flex flex-col w-full gap-xs">
+
+            <div className="title">
+                <h5>Billing Address</h5>
+            </div>
+
+            <div className="f-name flex gap-xs">
+                <p className='text-[#000000a6]'>First Name:</p>
+                <p>{trackedOrder?.billingAddress?.fullName}</p>
+            </div>
+
+            <div className="l-name flex gap-xs">
+                <p className='text-[#000000a6]'>Last Name:</p>
+                <p>{trackedOrder?.billingAddress?.lastName}</p>
+            </div>
+            
+            <div className="Country flex gap-xs">
+                <p className='text-[#000000a6]'>Country:</p>
+                <p>{trackedOrder?.billingAddress?.country}</p>
+            </div>
+
+            <div className="state flex gap-xs">
+                <p className='text-[#000000a6]'>State:</p>
+                <p>{trackedOrder?.billingAddress?.state}</p>
+            </div>
+
+            <div className="city flex gap-xs">
+                <p className='text-[#000000a6]'>City:</p>
+                <p>{trackedOrder?.billingAddress?.city}</p>
+            </div>
+
+            <div className="address flex gap-xs">
+                <p className='text-[#000000a6]'>Address:</p>
+                <div>
+
+                <p>{trackedOrder?.billingAddress?.addressOne}</p>
+                <p>{trackedOrder?.billingAddress?.addressTwo}</p>
+                </div>
+            </div>
+
+            <div className="email flex gap-xs">
+                <p className='text-[#000000a6]'>Postal code:</p>
+                <p>{trackedOrder?.billingAddress?.postalCode}</p>
+            </div>
+
+            <div className="phone flex gap-xs">
+                <p className='text-[#000000a6]'>Phone:</p>
+                <p>{trackedOrder?.billingAddress?.phone}</p>
+            </div>
+
+        </div>
+        </div>
+
+        <div className="title grid gap-xs overflow-scroll no-scrollbar grid-cols-[40px,1fr,132px,132px,132px]  py-p-sm">
+
+<div className="name py-sm px-xs bg-[#00000005]"></div>
+<div className="name py-sm px-xs bg-[#00000005]">Product</div>
+<div className="name py-sm px-xs bg-[#00000005]">Price</div>
+<div className="name py-sm px-xs bg-[#00000005]">Amount</div>
+<div className="name py-sm px-xs bg-[#00000005]">Action</div>
+
+        {/* </div> */}
+
+
+        {/* <div className="itemcontainer grid gap-lg"> */}
+        {trackedOrder && trackedOrder?.products?.map((product,i)=>(
+        // <div className="product border-b-2 items-center grid gap-xs overflow-scroll no-scrollbar grid-cols-[40px,1fr,132px,132px,132px,105px] py-p-xs">
+            <React.Fragment key={product.productId}>
+
+        <div className="price py-sm px-xs">{i+1}</div>
+        <div className="btm mt-sm">
+        <div className="name text-base w-full">{product.name?.slice(0, 75)}{product.name?.length > 75 && "..."} </div>
+        <div className="sub-Cat text-primary-base text-sm">in Category</div>
    
+        </div>
+        
+         <div className="price py-sm px-xs">$ <span>{product.priceAtPurchase}</span></div>
+        <div className="amount  py-sm px-xs">{product.quantity}</div>
+    
+       <div className="details py-sm px-xs text-primary-base">
+
+  {(trackedOrder?.status !== "delivered" &&
+    trackedOrder?.status !== "refunded") && (
+    
+    <button
+      type="button"
+      disabled={trackedOrder?.status !== "pending"}
+      onClick={() => handleProductCancel(product.productId)}
+      className={`text-white rounded-md py-xs px-xl bg-warning-base ${
+        trackedOrder?.status !== "pending" && "cursor-not-allowed"
+      }`}
+    >
+      Cancel
+    </button>
+  )}
+
+  {(trackedOrder?.status === "delivered" ||
+    trackedOrder?.status === "refunded") && (
+    
+    <Button onClick={() => handleReview(product.productId)} className="text-primary-base bg-[#00000005]">
+      Review
+    </Button>
+  )}
+
+</div>    
+            </React.Fragment>
+        // </div>
+       ))}
+       {isReview && <ReviewComponent productId={isReview} setIsReview={setIsReview}/>}
+        </div>
+        <div className="price ml-auto flex flex-col gap-sm w-[250px]">
+          <div className="subtotal flex justify-between"><span>Total</span><span>{trackedOrder?.totalPrice}</span></div>
+        </div>
+
+        </div>
+        </div>
+       </section>
+      )
 }
 
-export default OrderDetailPage
+export default TrackOrderPage;

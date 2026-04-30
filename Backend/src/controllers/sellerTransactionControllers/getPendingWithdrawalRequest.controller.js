@@ -1,7 +1,6 @@
 import {apiError, apiResponse, asyncHandler, SellerTransactionModel} from "../../index.js";
 
 const getPendingWithdrawalRequest = asyncHandler(async (req, res) => {
-    console.log("get pending withdraw runs");
     const {page=1,limit=10,search=""}=req.query
  
     

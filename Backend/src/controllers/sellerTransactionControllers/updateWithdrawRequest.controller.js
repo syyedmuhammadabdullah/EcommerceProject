@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {apiError,apiResponse,asyncHandler,SellerTransactionModel,SellerWalletModel} from "../../index.js";
+import {apiError,apiResponse,asyncHandler,io,NotificationModel,SellerTransactionModel,SellerWalletModel} from "../../index.js";
 
 const updateWithdrawRequest=asyncHandler(async(req,res)=>{
   
@@ -14,6 +14,17 @@ const updateWithdrawRequest=asyncHandler(async(req,res)=>{
     const status=req.body.status;
     const transaction=await SellerTransactionModel.findByIdAndUpdate(transactionId,{status},{new:true})
    
+       const notification=await NotificationModel.create({
+        recipientModel:"Seller",
+        recipient:transaction.sellerId,
+        title:"Withdrawal Update",
+        redirect:false,
+        type:"withdrawal",
+        data:{transactionId:transaction._id},
+        message:`Your withdrawal request of amount RS ${transaction.amount} has been ${status}.`
+    })
+    io.to(transaction.sellerId.toString()).emit("notification", notification);
+
     if (status==="rejected") {
         console.log("rejected");
         
@@ -25,6 +36,7 @@ const updateWithdrawRequest=asyncHandler(async(req,res)=>{
     }
     sellerWallet.balance -= transaction.amount;
     await sellerWallet.save();
+ 
     res.status(200).json(new apiResponse(200,"Transaction updated successfully",transaction));
 })
 export {updateWithdrawRequest}

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProductDetails,filterProduct} from "../../../index";
+import { getProductDetails,filterProduct,getAllCategories,getProducts} from "../../../index";
 const initialState = {
     loading: false,
     error: null,
@@ -9,6 +9,7 @@ const initialState = {
     productQuestions: [],
     filteredProducts: [],
     searchProduct:"",
+    categories:[],
 }
 const productSlice = createSlice({
     name: "product",
@@ -38,6 +39,32 @@ const productSlice = createSlice({
             state.filteredProducts=action.payload
         })
         .addCase(filterProduct.rejected,(state,action)=>{
+            state.loading=false,
+            state.error=action.error.message
+        })
+        .addCase(getAllCategories.pending,(state)=>{
+            state.loading=null,
+            state.error=null
+        })
+        .addCase(getAllCategories.fulfilled,(state,action)=>{
+            state.loading=false,
+            state.categories=action.payload
+        })
+        .addCase(getAllCategories.rejected,(state,action)=>{
+            state.loading=false,
+            state.error=action.error.message
+        })
+        .addCase(getProducts.pending,(state)=>{
+            state.loading=null,
+            state.error=null
+        })
+        .addCase(getProducts.fulfilled,(state,action)=>{
+            state.loading=false,
+            console.log(action.payload);
+            
+            state.products=action.payload
+        })
+        .addCase(getProducts.rejected,(state,action)=>{
             state.loading=false,
             state.error=action.error.message
         })

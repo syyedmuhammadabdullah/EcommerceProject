@@ -34,7 +34,6 @@ const handleLogout = () => {
     <div className={`${sideBArToggle ? "lg:w-[264px]" : "lg:w-[72px]"} transition-all duration-300 no-scrollbar w-full overflow-scroll flex flex-col gap-lg p-p-xxs  lg:h-screen`}>
         <div className="togglesidebar hidden  p-p-lg lg:flex gap-sm sticky top-0 bg-white">
             {sideBArToggle? <CloseOutlined onClick={() => setSideBArToggle(false)}/>: <BarsOutlined onClick={() => setSideBArToggle(true)}/>}
-                {sideBArToggle&& <h4>Company Name</h4>}
         </div>
 
 

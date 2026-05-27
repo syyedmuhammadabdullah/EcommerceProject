@@ -165,7 +165,7 @@ const OrderSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'shipped', 'out for delivery', 'delivered', 'cancelled', 'processing',"confirmed", 'refunded','rejected'],
+    enum: ['pending', 'shipped', 'out for delivery', 'delivered', 'cancelled', 'processing',"confirmed",'rejected'],
     default: 'pending'
   },
   statusHistory: [
@@ -181,7 +181,9 @@ const OrderSchema = new Schema({
         "delivered",
         "cancelled",
         "refunded",
-        "rejected"
+        "rejected",
+        "requested",
+        "approved",
       ],
       default: "pending"
     },
@@ -191,7 +193,11 @@ const OrderSchema = new Schema({
     }
   }
 ],
-    
+     refundStatus: {
+    type: String,
+    enum: ['pending', 'approved',"requested","cancelled","processing","refunded", 'rejected'],
+    default: 'pending'
+  },
   paymentMethod: {
     type: String,
     enum: ['cod', 'credit card', 'paypal', 'stripe'],

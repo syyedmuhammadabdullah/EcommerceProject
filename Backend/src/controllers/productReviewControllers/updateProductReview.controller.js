@@ -1,8 +1,8 @@
 import { asyncHandler, apiError, apiResponse, ProductReviewModel, ProductModel } from "../../index.js";
 
 const updateProductReview = asyncHandler(async (req, res) => {
-    const { review, reviewId, rating, productId } = req.body;
-    console.log(review, reviewId, rating);
+    const { comment, reviewId, rating, productId } = req.body;
+    console.log(comment, reviewId, rating);
     
     // Check if all required fields are provided
     if (!reviewId || !rating || !productId) {
@@ -27,8 +27,8 @@ const updateProductReview = asyncHandler(async (req, res) => {
     }
 
     // Update the review comment if provided
-    if (review) {
-        oldReview.comment = review;
+    if (comment) {
+        oldReview.comment = comment;
     }
 
     // Update the review rating

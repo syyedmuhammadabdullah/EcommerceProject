@@ -3,10 +3,11 @@ import axios from 'axios';
 
 const updateOderStatus=createAsyncThunk(
     "order/updateOderStatus",
-    async ({orderId,status},{rejectWithValue})=>{
+    async ({orderId,status,refundStatus},{rejectWithValue})=>{
         try {
             const {data}=await axios.post(`http://localhost:3001/api/v1/orders/updateOrder/${orderId}`,{
-                status
+                status,
+                refundStatus
             },
             {
                 withCredentials:true

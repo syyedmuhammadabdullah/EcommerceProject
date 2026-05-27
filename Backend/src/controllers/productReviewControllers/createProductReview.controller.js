@@ -3,10 +3,12 @@ import {asyncHandler,apiError,apiResponse,ProductReviewModel, ProductModel, io, 
 
 const createProductReview=asyncHandler(async(req,res)=>{
     const {productId,rating,comment}=req.body;
+    console.log(productId,rating,comment);
+    
     if(!productId || !rating ){
         throw new apiError(400,"All fields are required")
     }
-    await ProductReviewModel.updateOne(
+   const productReview= await ProductReviewModel.updateOne(
   { productId, userId: req.user._id }, // filter
   {
     $setOnInsert: {

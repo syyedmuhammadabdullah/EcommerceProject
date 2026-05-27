@@ -13,7 +13,7 @@ const OrderDetailPage = () => {
     // const currentStatus = statusOptions.findIndex((status) => status === order?.orderStatus);
     const [itemStatus, setItemStatus] = useState("");
     const [itemId, setItemId] = useState("");
-
+    const [refundStatus, setRefundStatus] = useState(order?.refundStatus);
     const handleItemStatusChange=(orderId,itemId)=>{
         //dispatch update order status action
         dispatch(updateItemStatus({orderId,itemId,status:itemStatus}));
@@ -24,6 +24,10 @@ const OrderDetailPage = () => {
         //dispatch update order status action
         dispatch(updateOrderStatus({orderId,status:orderStatus}));        
         setEditMode(false);
+    }
+    const handleRefundStatusChange=(orderId)=>{
+        //dispatch update order status action
+        dispatch(updateOrderStatus({orderId,refundStatus}));        
     }
     
     useEffect(() => {

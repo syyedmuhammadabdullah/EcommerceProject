@@ -1,21 +1,23 @@
-import React, { useState } from 'react'
-import { Button, StarRating, addProductReview } from '../index'
+import React, { useEffect, useState } from 'react'
+import { Button, StarRating, addProductReview,updateProductReview } from '../index'
 import { useDispatch } from 'react-redux'
 
-const ReviewComponent = ({ productId, setIsReview = () => {} }) => {
+const ReviewComponent = ({ productId,isReview,reviewId,comment="",rating=0,selectedReview = ()=>{} } ) => {
   const dispatch = useDispatch();
-  const [starRating, setStarRating] = useState(0);
-  const [review, setReview] = useState('');
-
+  const [starRating, setStarRating] = useState(rating);
+  const [review, setReview] = useState(comment);
   const handleReviewSubmit = () => {
     const reviewData = {
       productId,
-      comment: review,
-      rating: starRating
+      comment:review,
+      rating: starRating,
     };
-
-    dispatch(addProductReview(reviewData));
-    setIsReview(''); // ya false (better 👇)
+    if(isReview){
+      dispatch(updateProductReview({ ...reviewData, reviewId }));
+    } else {
+      dispatch(addProductReview(reviewData));
+    }
+    selectedReview("");
   };
 
   const handleClick = (index) => {
@@ -24,7 +26,7 @@ const ReviewComponent = ({ productId, setIsReview = () => {} }) => {
 
   return (
     <div className="reviewBox flex  justify-center items-center bg-black/40 absolute top-0 left-0 w-full h-full">
-      <div className='bg-red-200 px-xl py-lg rounded-md'>
+      <div className='bg-white border border-border-primary  px-xl py-lg rounded-md'>
 
       <h3>Review</h3>
 
@@ -55,7 +57,7 @@ const ReviewComponent = ({ productId, setIsReview = () => {} }) => {
       </Button>
       <Button
         className="bg-red-500 text-white rounded-md px-xl py-2"
-        onClick={() => setIsReview('')}
+        onClick={() => selectedReview("")}
         >Cancel</Button>
         </div>
     </div>

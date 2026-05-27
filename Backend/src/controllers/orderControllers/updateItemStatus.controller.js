@@ -20,10 +20,12 @@ const updateItemStatus = asyncHandler(async (req, res) => {
   // ✅ ROLE BASED AUTH
   const allowedTransitions = {
     // seller: ["accepted", "rejected"],
-    user: ["canncelled"],
+    user: ["cancelled","requested"],
   };
 
-  if (req.user&&status!=="canncelled") {
+  if (req.user&& !["cancelled","requested"].includes(status)) {
+    // console.log(req.user,);
+    
     throw new apiError(403, "Not allowed");
   }
 
@@ -70,7 +72,13 @@ const updateItemStatus = asyncHandler(async (req, res) => {
   }
 
   // ✅ UPDATE STATUS
-  item.status = status;
+  if (status==="requested") {
+    item.refundStatus="requested";
+  }else if(order.status==="delivered" && status==="cancelled"){
+    item.refundStatus="cancelled";
+  }else{
+    item.status = status;
+  }
 
   // ✅ TOTAL RECALC
   order.totalAmount = order.products.reduce((acc, curr) => {

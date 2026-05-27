@@ -11,7 +11,7 @@ import {
 
 export const updateOrderController = asyncHandler(async (req, res) => {
   const { orderId } = req.params;
-  const { status } = req.body;
+  const { status,refundStatus } = req.body;
 
   const order = await OrderModel.findById(orderId);
   if (!order) throw new apiError(404, "Order not found");
@@ -20,9 +20,10 @@ export const updateOrderController = asyncHandler(async (req, res) => {
     return new apiResponse(200, "Order already in this state", order);
   }
 
+
   const commissionRate = 0.1;
-  const commission = order.totalPrice * commissionRate;
-  const sellerEarning = order.totalPrice - commission;
+  const commission = Number((order.totalPrice * commissionRate).toFixed(2));
+  const sellerEarning = Number((order.totalPrice - commission).toFixed(2));
 
   /* =========================
       DELIVERED FLOW
@@ -74,7 +75,7 @@ export const updateOrderController = asyncHandler(async (req, res) => {
     });
 
     if (!existingRefund) {
-      const refundAmount = order.totalPrice - order.commissionAmount;
+      const refundAmount = Number((order.totalPrice - order.commissionAmount).toFixed(2));
 
       const wallet = await SellerWalletModel.findOneAndUpdate(
         { sellerId: order.sellerId },
@@ -95,8 +96,26 @@ export const updateOrderController = asyncHandler(async (req, res) => {
     order.paymentStatus = "refunded";
   }
 
-  order.status = status;
-  order.statusHistory.push({ status, timestamp: new Date() });
+  /* =========================
+      CANCEL FLOW
+  ========================== */
+  if (status === "cancelled") {
+    if (order.paymentMethod==="cod") {
+      order.paymentStatus = "cancelled";
+    }else{
+      order.paymentStatus = "refunded";
+    }
+  }
+
+  
+  if (status) {
+    order.status = status; 
+    order.statusHistory.push({ status, timestamp: new Date() });
+  }
+  if (refundStatus) {
+    order.refundStatus = refundStatus;
+    order.statusHistory.push({ status: refundStatus, timestamp: new Date() });
+  }
   await order.save();
     const notification=await NotificationModel.create({
       recipient: order.userId,

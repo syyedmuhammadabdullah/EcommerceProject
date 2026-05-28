@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { SearchOutlined } from '@ant-design/icons'
-import {Button,Input } from "../index";
+import {Button,CopyToClipboard,Input } from "../index";
 import { useSelector } from 'react-redux';
 
 const OrderHistoryPage = () => {
  const { orders } = useSelector((state) => state.order);
- useEffect(() => {
-    console.log(orders);
-  }, [orders]);
-    
+
+  
   return (
     <section className='flex justify-center '>
 
@@ -34,12 +32,15 @@ const OrderHistoryPage = () => {
                             <div className="logo h-[50px] w-[50px] rounded-full border border-border-primary"><img className='rounded-full w-full h-full' src={order?.sellerId?.storeDetails?.storeLogo} alt="" /></div>
                             <div className="name">{order?.sellerId?.storeDetails?.storeName}</div>
                         </div>
-        
-                        <div className="order-details mt-md">
-        
-                            <div className="order-info flex-col lg:flex-row gap-md flex justify-between items-center border-b py-p-md border-border-primary"> 
+
+                        <div key={order._id} className="order-details mt-md">
+
+                            <div className="order-info flex-col lg:flex-row gap-md flex justify-between items-center border-b py-p-md border-border-primary">
                                 <div className="date">
-                                <p className='text-md'>Tracking Id: #{order.trackingNumber}</p>
+                               <CopyToClipboard text={order.trackingNumber}>
+                                <div className="trackingNumber flex items-center gap-xs">
+                                    <span className='text-text-secondary'>Tracking Number: </span> <span className='relative'>{order.trackingNumber}</span> </div>
+                               </CopyToClipboard>
                                 <p className='text-text-secondary '>Order Date: {new Date(order?.orderDate).toLocaleString("en-PK", {
     day: "2-digit",
     month: "short",
@@ -56,7 +57,7 @@ const OrderHistoryPage = () => {
                                 </div>
                             </div>
                             {order?.products?.map((product) => (
-                                 <div className="product flex-col lg:flex-row items-center lg:items-start flex gap-md border border-border-primary bg-white  py-p-md">
+                                 <div key={product.productId} className="product flex-col lg:flex-row items-center lg:items-start flex gap-md border border-border-primary bg-white  py-p-md">
                                  <div className="basic flex-col lg:flex-row flex gap-md">
          
                                  <div className="img h-[150px] w-[150px] bg-red-100"><img className='w-full h-full' src={product?.image} alt="" /></div>

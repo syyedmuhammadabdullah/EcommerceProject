@@ -41,12 +41,12 @@ const SellerSchema = new Schema({
         iban: { type: String, default: null },
       },
       storeDetails: {
-        storeName: { type: String, default: null,  },
-        storeDescription: { type: String, default: null },
-        storeLogo: { type: String, default: null },
-        storeBanner: { type: String, default: null },
-        storeBannerPublicId: { type: String, default: null },
-        storeLogoPublicId: { type: String, default: null },
+        storeName: { type: String, default: "",  },
+        storeDescription: { type: String, default: "" },
+        storeLogo: { type: String, default: "" },
+        storeBanner: { type: String, default: "" },
+        storeBannerPublicId: { type: String, default: "" },
+        storeLogoPublicId: { type: String, default: "" },
       },
       verification: {
         isVerified: { type: Boolean, default: false },
@@ -62,7 +62,7 @@ const SellerSchema = new Schema({
       accountStatus: {
         status: {
           type: String,
-          enum: ["active", "inactive", "suspended"],
+          enum: ["active", "inactive","pending","reviewing","suspended"],
           default: "inactive",
         },
         createdAt: { type: Date, default: Date.now },

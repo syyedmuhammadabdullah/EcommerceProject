@@ -4,13 +4,17 @@ import { DeliveredProcedureOutlined } from '@ant-design/icons'
 import { useParams } from 'react-router-dom'
 import { Button, StarRating, trackOrder,addProductReview } from '../../index'
 
-const OrderDetailPage = () => {
+const TrackOrderPage = () => {
     const dispatch=useDispatch()
     const {trackedOrder,error}=useSelector(state=>state.order)
     const {trackingNumber}=useParams();
     const [starRating, setStarRating] = useState(0);
     const [review,setReview]=useState('')
-    const createdDate=trackedOrder && new Date(trackedOrder[0]?.createdAt)
+    const createdDate=trackedOrder &&trackedOrder?.orderDate?.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
     const statusMap = {
   pending: "Your order is pending",
   rejected: "Your order has been rejected",
@@ -55,7 +59,7 @@ dispatch(trackOrder({trackingNumber: trackingNumber }))
 
 <div className="name py-sm px-xs flex flex-col gap-base">
     <h5>Order place date:</h5>
-    <p>{trackedOrder?.orderDate}</p>
+    <p>{createdDate}</p>
 </div>
 <div className="name py-sm px-xs flex flex-col gap-base">
     <h5>Order status:</h5>
@@ -107,5 +111,5 @@ dispatch(trackOrder({trackingNumber: trackingNumber }))
    
 }
 
-export default OrderDetailPage
+export default TrackOrderPage
 

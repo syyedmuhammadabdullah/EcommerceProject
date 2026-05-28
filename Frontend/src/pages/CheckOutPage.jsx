@@ -177,7 +177,7 @@ useEffect(() => {
               product?product &&
                 <div className="product flex gap-base" key={product?._id}>
                   <div className="img">
-                    <img src="" alt="" className="w-[104px] h-[130px]" />{" "}
+                    <img src={product?.image} alt="" className="w-[104px] h-[130px]" />{" "}
                   </div>
                   <div className="info w-full flex flex-col justify-between">
                     <div className="content flex justify-between">

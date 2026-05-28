@@ -40,10 +40,10 @@ const handleRemoveItem=(id)=>{
         <div className="remove">Remove</div>
       </div>
     
-  {loading ? <p>Loading</p>: wishlist?.item?.map((item)=>(
+  {loading ? <p>Loading</p>: wishlist?.map((item)=>(
  <div key={item._id} className="productItem  shadow-secondary place-items-center max-w-[300px] sm:max-w-full gap-xs px-p-sm py-p-lg sm:p-p-lg md:px-p-lg md:py-p-sm rounded-md  grid sm:grid-cols-5">
    
- <div className="img w-full  aspect-square"><figure><img src={item.productId.img} alt="img" className='w-full h-full'/></figure></div>
+ <div className="img w-full  aspect-square"><figure><img src={item?.productId?.image} alt="img" className='w-full h-full'/></figure></div>
  
  
  

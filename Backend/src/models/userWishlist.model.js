@@ -1,15 +1,10 @@
 import mongoose,{Schema} from "mongoose";
-const itemSchema = new Schema({
-    productId: { type: Schema.ObjectId, ref: "ProductModel" },
-})
+
 const WishlistSchema = new Schema({
-    userId: { type: Schema.Types.ObjectId, ref: "UserModel" },
-   item:{
-    type:[itemSchema]
-   },
-   price:{
-    type:Number
-   },
-   totalItems: { type: Number, default: 0 },
+    userId: { type: Schema.Types.ObjectId, ref: "UserModel", required: true, index: true ,unique:true},
+   productId: { type: Schema.ObjectId, ref: "ProductModel", required: true, index: true ,unique:true},
+   
+},{
+    timestamps:true
 });
 export const WishlistModel=mongoose.model("WishlistModel",WishlistSchema)

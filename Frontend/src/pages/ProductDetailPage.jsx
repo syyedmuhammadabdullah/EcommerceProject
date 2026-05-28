@@ -16,6 +16,7 @@ import {
   getProductDetails,
   getProductQuestion,
   getProductReviews,
+  removeItemFromWishlist,
 } from "../index";
 import {  useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,7 +37,7 @@ const ProductDetailPage = () => {
   useEffect(() => {
     dispatch(getProductDetails(productId));
     dispatch(getProductQuestion(productId));
-    dispatch(getProductReviews(productId));
+    dispatch(getProductReviews(productId));    
   
   }, []);
   useEffect(() => {
@@ -45,6 +46,9 @@ const ProductDetailPage = () => {
     }
     
   }, [product]);
+  useEffect(() => {
+    console.log("wishlist",wishlist);
+  }, [wishlist]);
   const handleAddToCart = () => {
     if (!isAuthenticated) {
       localStorage.setItem("pendingProduct", JSON.stringify(product));
@@ -63,13 +67,19 @@ const ProductDetailPage = () => {
     )
   };
 
-  const handleAddToWishlist = (product) => {
+  const handleAddToWishlist = (id) => {
     if (!isAuthenticated) {
       navigate(`/login`);
     }
-    dispatch(addItemToWishlist({ productId: product._id, userId: user._id }));
+    dispatch(addItemToWishlist({ productId: id, userId: user._id }));
   };
 
+  const handleRemoveFromWishlist = (id) => {
+    if (!isAuthenticated) {
+      navigate(`/login`);
+    }
+    dispatch(removeItemFromWishlist({ productId: id, userId: user._id }));
+  };
   const handleQuestion = () => {
     dispatch(
       createProductQuestion({ productId, question,sellerId:product?.seller?._id })
@@ -120,16 +130,17 @@ const ProductDetailPage = () => {
 
                   <div className="count text-md">{product.averageRating}</div>
                 
-                    {
-                      wishlist?.item?.find((item)=>item?.productId?._id===product?._id)?._id?  <div
+                    {wishlist?.some(item => item.productId?._id === product._id) ? (
+                       <div 
                       className="wishlist ml-auto cursor-warning"
-                     
-                    ><HeartFilled className="text-red-500 text-[18px]" /></div>: <div
+                   ><HeartFilled onClick={()=>handleRemoveFromWishlist(product._id)} className="text-red-500 text-[18px]" />
+                    </div>) : (
+                     <div
                     className="wishlist ml-auto cursor-pointer"
-                    onClick={() => handleAddToWishlist(product)}
+                    onClick={() => handleAddToWishlist(product._id)}
                   ><HeartOutlined className="text-[18px]" /></div>
-                    }
-               
+                    
+                    )}
                 </div>
 
                 <div className="brand  py-p-md">

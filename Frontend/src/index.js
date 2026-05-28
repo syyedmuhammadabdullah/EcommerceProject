@@ -12,7 +12,7 @@ import StarRating from "./components/StarRating";
 import AddressForm from "./components/AddressFrom";
 import BillingFormCard from "./components/BillingFormCard";
 import TrackOrder from "./components/TrackOrder";
-
+import CopyToClipboard from "./components/CopyToClipBoard";
 //Home Components
 import PromoSectionOne from "./components/Home/PromoSectionOne";
 import PopularProducts from "./components/Home/PopularProducts";
@@ -150,6 +150,7 @@ export {
   AddressForm,
   BillingFormCard,
   TrackOrder,
+  CopyToClipboard,
   // Home Components
   PromoSectionOne,
   PopularProducts,

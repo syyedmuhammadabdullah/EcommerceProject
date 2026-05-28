@@ -2,27 +2,38 @@ import {apiError,apiResponse,asyncHandler,io,NotificationModel,SellerModel} from
 
 const updateSellerStatus=asyncHandler(async(req,res)=>{
     const {sellerId,status}=req.body;
+    
     const seller=await SellerModel.findById(sellerId);
+    
     if(!seller){
-        return res.status(400).json(new apiError(400,"Seller not found"));
+       throw new apiError(400,"Seller not found")
     }
     if(seller.accountStatus.status===status){
-        return res.status(400).json(new apiError(400,"Seller status already updated"));
+        throw new apiError(400,"Seller status already updated");
     }
     seller.accountStatus.status=status;
     seller.accountStatus.updatedAt=Date.now();
     await seller.save();
-
-    const message=status==="approved"?"Congratulations! Your seller account has been approved. You can now start listing your products and selling on our platform.":"We regret to inform you that your seller account has been rejected. For more information, please contact our support team.";
-    // Send notification to seller about status update
+    
+    const message={
+        pending:"Your account is pending approval. Please Submit all required documents and information to complete the verification process.",
+        reviewing:"Your account is being reviewed. We will notify you once the review is complete.",
+        active:"Congratulations! Your account has been approved and is now active. You can start listing your products and managing your store.",
+        suspended:"Your account has been suspended. Please contact support for more information.",
+        inactive:"Your account is currently inactive. Please contact support for more information."
+    } // Send notification to seller about status update
+    
+    
     const notification =await NotificationModel.create({
         recipientModel:"Seller",
         recipient:sellerId,
         type:"account",
         title:"Account Status Update",
-        message,
+        message:message[status],
         redirect:false,
-        data:{}
+        data:{status:status,
+            message:message[status]
+        }
     });
     io.to(sellerId.toString()).emit("notification",notification);
 

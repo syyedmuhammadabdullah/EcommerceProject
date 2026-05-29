@@ -9,7 +9,13 @@ const initialState = {
 const productQuestionSlice = createSlice({
     name: "productQuestion",
     initialState,
-    reducers: {},
+    reducers: {
+        questionAdded: (state, action) => {
+            console.log("question add runs",action.payload);
+            
+            state.productsQuestion = [action.payload, ...state.productsQuestion];
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getProductsQuestion.pending, (state) => {
@@ -39,5 +45,5 @@ const productQuestionSlice = createSlice({
             });
     },
 });
-
+export const { questionAdded } = productQuestionSlice.actions;
 export default productQuestionSlice.reducer;

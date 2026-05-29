@@ -5,14 +5,22 @@ import requestWithdraw from "./requestWithdraw.js";
 
 const initialState = {
     walletBalance: 0,
-    transactions: [],
+    transactions: {},
     loading: false,
     error: null,
 };
 const transactionSlice = createSlice({
     name: "transactions",
     initialState,
-    reducers: {},
+    reducers: {
+        updateTransactionStatus: (state, action) => {
+            const { transactionId, status } = action.payload;
+            const transactionIndex = state?.transactions?.withdrawn?.findIndex(t => t._id === transactionId);
+            if (transactionIndex !== -1) {
+                state.transactions.withdrawn[transactionIndex].status = status;
+            }
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getBalance.pending, (state) => {
@@ -53,4 +61,5 @@ const transactionSlice = createSlice({
             });
     },
 });
+export const { updateTransactionStatus } = transactionSlice.actions;
 export default transactionSlice.reducer;

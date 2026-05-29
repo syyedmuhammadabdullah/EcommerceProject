@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, getBalance, getTransactions, Input, requestWithdraw } from '../index'
+import { Button, getBalance, getTransactions, Input, requestWithdraw, socket,updateTransactionStatus } from '../index'
 import { BankOutlined } from '@ant-design/icons'
 import { useDispatch,useSelector } from 'react-redux'
 import {  useNavigate } from 'react-router-dom'
@@ -16,15 +16,10 @@ const WithdrawPage = () => {
         if (!walletBalance) {
             dispatch(getBalance());
         }
-        
             dispatch(getTransactions());
-        
+       
        
     }, [])
-    useEffect(() => {
-        console.log(walletBalance);
-        
-    },[transactions])
 
   return (
     <section className='flex justify-center'>

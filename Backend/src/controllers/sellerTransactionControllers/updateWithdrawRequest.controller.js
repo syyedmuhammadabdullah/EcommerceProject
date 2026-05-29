@@ -20,13 +20,13 @@ const updateWithdrawRequest=asyncHandler(async(req,res)=>{
         title:"Withdrawal Update",
         redirect:false,
         type:"withdrawal",
-        data:{transactionId:transaction._id},
+        data:{transactionId:transaction._id,status},
         message:`Your withdrawal request of amount RS ${transaction.amount} has been ${status}.`
     })
     io.to(transaction.sellerId.toString()).emit("notification", notification);
+        io.to(transaction.sellerId.toString()).emit("withdrawStatusUpdate", { transactionId: transaction._id, status });
 
     if (status==="rejected") {
-        console.log("rejected");
         
       return res.status(200).json(new apiResponse(200,"Transaction updated successfully",transaction));
     }

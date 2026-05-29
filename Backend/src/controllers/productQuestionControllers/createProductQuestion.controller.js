@@ -12,8 +12,9 @@ const createProductQuestion=asyncHandler(async(req,res)=>{
         question,
         sellerId,
         userId:req.user._id,
-        userName:req.user.fullName
     })
+    console.log("working here");
+    
     const notificationMessage = `Your product has received a new question: "${question}". Please respond to the customer as soon as possible.`;
     const notification = await NotificationModel.create({
         recipientModel: "Seller",
@@ -28,6 +29,7 @@ const createProductQuestion=asyncHandler(async(req,res)=>{
         },
     });
     io.to(sellerId.toString()).emit("notification", notification);
+    io.to(sellerId.toString()).emit("questionAdded", productQuestion);
     const productQuestions=await ProductQuestionModel.find({productId}).sort({createdAt:-1}).skip(0).limit(10) 
     res.status(201).json(new apiResponse(201,"Product question created successfully",productQuestions))
 })

@@ -80,11 +80,14 @@ import getSellerOrders from "./store/Slices/orderSlice/getSellerOrders";
 import getOneSellerOrder from "./store/Slices/orderSlice/getOneSellerOrder";
 import updateOrderStatus from "./store/Slices/orderSlice/updateOderStatus";
 import getSellerOrdersDetail from "./store/Slices/orderSlice/getSellerOrdersDetail";
+
+//transaction Slice
 import transationReducer from "./store/Slices/TransactionSlice/transactionSlice";
 import getBalance from "./store/Slices/TransactionSlice/getBalance";
 import getTransactions from "./store/Slices/TransactionSlice/getTransaction";
 import requestWithdraw from "./store/Slices/TransactionSlice/requestWithdraw";
 import updateItemStatus from "./store/Slices/orderSlice/updateItemStatus";
+import { updateTransactionStatus } from "./store/Slices/TransactionSlice/transactionSlice";
 
 //Notification Slice
 import notificationReducer from "./store/Slices/NotificationSlice/NotificationSlice";
@@ -112,6 +115,7 @@ export {
   getTransactions,
   getAllSellerCustomers,
   orderReducer,
+  updateTransactionStatus,
   transationReducer,
   getSellerOrdersDetail,
   updateOrderStatus,

@@ -27,6 +27,7 @@ import AuthProtectedRoute from "./components/AuthProtectedRoute";
 import {  useDispatch, useSelector} from "react-redux";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import { initializeSocketListeners } from "./socket/socketListeners";
 function App() {
   const { isAuthenticated,seller,loading } = useSelector(state => state.seller);
   const {unreadCount} = useSelector(state => state.notifications);
@@ -46,43 +47,22 @@ useEffect(() => {
   if (!isAuthenticated || !seller?._id) return;
   if (!unreadCount) {
     dispatch(getNotificationCount(seller._id));
-    console.log(unreadCount);
-    
   }
 }, [dispatch, isAuthenticated, seller?._id]);
+useEffect(()=>{
 
+   initializeSocketListeners({
+      socket,
+      dispatch
+   });
 
-useEffect(() => {
-  socket.on("notification", (data) => {
-    if (data.title==="Order created") {
-      useDebouncedAPI(()=>dispatch(getSellerOrders()),2000);
-    }
-    console.log("LIVE MESSAGE:", data);
-    toast.success(data.message);
-      dispatch(addNotification(data));
-  });
+   return ()=>{
 
-  return () => socket.off("notification");
-}, [dispatch]);
-// useEffect(() => {
-//   if (!isAuthenticated || !seller?._id) return;
+      socket.off();
 
-//   socket.connect();
+   }
 
-//   const handleConnect = () => {
-//     console.log("Connected");
-
-//     socket.emit("joinRoom", seller._id);
-//     console.log("user joined room", seller._id);
-//   };
-
-//   socket.on("connect", handleConnect);
-
-//   return () => {
-//     socket.off("connect", handleConnect);
-//     socket.disconnect();
-//   };
-// }, [isAuthenticated, seller?._id]);
+},[])
 const router = createBrowserRouter([
   // 🔓 Public
   {

@@ -13,7 +13,18 @@ const initialState = {
 const orderSlice = createSlice({
     name: "order",
     initialState,
-    reducers: {},
+    reducers: {
+        addOrder: (state, action) => {
+            state.orders.unshift(action.payload);
+        },
+        updateOrderInState: (state, action) => {
+            const updatedOrder = action.payload;
+            const index = state?.orders?.findIndex(order => order._id === updatedOrder._id);
+            if (index !== -1) {
+                state.orders[index] = updatedOrder;
+            }
+        },
+    },
     extraReducers: (builder) => {
         builder
         .addCase(getSellerOrders.pending, (state) => {
@@ -79,4 +90,5 @@ const orderSlice = createSlice({
     }
 
 });
+export const { addOrder, updateOrderInState } = orderSlice.actions;
 export default orderSlice.reducer

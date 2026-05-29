@@ -92,10 +92,20 @@ console.log("ship address",shipAddress,"bill address",billAddress,"is billing sa
     redirect: true,
     data: {
       orderId: order._id,
+      
     },
   })
 
+  const  orderData={
+      userId:{fullName:req.user.fullName},
+      totalItems:order.totalItems,
+      totalPrice:order.totalPrice,
+      status:order.status,
+      commissionAmount:order.commissionAmount,
+      _id:order._id
+    }
     io.to(sellerId).emit("notification", notification);
+    io.to(sellerId).emit("newOrder", orderData);
 
     createdOrders.push(order);
   }
@@ -154,12 +164,21 @@ console.log("ship address",shipAddress,"bill address",billAddress,"is billing sa
     title:"New order",
     message: "New order Received",
     redirect: true,
-    data: {
+     data: {
       orderId: order._id,
+     
     },
   })
-
+    const  orderData={
+        userId:{fullName:req.user.fullName},
+        totalItems:order.totalItems,
+        totalPrice:order.totalPrice,
+        status:order.status,
+        commissionAmount:order.commissionAmount,
+        _id:order._id
+      }
     io.to(sellerId).emit("notification", notification);
+    io.to(sellerId).emit("newOrder", orderData);
 
       createdOrders.push(order);
     }

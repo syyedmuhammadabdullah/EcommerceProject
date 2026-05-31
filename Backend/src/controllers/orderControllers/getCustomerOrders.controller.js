@@ -3,7 +3,9 @@ import {apiError,apiResponse,asyncHandler,OrderModel} from "../../index.js";
 
 const getCustomerOrders=asyncHandler(async(req,res)=>{
     
-    const {filter,page,limit,userId,search="" }=req.query
+    const {filter,userId,search="" }=req.query
+    const page=parseInt(req.query.page)||1;
+    const limit=parseInt(req.query.limit)||10;
     let query={
         userId:new mongoose.Types.ObjectId(userId)
     };
@@ -39,20 +41,21 @@ const getCustomerOrders=asyncHandler(async(req,res)=>{
                 "totalPrice": 1
             }
         },
-        // {
-        //     $skip: (page - 1) * limit
-        // },
-        // {
-        //     $limit: limit
-        // }
+        {
+            $skip: (page - 1) * limit
+        },
+        {
+            $limit: limit
+        }
         
         
     ])
+        const totalOrders = await OrderModel.countDocuments(query);
     
     if(!orders){
         return res.status(400).json(new apiError(400,"Orders not found"));
     }
     
-    res.status(200).json(new apiResponse(200,"Orders found successfully",{orders,userId}));
+    res.status(200).json(new apiResponse(200,"Orders found successfully",{orders,userId},totalOrders));
 })
 export {getCustomerOrders}

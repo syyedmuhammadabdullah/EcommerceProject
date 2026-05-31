@@ -2,18 +2,19 @@ import React, { useEffect,useState } from "react";
 import { Link } from "react-router-dom";
 import Input from "../components/Input";
 import { SearchOutlined } from "@ant-design/icons";
-import { Button,getAllProducts,deleteProduct,useDebouncedHook } from "../index";
+import { Button,getAllProducts,deleteProduct,useDebouncedHook,Pagination } from "../index";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const ProductsPage = () => {
   const dispatch = useDispatch();
-  const {loading ,products} = useSelector((state) => state.product);
+  const {loading ,products,totalProducts} = useSelector((state) => state.product);
 
   const navigate=useNavigate()
 const [selectedFilter, setSelectedFilter] =useState("all");
   const filters = ["All", "Active", "Inactive", "Out of Stock", "In Stock"];
 const [search, setSearch] = useState("");
+const [currentPage, setCurrentPage] = useState(1);
 const debouncedSearch = useDebouncedHook(search,500);
 
 const handleFilterChange = (filter) => {
@@ -39,6 +40,10 @@ const handleKeyDown = (e) => {
 
 const handleDelete=(id)=>{
   dispatch(deleteProduct({productId:id}))
+}
+const handlePageChange = (page) => {
+  setCurrentPage(page);
+  dispatch(getAllProducts({filter:selectedFilter,search:debouncedSearch,page,limit:10}))
 }
   return (
     <section className="flex justify-center">
@@ -113,16 +118,7 @@ const handleDelete=(id)=>{
         {/* Pagination */}
         {products?.length === 0 ? "" :
         <div className="pagination flex gap-xs mt-md justify-center items-center py-p-md border-t border-border-primary">
-          <span>1</span>
-          <span>2</span>
-          <span>3</span>
-          <span>4</span>
-          <span>5</span>
-          <span>6</span>
-          <span>7</span>
-          <span>8</span>
-          <span>9</span>
-          <span>10</span>
+          <Pagination currentPage={currentPage} totalItems={totalProducts} limit={10} onPageChange={handlePageChange} />
         </div>
         }
         </div>

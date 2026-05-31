@@ -7,6 +7,7 @@ const initialState = {
     mainCategories: [],
     subCategories: [],
     totalCategories: 0,
+    totalSubCategories: 0,
 };
 
 const categorySlice = createSlice({
@@ -66,8 +67,8 @@ const categorySlice = createSlice({
         }).
         addCase(getMainCategories.fulfilled, (state, action) => {
             state.loading = false;
-            state.mainCategories = action.payload;
-            // state.totalCategories = action.payload.totalCategories;
+            state.mainCategories = action.payload.data;
+            state.totalCategories = action.payload.totalCount;
         }).
         addCase(getMainCategories.rejected, (state, action) => {
             state.loading = false;
@@ -79,8 +80,8 @@ const categorySlice = createSlice({
         }).
         addCase(getSubCategories.fulfilled, (state, action) => {
             state.loading = false;
-            state.subCategories = action.payload;
-            // state.totalCategories = action.payload.totalCategories;
+            state.subCategories = action.payload.data;
+            state.totalSubCategories = action.payload.totalCount;
         }).
         addCase(getSubCategories.rejected, (state, action) => {
             state.loading = false;
@@ -92,8 +93,8 @@ const categorySlice = createSlice({
         }).
         addCase(createSubCategory.fulfilled, (state, action) => {
             state.loading = false;
-            state.subCategories = [action.payload, ...state.subCategories];
-            state.totalCategories = state.totalCategories + 1;
+            state.subCategories = [action.payload, ...state?.subCategories];
+            state.totalSubCategories = state.totalSubCategories + 1;
         }).
         addCase(createSubCategory.rejected, (state, action) => {
             state.loading = false;
@@ -125,7 +126,7 @@ const categorySlice = createSlice({
             state.subCategories = state.subCategories.filter(
                 (category) => category._id !== action.payload._id
             );
-            state.totalCategories = state.totalCategories - 1;
+            state.totalSubCategories = state.totalSubCategories - 1;
         }).
         addCase(deleteSubCategory.rejected, (state, action) => {
             state.loading = false;

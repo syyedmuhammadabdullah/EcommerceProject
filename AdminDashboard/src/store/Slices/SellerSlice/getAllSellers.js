@@ -14,7 +14,7 @@ const getAllSellers = createAsyncThunk(
                 }
             );
             
-            return data.data;
+            return data;
         } catch (error) {
             return rejectWithValue(error);
         }

@@ -13,8 +13,9 @@ const getSellerOrders = createAsyncThunk(
                     params: {page,limit,sellerId,search,filter},
                     withCredentials: true,
                 }
-            );           
-            return data.data;
+            );
+             
+            return data;
         } catch (error) {
             return rejectWithValue(error);
         }

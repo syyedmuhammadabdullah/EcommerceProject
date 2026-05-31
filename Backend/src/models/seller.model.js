@@ -63,7 +63,7 @@ const SellerSchema = new Schema({
         status: {
           type: String,
           enum: ["active", "inactive","pending","reviewing","suspended"],
-          default: "inactive",
+          default: "pending",
         },
         createdAt: { type: Date, default: Date.now },
         updatedAt: { type: Date, default: Date.now },

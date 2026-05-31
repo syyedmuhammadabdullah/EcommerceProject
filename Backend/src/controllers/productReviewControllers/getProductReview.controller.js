@@ -1,7 +1,9 @@
 import {apiError,apiResponse,asyncHandler,ProductReviewModel} from "../../index.js";
 import mongoose from "mongoose";
 const getProductReview=asyncHandler(async(req,res)=>{
-    const { productId, rating, page = 1, limit = 10 } = req.query;
+    const { productId, rating, } = req.query;
+        const page=parseInt(req.query.page)||1;
+    const limit=parseInt(req.query.limit)||3;
     if (!productId) {
         return res.status(400).json({ message: "Product ID is required" });
     }

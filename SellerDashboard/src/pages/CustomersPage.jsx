@@ -1,26 +1,26 @@
 import React, { useEffect,useState } from 'react'
 import { MailOutlined, PhoneOutlined, SearchOutlined } from '@ant-design/icons'
-import { Button, Input,getAllSellerCustomers,socket,useDebouncedHook } from '../index'
+import { Button, Input,Pagination,getAllSellerCustomers,socket,useDebouncedHook } from '../index'
 import { useSelector, useDispatch } from 'react-redux'
 const CustomersPage = () => {
   const dispatch=useDispatch()
   const {loading, error, customers, totalCustomers } = useSelector((state) => state.customer);
-  useEffect(() => {
-  socket.on("notification", (data) => {
-    console.log("LIVE MESSAGE:", data.message);
-  });
 
-  return () => socket.off("notification");
-}, []);
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const debouncedSearch = useDebouncedHook(search,500);
   useEffect(() => {
-    dispatch(getAllSellerCustomers({search:debouncedSearch,page:1,limit:10}))
+    dispatch(getAllSellerCustomers({search:debouncedSearch,page:currentPage,limit:10}))
   },[debouncedSearch]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    dispatch(getAllSellerCustomers({search:debouncedSearch,page,limit:10}))
+  }
 
   const handleKeyDown = (e) => {    
     if (e.key === 'Enter') {
-      dispatch(getAllSellerCustomers({debouncedSearch}));
+      dispatch(getAllSellerCustomers({search:debouncedSearch,page:currentPage,limit:10}));
     }
   };
 
@@ -68,7 +68,7 @@ const CustomersPage = () => {
 </div>
 
 <div className="pagination h-[40px] col-span-full ml-auto mr-sm">
-<p>1 - 10 of {totalCustomers}</p>
+<Pagination currentPage={currentPage} totalItems={totalCustomers} limit={10} onPageChange={handlePageChange} />
 </div>
 
       </div>

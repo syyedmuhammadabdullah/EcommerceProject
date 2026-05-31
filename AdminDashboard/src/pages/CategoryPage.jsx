@@ -1,7 +1,7 @@
 import React, { useEffect,useState } from "react";
 import Input from "../components/Input";
 import { SearchOutlined } from "@ant-design/icons";
-import { Button,getAllProducts,deleteProduct,useDebouncedHook,getMainCategories,createMainCategory,SelectMenu,updateProduct,getSellerAllProducts,getSellerProducts, deleteMainCategory, updateMainCategory, createSubCategory, getSubCategories, deleteSubCategory, updateSubCategory } from "../index";
+import { Button,getAllProducts,deleteProduct,useDebouncedHook,getMainCategories,createMainCategory,SelectMenu,updateProduct,getSellerAllProducts,getSellerProducts, deleteMainCategory, updateMainCategory, createSubCategory, getSubCategories, deleteSubCategory, updateSubCategory, Pagination } from "../index";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate,useLocation } from "react-router-dom";
 
@@ -112,7 +112,7 @@ useEffect(() => {
 
 const CategoryPage = () => {
   const dispatch = useDispatch();
-  const {loading,mainCategories,subCategories} = useSelector((state) => state.category);
+  const {loading,mainCategories,subCategories,totalSubCategories,totalCategories} = useSelector((state) => state.category);
   const [categoryName, setCategoryName] = useState("");
 const location = useLocation();
   const currentPath = location.pathname;
@@ -126,7 +126,8 @@ const [search, setSearch] = useState("");
 const [editId, setEditId] = useState(null);
 const debouncedSearch = useDebouncedHook(search,500);
 const [isCreate,setIsCreate] = useState(false);
-
+const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 10;
  const mode =
   currentPath === "/categories/main"
     ? "main"
@@ -140,7 +141,7 @@ const handleFilterChange = (filter) => {
 
 useEffect(() => {
   
-  const payload = { search: debouncedSearch};  
+  const payload = { search: debouncedSearch, page: currentPage, limit: itemsPerPage };  
   switch(mode) {
     case "main":search===debouncedSearch&& dispatch(getMainCategories(payload)); break;
     case "submain": search===debouncedSearch&& dispatch(getSubCategories(payload)); break;
@@ -185,7 +186,13 @@ const handleDelete=(id)=>{
 const handleCategoryCancel = () => {
   setIsCreate(false);
 }
-
+const handlePageChange = (pageNumber) => {
+  setCurrentPage(pageNumber);
+  switch(mode){
+    case "main": dispatch(getMainCategories({search:debouncedSearch,page:pageNumber,limit:itemsPerPage})); break;
+    case "submain": dispatch(getSubCategories({search:debouncedSearch,page:pageNumber,limit:itemsPerPage}));  break;
+  }
+}
 const columns = {
   main: [
     { key: "id", label: "ID", width: "minmax(100px,1fr)" },
@@ -283,16 +290,7 @@ return (
         {/* Pagination */}
         {dataSource?.length === 0 ? "" :
         <div className="pagination flex gap-xs mt-md justify-center items-center py-p-md border-t border-border-primary">
-          <span>1</span>
-          <span>2</span>
-          <span>3</span>
-          <span>4</span>
-          <span>5</span>
-          <span>6</span>
-          <span>7</span>
-          <span>8</span>
-          <span>9</span>
-          <span>10</span>
+         <Pagination currentPage={currentPage} totalPages={mode==="main"?totalCategories:totalSubCategories} limit={10} onPageChange={handlePageChange} />
         </div>
         }
         </div>

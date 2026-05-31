@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react'
 import { MailOutlined, PhoneOutlined, SearchOutlined } from '@ant-design/icons'
-import { Button, Input,getAllCustomers,useDebouncedHook } from '../index'
+import { Button, Input,Pagination,getAllCustomers,useDebouncedHook } from '../index'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 const CustomersPage = () => {
@@ -8,11 +8,12 @@ const CustomersPage = () => {
   const {loading, error, customers, totalCustomers } = useSelector((state) => state.customer);
   const navigate=useNavigate()
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const debouncedSearch = useDebouncedHook(search,500);
   useEffect(() => {
     
      if (!customers || customers.length === 0 || debouncedSearch !== search) {
-    dispatch(getAllCustomers({ search: debouncedSearch, page: 1, limit: 10 }));
+    dispatch(getAllCustomers({ search: debouncedSearch, page: currentPage, limit: 9 }));
   }
   },[debouncedSearch,search]);
 
@@ -20,6 +21,11 @@ const CustomersPage = () => {
     if (e.key === 'Enter') {
       dispatch(getAllCustomers({debouncedSearch}));
     }
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    dispatch(getAllCustomers({ search: debouncedSearch, page, limit: 9}));
   };
 
   return (
@@ -57,7 +63,7 @@ const CustomersPage = () => {
 </div>
 
 <div className="pagination h-[40px] col-span-full ml-auto mr-sm">
-<p>1 - 10 of {totalCustomers}</p>
+<Pagination totalItems={totalCustomers} limit={9} currentPage={currentPage} onPageChange={handlePageChange} />
 </div>
 
       </div>

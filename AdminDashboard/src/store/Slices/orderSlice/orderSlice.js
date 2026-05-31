@@ -11,6 +11,8 @@ const initialState = {
     sellerId: "",
     userId: "",
     totalOrders: 0,
+    totalCustomerOrders: 0,
+    totalSellerOrders: 0,
     order: {},
     orderstats: {},
 };
@@ -27,7 +29,7 @@ const orderSlice = createSlice({
         .addCase(getAllOrders.fulfilled, (state, action) => {
             state.loading = false;
             state.orders = action.payload.data;
-            state.totalOrders = action.payload.totalOrders;
+            state.totalOrders = action.payload.totalCount || 0;
         })
         .addCase(getAllOrders.rejected, (state, action) => {
             state.loading = false;
@@ -38,7 +40,8 @@ const orderSlice = createSlice({
         })
         .addCase(getCustomerOrders.fulfilled, (state, action) => {
             state.loading = false;
-            state.customerOrders = action.payload
+            state.customerOrders = action.payload.data;
+            state.totalCustomerOrders = action.payload.totalCount || 0;
         })
         .addCase(getCustomerOrders.rejected, (state, action) => {
             state.loading = false;
@@ -87,7 +90,8 @@ const orderSlice = createSlice({
         })
         .addCase(getSellerOrders.fulfilled, (state, action) => {
             state.loading = false;
-            state.sellerOrders = action.payload
+            state.sellerOrders = action.payload.data;
+            state.totalSellerOrders = action.payload?.totalCount || 0;
         })
         .addCase(getSellerOrders.rejected, (state, action) => {
             state.loading = false;

@@ -1,17 +1,19 @@
 import { SearchOutlined } from '@ant-design/icons'
 import React, { useEffect, useState } from 'react'
-import {Input, Button, getProductsQuestion,giveAnswerToQuestion,useDebouncedHook} from '../index'
+import {Input, Button, getProductsQuestion,giveAnswerToQuestion,useDebouncedHook,Pagination} from '../index'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 const ProductQuestionsPage = () => {
     const dispatch = useDispatch();
-    const {loading, error, productsQuestion } = useSelector((state) => state.productsQuestion);
+    const {loading, error, productsQuestion, totalQuestions } = useSelector((state) => state.productsQuestion);
     const [isReply, setIsReply] = useState("");
     const [answer,setAnswer] = useState("")
     const filters = ["All", "Replied", "Unreplied"];
     const [search, setSearch] = useState("");
     const [selectedFilter, setSelectedFilter] = useState("all");
     const debouncedSearch = useDebouncedHook(search,500);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const handleFilterChange = (filter) => {
         if (filter!==selectedFilter) {
             dispatch(getProductsQuestion({filter}));
@@ -19,10 +21,11 @@ const ProductQuestionsPage = () => {
         setSelectedFilter(filter);
     };
     useEffect(() => {
-        dispatch(getProductsQuestion({filter:selectedFilter,search:debouncedSearch,page:1,limit:10}))
+        dispatch(getProductsQuestion({filter:selectedFilter,search:debouncedSearch,page:currentPage,limit:5}))
         
     },[debouncedSearch,]);
-
+      
+    
     const handleReply=(id)=>{
         dispatch(giveAnswerToQuestion({productQuestionId:id,answer}))
         setIsReply("")
@@ -32,6 +35,10 @@ const ProductQuestionsPage = () => {
           dispatch(giveAnswerToQuestion({productQuestionId:isReply,answer}));
         }
       };
+      const handlePageChange = (page) => {
+        setCurrentPage(page);
+        dispatch(getProductsQuestion({filter:selectedFilter,search:debouncedSearch,page:currentPage,limit:5}))
+      }
       
   return (
     <section className="flex justify-center">
@@ -111,17 +118,8 @@ const ProductQuestionsPage = () => {
       </div>
       {/* Pagination */}
       
-      <div className="pagination flex gap-xs">
-        <span>1</span>
-        <span>2</span>
-        <span>3</span>
-        <span>4</span>
-        <span>5</span>
-        <span>6</span>
-        <span>7</span>
-        <span>8</span>
-        <span>9</span>
-        <span>10</span>
+      <div className="pagination justify-center flex gap-xs">
+        <Pagination currentPage={currentPage} totalItems={totalQuestions} limit={5} onPageChange={handlePageChange} />
       </div>
 
       </div>

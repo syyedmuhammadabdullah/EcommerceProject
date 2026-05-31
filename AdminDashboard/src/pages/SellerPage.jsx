@@ -1,13 +1,14 @@
 import React, { useEffect,useState } from 'react'
 import { MailOutlined, PhoneOutlined, SearchOutlined } from '@ant-design/icons'
-import { Button, Input,getAllCustomers,useDebouncedHook,getAllSellers, SelectMenu,updateSellerStatus } from '../index'
+import { Button, Input,getAllCustomers,useDebouncedHook,getAllSellers, SelectMenu,updateSellerStatus, Pagination } from '../index'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 const SellerPage = () => {
   const dispatch=useDispatch()
-  const {loading, error, sellers } = useSelector((state) => state.seller);
+  const {loading, error, sellers, totalSellers } = useSelector((state) => state.seller);
   const navigate=useNavigate()
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const debouncedSearch = useDebouncedHook(search,500);
   const [editId, setEditId] = useState(null);
     const [status, setStatus] = useState("");
@@ -39,6 +40,10 @@ const handleSave=(id)=>{
 
 const handleCancel=()=>{
   setEditId(null);
+}
+const handlePageChange = (page) => {
+  setCurrentPage(page);
+  dispatch(getAllSellers({search:debouncedSearch,page,limit:10}))
 }
 
   return (
@@ -88,8 +93,10 @@ const handleCancel=()=>{
 
 </div>
 
-
       </div>
+<div className="pagination h-[40px] col-span-full ml-auto mr-sm">
+<Pagination totalItems={totalSellers} limit={10} currentPage={currentPage} onPageChange={handlePageChange} />
+</div>
     </div>
   </section>
   )

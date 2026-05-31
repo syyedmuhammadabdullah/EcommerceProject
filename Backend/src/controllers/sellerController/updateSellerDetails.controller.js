@@ -1,10 +1,9 @@
 
-import {apiError,apiResponse,asyncHandler,SellerModel,uploadOnCloudinary,deleteOnCloudinary} from '../../index.js';
+import {apiError,apiResponse,asyncHandler,SellerModel,uploadOnCloudinary,deleteOnCloudinary, UserModel, NotificationModel, io} from '../../index.js';
 
 const updateSellerDetails=asyncHandler(async(req,res)=>{
     const {sellerId}=req.params;
     const sellerForm=req.body;
-    console.log("update seller details runs",sellerForm,req.files);
     
     if(req.files.storeLogo ){
         
@@ -26,7 +25,6 @@ const updateSellerDetails=asyncHandler(async(req,res)=>{
         sellerForm.storeBanner=result.url;
         sellerForm.storeBannerPublicId=result.public_id;
     }
-    console.log("seller form",sellerForm?.street1,sellerForm?.street2);
     
     const form={
         businessName:sellerForm.businessName,
@@ -65,6 +63,32 @@ const updateSellerDetails=asyncHandler(async(req,res)=>{
     const updatedSeller=await SellerModel.findByIdAndUpdate(sellerId,form,{new:true});
     if (!updatedSeller) {
         throw new apiError(404, "Seller not found");
+    }
+
+    if(!updatedSeller.verification.isVerified){        
+        const admins=await UserModel.find({role:"admin"});
+    
+    const adminNotifications=await Promise.all(admins.map(async(admin)=> (
+        await NotificationModel.create({
+        type:"seller",
+        message:`${updatedSeller?.storeDetails?.storeName} has updated their details and is pending verification.`,
+        redirect:true,
+        recipientModel:"Admin",
+        recipient:admin?._id,
+        title:"Pending Verification",
+        data:{
+            sellerId:updatedSeller._id,
+            storeName:updatedSeller?.storeDetails?.storeName
+        }
+    })
+
+    )));
+    
+    admins.forEach((admin,i) => {
+        const adminNotification=adminNotifications[i];
+        io.to(admin._id.toString()).emit("notification", adminNotification);
+        
+    })
     }
     res.status(200).json(new apiResponse(200,"Seller details updated",updatedSeller));
 });

@@ -1,14 +1,15 @@
 import React, { useEffect,useState } from "react";
 import Input from "../components/Input";
 import { SearchOutlined } from "@ant-design/icons";
-import { Button,getAllProducts,deleteProduct,useDebouncedHook,SelectMenu,updateProduct,getSellerAllProducts,getSellerProducts } from "../index";
+import { Button,Pagination,getAllProducts,deleteProduct,useDebouncedHook,SelectMenu,updateProduct,getSellerAllProducts,getSellerProducts } from "../index";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate,useLocation } from "react-router-dom";
 
 const ProductsPage = () => {
   const dispatch = useDispatch();
-  const {loading ,products,sellerProducts,venderId} = useSelector((state) => state.product);
+  const {loading ,products,sellerProducts,venderId,totalProducts,totalSellerProducts} = useSelector((state) => state.product);
   const [status, setStatus] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 const location = useLocation();
   const currentPath = location.pathname;
   const params =new URLSearchParams(location.search);
@@ -66,6 +67,16 @@ const handleKeyDown = (e) => {
 const handleDelete=(id)=>{
   dispatch(deleteProduct({productId:id}))
 }
+
+
+const handlePageChange = (page) => {
+  setCurrentPage(page);
+  const payload = { page, search: debouncedSearch, filter: selectedFilter };  
+  switch(mode) {
+    case "all": dispatch(getAllProducts(payload)); break;
+    case "seller": dispatch(getSellerAllProducts({ ...payload, sellerId })); break;
+  }
+};
 
 
 const columns = {
@@ -176,16 +187,11 @@ const dataSource = (() => {
         {/* Pagination */}
         {products?.length === 0 ? "" :
         <div className="pagination flex gap-xs mt-md justify-center items-center py-p-md border-t border-border-primary">
-          <span>1</span>
-          <span>2</span>
-          <span>3</span>
-          <span>4</span>
-          <span>5</span>
-          <span>6</span>
-          <span>7</span>
-          <span>8</span>
-          <span>9</span>
-          <span>10</span>
+          <Pagination
+            current={currentPage}
+            total={mode==="all"?totalProducts:totalSellerProducts}
+            onChange={handlePageChange}
+          />
         </div>
         }
         </div>

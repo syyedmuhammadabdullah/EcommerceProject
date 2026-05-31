@@ -20,7 +20,7 @@ const getSellerAllProducts = createAsyncThunk(
           withCredentials: true,
         }
       );
-      return data.data;
+      return data;
     } catch (error) {
       return rejectWithValue(error);
     }

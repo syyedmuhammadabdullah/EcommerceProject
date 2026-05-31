@@ -2,29 +2,31 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Input from "../components/Input";
 import { SearchOutlined } from "@ant-design/icons";
-import { Button,getSellerOrders,useDebouncedHook } from "../index";
+import { Button,getSellerOrders,Pagination,useDebouncedHook } from "../index";
 import { useSelector,useDispatch } from "react-redux";
 
 const OrderHistoryPage = () => {
-  const { orders,totalOrders,loading } = useSelector((state) => state.order);
+  const { orders,totalOrders,loading, } = useSelector((state) => state.order);
   const dispatch = useDispatch();
   const [selectedFilter, setSelectedFilter] =useState("all");
   const filters = ["All", "Delivered", "Rejected", "Refunded",, "Failed", "Shipped", "Pending"];
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebouncedHook(search,500);
+  const [currentPage, setCurrentPage] = useState(1);
+
+
 useEffect(() => {
-
-
   // ✅ agar data already loaded hai → skip
   if (orders.length > 0 && debouncedSearch === "") return;
 
   dispatch(
     getSellerOrders({
       search: debouncedSearch || undefined,
+      page: currentPage,
     })
   );
 
-}, [debouncedSearch,]);
+}, [debouncedSearch]);
   const handleFilterChange = (filter) => {
    if (filter!==selectedFilter) {
      dispatch(getSellerOrders({filter}));
@@ -39,6 +41,19 @@ useEffect(() => {
     }
   };
 
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    let totalPages = Math.ceil(totalOrders / 10);    
+if (page > totalPages) return;
+     dispatch(
+    getSellerOrders({
+      search: debouncedSearch || undefined,
+      page,
+    })
+  );
+
+  };
   
   return (
     <section className="flex justify-center">
@@ -98,17 +113,8 @@ useEffect(() => {
          ))}
 
         </div>
-        <div className="pagination flex gap-xs">
-          <span>1</span>
-          <span>2</span>
-          <span>3</span>
-          <span>4</span>
-          <span>5</span>
-          <span>6</span>
-          <span>7</span>
-          <span>8</span>
-          <span>9</span>
-          <span>10</span>
+        <div className="pagination justify-center flex gap-xs">
+          <Pagination totalItems={totalOrders} currentPage={currentPage} onPageChange={handlePageChange}/>
         </div>
         </div>
       </div>

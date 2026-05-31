@@ -1,6 +1,8 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 import SidebarMenu from '../components/SidebarMenu'
+import HeaderNavbar from '../components/HeaderNavbar';
+
 const MainLayout = () => {
   return (
     <div className="xl:min-w-screen-2xl lg:h-screen lg:overflow-hidden flex flex-col lg:flex-row">
@@ -12,6 +14,7 @@ const MainLayout = () => {
 
       {/* Content */}
       <div className="content flex-1 min-h-screen bg-background-layout overflow-y-auto">
+          <HeaderNavbar />
         <Outlet />
       </div>
 

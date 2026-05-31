@@ -1,7 +1,9 @@
 import {apiError,apiResponse,asyncHandler,OrderModel} from "../../index.js";
 
 const getAllOrders=asyncHandler(async(req,res)=>{
-    const {filter,page,limit,search=""}=req.query
+    const {filter,search=""}=req.query
+    const page=parseInt(req.query.page)||1;
+    const limit=parseInt(req.query.limit)||10;
     let query={};
     
     if (filter && filter!=="all") {
@@ -51,16 +53,17 @@ const getAllOrders=asyncHandler(async(req,res)=>{
                 "totalPrice": 1
             }
         },
-        // {
-        //     $skip: (page - 1) * limit
-        // },
-        // {
-        //     $limit: limit
-        // }
+        {
+            $skip: (page - 1) * limit
+        },
+        {
+            $limit: limit
+        }
     ])
+    const totalOrders = await OrderModel.countDocuments(query);
     if(!orders){
         return res.status(400).json(new apiError(400,"Orders not found"));
     }
-    res.status(200).json(new apiResponse(200,"Orders found successfully",orders));
+    res.status(200).json(new apiResponse(200,"Orders found successfully",orders,totalOrders));
 })
 export {getAllOrders}

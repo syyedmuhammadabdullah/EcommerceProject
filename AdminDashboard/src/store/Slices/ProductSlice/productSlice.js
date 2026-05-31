@@ -7,7 +7,8 @@ const initialState={
     products:[],
     sellerProducts:[],
     venderId:"",
-    totalProducts:0
+    totalProducts:0,
+    totalSellerProducts:0
 }
 const productSlice=createSlice({
     name:"product",
@@ -80,8 +81,9 @@ const productSlice=createSlice({
             state.error=null
         }).
         addCase(getSellerAllProducts.fulfilled,(state,action)=>{
-            state.sellerProducts=action.payload.products;
-            state.venderId=action.payload.sellerId
+            state.sellerProducts=action.payload.data.products;
+            state.venderId=action.payload.data.sellerId
+            state.totalSellerProducts=action.payload.totalCount
             state.loading=false
         }). 
         addCase(getSellerAllProducts.rejected,(state,action)=>{

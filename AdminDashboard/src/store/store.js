@@ -1,5 +1,5 @@
 import {configureStore} from '@reduxjs/toolkit'
-import { transationReducer,adminReducer,categoryReducer,sellerReducer,productReducer,productQuestionReducer,customerReducer,orderReducer } from '../index'
+import { transationReducer,adminReducer,categoryReducer,sellerReducer,productReducer,productQuestionReducer,customerReducer,orderReducer, notificationReducer } from '../index'
 const store=configureStore({
     reducer:{
         seller:sellerReducer,
@@ -9,7 +9,8 @@ const store=configureStore({
         customer:customerReducer,
         order:orderReducer,
         category:categoryReducer,
-        transaction:transationReducer
+        transaction:transationReducer,
+        notifications:notificationReducer,
     }
 })
 

@@ -14,7 +14,11 @@ const initialState = {
 const transactionSlice = createSlice({
     name: "transactions",
     initialState,
-    reducers: {},
+    reducers: {
+        addTransaction: (state, action) => {
+            state.pendingTransactions.unshift(action.payload);
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getBalance.pending, (state) => {
@@ -71,10 +75,8 @@ const transactionSlice = createSlice({
                 state.error = null;
             })
             .addCase(updateWithdrawRequest.fulfilled, (state, action) => {
-                state.loading = false;                
-                state.pendingTransactions = state.pendingTransactions.filter(
-                    (transaction) => transaction.id !== action.payload.id
-                );
+                state.loading = false;                                
+                state.pendingTransactions = state.pendingTransactions.filter((req) => req._id !== action.payload._id);
             })
             .addCase(updateWithdrawRequest.rejected, (state, action) => {
                 state.loading = false;
@@ -82,4 +84,5 @@ const transactionSlice = createSlice({
             });
     },
 });
+export const { addTransaction } = transactionSlice.actions;
 export default transactionSlice.reducer;

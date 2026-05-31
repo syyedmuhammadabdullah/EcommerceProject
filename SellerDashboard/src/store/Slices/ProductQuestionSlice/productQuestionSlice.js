@@ -4,6 +4,7 @@ const initialState = {
     loading: false,
     error: null,
     productsQuestion: [],
+    totalQuestions: 0,
 };
 
 const productQuestionSlice = createSlice({
@@ -24,7 +25,8 @@ const productQuestionSlice = createSlice({
             })
             .addCase(getProductsQuestion.fulfilled, (state, action) => {
                 state.loading = false;
-                state.productsQuestion = action.payload;
+                state.productsQuestion = action.payload.data;
+                state.totalQuestions = action.payload.totalCount;
             })
             .addCase(getProductsQuestion.rejected, (state, action) => {
                 state.loading = false;

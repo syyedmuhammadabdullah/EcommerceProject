@@ -6,6 +6,7 @@ import requestWithdraw from "./requestWithdraw.js";
 const initialState = {
     walletBalance: 0,
     transactions: {},
+    totalWithdrawnTransactions: 0,
     loading: false,
     error: null,
 };
@@ -42,6 +43,7 @@ const transactionSlice = createSlice({
             .addCase(getTransactions.fulfilled, (state, action) => {
                 state.loading = false;
                 state.transactions = action.payload;
+                state.totalWithdrawnTransactions = action.payload.withdrawn?.length || 0;
             })
             .addCase(getTransactions.rejected, (state, action) => {
                 state.loading = false;

@@ -30,10 +30,10 @@ const orderSlice = createSlice({
         .addCase(getSellerOrders.pending, (state) => {
             state.loading = true;
         })
-        .addCase(getSellerOrders.fulfilled, (state, action) => {
+        .addCase(getSellerOrders.fulfilled, (state, action) => {            
             state.loading = false;
             state.orders = action.payload.data;
-            state.totalOrders = action.payload.totalOrders;
+            state.totalOrders = action.payload.totalCount;
         })
         .addCase(getSellerOrders.rejected, (state, action) => {
             state.loading = false;

@@ -1,7 +1,7 @@
 import {apiError,apiResponse,asyncHandler,ProductQuestionModel,ProductModel,OrderModel} from "../../index.js";
 
 const getSellerProductsQuestion = asyncHandler(async (req, res) => {
-  const { filter, search } = req.query;
+  const { filter, search, page = 1, limit = 10 } = req.query;
 
   let query = {
     sellerId: req.seller.sellerId,
@@ -67,12 +67,19 @@ const getSellerProductsQuestion = asyncHandler(async (req, res) => {
         }
       }
     },
+    {
+      $skip: (parseInt(page) - 1) * parseInt(limit),
+    },
+    {
+      $limit: parseInt(limit),
+    },
 
     { $sort: { createdAt: -1 } }
   ]);
+  const totalQuestions = await ProductQuestionModel.countDocuments();
 
   res.status(200).json(
-    new apiResponse(200, "Product questions found successfully", productQuestions)
+    new apiResponse(200, "Product questions found successfully", productQuestions,totalQuestions)
   );
 });
 

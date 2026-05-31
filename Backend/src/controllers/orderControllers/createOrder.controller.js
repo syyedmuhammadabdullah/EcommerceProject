@@ -2,7 +2,6 @@ import { asyncHandler, apiError, apiResponse, OrderModel, CartModel,io,Notificat
 import { customAlphabet } from "nanoid";
 
 const createOrder = asyncHandler(async (req, res) => {
-  console.log("create order runs", req.body);
 try{
   const {
     shippingAddress,
@@ -40,14 +39,11 @@ try{
       }
       billAddress = address;
   }
-console.log("ship address",shipAddress,"bill address",billAddress,"is billing same as shipping?",isBillingSameAsShipping);
-
   const createdOrders = [];
 
 
   // Case 1: Buy Now Product Handling
   if (buyNowProduct) {
-    console.log("buyNowProduct found");
     
     const order = await OrderModel.create({
       userId: req.user._id,

@@ -15,6 +15,7 @@ import BillingFormCard from "./components/BillingFormCard";
 import TrackOrder from "./components/TrackOrder";
 import ProductDescriptionEditor from "./components/ProductDescriptionEditor";
 import MyChart from "./components/MyChart";
+import Pagination from "./components/Pagination";
 //Home Components
 import PromoSectionOne from "./components/Home/PromoSectionOne";
 import PopularProducts from "./components/Home/PopularProducts";
@@ -97,6 +98,7 @@ import {addNotification} from "./store/Slices/NotificationSlice/NotificationSlic
 import { markAllNotificationAsRead } from "./store/Slices/NotificationSlice/markAllNotificationAsRead";
 import { markNotificationAsRead } from "./store/Slices/NotificationSlice/markNotificationAsRead";
 import { clearAllNotifications } from "./store/Slices/NotificationSlice/clearAllNotication";
+
 // store
 import store from "./store/store";
 export {
@@ -170,6 +172,7 @@ export {
   BillingFormCard,
   TrackOrder,
   PromoSectionOne,
+  Pagination,
   PopularProducts,
   ProductWithCategory,
   LoginPage,

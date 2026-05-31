@@ -19,7 +19,7 @@ import MyChart from "./components/MyChart";
 import PromoSectionOne from "./components/Home/PromoSectionOne";
 import PopularProducts from "./components/Home/PopularProducts";
 import ProductWithCategory from "./components/Home/ProductWithCategory";
-
+import Pagination from "./components/Pagination";
 // pages
 import OrderHistoryPage from "./pages/OrderHistoryPage";
 import ProductsPage from "./pages/ProductsPage";
@@ -43,6 +43,7 @@ import SellerDetailPage from "./pages/SellerDetailPage.jsx";
 import MainLayout from "./layouts/MainLayout";
 //hooks
 import useDebouncedHook from "./hooks/useDebouncedHook";
+import useNotificationClick from "./hooks/useNotificationClick";
 
 //redux store
 // Slices
@@ -92,7 +93,7 @@ import getTransactions from "./store/Slices/TransactionSlice/getTransaction";
 import requestWithdraw from "./store/Slices/TransactionSlice/requestWithdraw";
 import getPendingWithdrawRequest from "./store/Slices/TransactionSlice/getPendingWithdrawRequest";
 import updateWithdrawRequest from "./store/Slices/TransactionSlice/updateWithdrawRequest.js";
-
+import { addTransaction } from "./store/Slices/TransactionSlice/transactionSlice";
 //sellerSlice
 import sellerReducer from "./store/Slices/SellerSlice/SellerSlice";
 import getAllSellers from "./store/Slices/SellerSlice/getAllSellers.js";
@@ -110,13 +111,24 @@ import deleteSubCategory from "./store/Slices/CategorySlice/deleteSubCategory";
 import updateSubCategory from "./store/Slices/CategorySlice/updateSubCategory";
 // import getOneCategory from "./store/Slices/CategorySlice/getOneCategory";
 
+//Notification Slice
+import notificationReducer from "./store/Slices/NotificationSlice/NotificationSlice";
+import getNotifications from "./store/Slices/NotificationSlice/getNotifications";
+import getNotificationCount from "./store/Slices/NotificationSlice/NotificationCount";
+import {addNotification} from "./store/Slices/NotificationSlice/NotificationSlice";
+import { markAllNotificationAsRead } from "./store/Slices/NotificationSlice/markAllNotificationAsRead";
+import { markNotificationAsRead } from "./store/Slices/NotificationSlice/markNotificationAsRead";
+import { clearAllNotifications } from "./store/Slices/NotificationSlice/clearAllNotication";
+
 // store
 import store from "./store/store";
 export {
   PrimaryBtn,
   DefaultBtn,
+  Pagination,
   requestWithdraw,
   deleteProduct,
+  useNotificationClick,
   updateProduct,
   getOneProduct,
   productQuestionReducer,
@@ -124,6 +136,7 @@ export {
   giveAnswerToQuestion,
   customerReducer,
   getBalance,
+  addTransaction,
   logoutAdmin,
   getTransactions,
   getAllCustomers,
@@ -134,6 +147,14 @@ export {
   getPendingWithdrawRequest,
   getAllSellers,
   updateSellerStatus,
+  notificationReducer,
+  getNotifications,
+  getNotificationCount,
+  addNotification,
+  getAdmin,
+  markAllNotificationAsRead,
+  markNotificationAsRead,
+  clearAllNotifications,
   sellerReducer,
   getSellerAllProducts,
   getSellerOrdersDetail,
@@ -158,7 +179,6 @@ export {
   updateSubCategory,
 
   categoryReducer,
-  getAdmin,
   adminReducer,
   createProduct,
   SearchBtn,

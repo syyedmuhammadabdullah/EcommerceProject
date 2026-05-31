@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 const getAllSellerCustomers=asyncHandler(async(req,res)=>{
   const sellerId=req.seller.sellerId;
   const search=req.query.search || "";
+  const page=parseInt(req.query.page)||1;
+  const limit=parseInt(req.query.limit)||10;
 
     const totalCustomers = await OrderModel.aggregate([
       { $match: { sellerId } },
@@ -22,7 +24,9 @@ const getAllSellerCustomers=asyncHandler(async(req,res)=>{
       { $lookup: { from: 'usermodels', localField: '_id', foreignField: '_id', as: 'customerInfo' } },  // Join with User model
       { $unwind: '$customerInfo' },  // Flatten the customer data
       { $project: { 'customerInfo.fullName': 1, 'customerInfo.email': 1, 'customerInfo.avatar': 1 , 'customerInfo._id': 1} },  // Select the fields you need
-      { $match: { 'customerInfo.fullName': { $regex: search, $options: 'i' } } } // Search filter
+      { $match: { 'customerInfo.fullName': { $regex: search, $options: 'i' } } }, // Search filter
+      { $skip: (page - 1) * limit },  // Pagination: skip previous pages
+      { $limit: limit }  // Pagination: limit the number of results
     ]);
     console.log("orders",customers);
     

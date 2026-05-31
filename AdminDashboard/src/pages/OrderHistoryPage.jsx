@@ -2,15 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Link,useLocation,useParams } from "react-router-dom";
 import Input from "../components/Input";
 import { SearchOutlined } from "@ant-design/icons";
-import { Button,getCustomerOrders,getAllOrders,useDebouncedHook, getSellerOrders } from "../index";
+import { Button,getCustomerOrders,getAllOrders,useDebouncedHook, getSellerOrders, Pagination } from "../index";
 import { useSelector,useDispatch } from "react-redux";
 
 const OrderHistoryPage = () => {
-  const { orders,totalOrders,customerOrders,sellerOrders, }= useSelector((state) => state.order);
+  const { orders,totalOrders,totalCustomerOrders,totalSellerOrders,customerOrders,sellerOrders, }= useSelector((state) => state.order);
   const dispatch = useDispatch();
   const [selectedFilter, setSelectedFilter] =useState("all");
   const filters = ["All", "Delivered", "Rejected", "Refunded", "Failed", "Shipped", "Pending"];
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const debouncedSearch = useDebouncedHook(search,500);
   const location = useLocation();
   const currentPath = location.pathname;
@@ -28,7 +29,7 @@ const OrderHistoryPage = () => {
 
 
 useEffect(() => {
-  const payload = { search: debouncedSearch, filter: selectedFilter };  
+  const payload = { search: debouncedSearch, filter: selectedFilter, page: currentPage };  
   switch(mode) {
     case "all": (orders?.length === 0 ||search===debouncedSearch )&& dispatch(getAllOrders(payload)); break;
     case "customer": (customerOrders?.length === 0 ||search===debouncedSearch || userId!==customerOrders.userId)&& dispatch(getCustomerOrders({ ...payload, userId })); break;
@@ -66,6 +67,21 @@ const dataSource = (() => {
     setSelectedFilter(filter);
     
   }
+  const handlePageChange = (page) => {
+    const payload = { search: debouncedSearch, filter: selectedFilter, page };
+    setCurrentPage(page);
+    switch (mode) {
+      case "all":
+        dispatch(getAllOrders(payload));
+        break;
+      case "customer":
+        dispatch(getCustomerOrders({ ...payload, userId }));
+        break;
+      case "seller":
+        dispatch(getSellerOrders({ ...payload, sellerId }));
+        break;
+    }
+  };
 
   const handleKeyDown = (e) => {    
     if (e.key === 'Enter') {
@@ -216,16 +232,11 @@ const Cell = ({ children }) => (
 
         </div>
         <div className="pagination flex gap-xs">
-          <span>1</span>
-          <span>2</span>
-          <span>3</span>
-          <span>4</span>
-          <span>5</span>
-          <span>6</span>
-          <span>7</span>
-          <span>8</span>
-          <span>9</span>
-          <span>10</span>
+          <Pagination
+            currentPage={currentPage}
+            totalItems={mode==="all"?totalOrders:mode==="customer"?totalCustomerOrders:totalSellerOrders}
+            onPageChange={handlePageChange}
+          />
         </div>
         </div>
       </div>

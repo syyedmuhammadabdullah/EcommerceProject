@@ -7,6 +7,7 @@ const initialState = {
     error: null,
     seller: {},
     sellers:[],
+    totalSellers:0,
     isAuthenticated: false,
 };
 
@@ -22,7 +23,8 @@ const sellerSlice = createSlice({
             })
             .addCase(getAllSellers.fulfilled, (state, action) => {
                 state.loading = false;
-                state.sellers = action.payload;
+                state.sellers = action.payload.data;
+                state.totalSellers = action.payload.total;
             })
             .addCase(getAllSellers.rejected, (state, action) => {
                 state.loading = false;

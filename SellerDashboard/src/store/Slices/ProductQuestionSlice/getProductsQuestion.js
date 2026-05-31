@@ -4,7 +4,7 @@ import axios from "axios";
 
 const getProductsQuestion = createAsyncThunk(
     "productQuestion/getProductsQuestion",
-    async ({filter,search,page,limit}, { rejectWithValue }) => {
+    async ({filter,search,page=1,limit=10}, { rejectWithValue }) => {
         try {
             const { data } = await axios.get(
                 "http://localhost:3001/api/v1/sellers/getSellerProductsQuestion",
@@ -20,7 +20,7 @@ const getProductsQuestion = createAsyncThunk(
                 }
             );
             
-            return data.data;
+            return data
         } catch (error) {
             return rejectWithValue(error);
         }

@@ -11,18 +11,12 @@ const HeaderNavbar = () => {
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const {unreadCount} = useSelector((state) => state.notifications);
-
- 
-  const handleSearch=()=>{
-
-   
-  }
-  
+  const {seller} = useSelector((state) => state.seller);
   return (
     <>
     <section className="container bg-white sticky top-0 z-50 h-[50px] mx-auto flex justify-between w-full items-center   text-text-default py-p-xs px-p-md sm:px-p-lg sm:py-p-xs">
     <div className="left flex gap-xl">
-    <div className="logo">Logo</div>
+    <div className="logo">{seller?.storeDetails?.storeName}</div>
     <div className="menu flex gap-6">
    
    

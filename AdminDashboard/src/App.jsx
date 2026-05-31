@@ -20,16 +20,52 @@ import {
   CategoryPage,
   SellerPage,
   SellerDetailPage,
+  getNotificationCount,
 } from "./index";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthProtectedRoute from "./components/AuthProtectedRoute";
-import { useDispatch} from "react-redux";
+import { useDispatch,useSelector} from "react-redux";
 import { useEffect } from "react";
+import { initializeSocketListeners } from "./socket/socketListeners";
+import {socket} from "./socket/socket";
 function App() {
   const dispatch = useDispatch();
+  const { isAuthenticated, admin, } = useSelector((state) => state.admin);
+  const {unreadCount} = useSelector(state => state.notifications);
+
   useEffect(() => {
     dispatch(getAdmin());
   }, []);
+
+
+  useEffect(() => {
+  if (!isAuthenticated) return;
+  socket.connect();
+  socket.on("connect", () => {
+  socket.emit("joinRoom",admin._id );    
+  });
+  return () => {
+    socket.disconnect();
+  };
+}, [isAuthenticated,admin]);
+
+useEffect(() => {
+  if (!isAuthenticated || !admin?._id) return;
+  if (!unreadCount) {
+    dispatch(getNotificationCount(admin._id));
+  }
+}, [dispatch, isAuthenticated, admin?._id]);
+useEffect(()=>{
+   initializeSocketListeners({
+      socket,
+      dispatch
+   });
+   return ()=>{
+      socket.off();
+   }
+},[])
+
+
 const router = createBrowserRouter([
   // 🔓 Public
   {

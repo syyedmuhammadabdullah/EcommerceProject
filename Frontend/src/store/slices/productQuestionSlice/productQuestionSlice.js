@@ -4,7 +4,8 @@ import {createProductQuestion,deleteProductQuestion,updateProductQuestion,update
 const initialState={
     loading:false,
     error:null,
-    productQuestions:[]
+    productQuestions:[],
+    totalQuestions:0
 }
 const productQuestionSlice=createSlice({
     name:"productQuestion",
@@ -28,9 +29,10 @@ const productQuestionSlice=createSlice({
             state.loading=true,
             state.error=null
         })
-        .addCase(getProductQuestion.fulfilled,(state,action)=>{
+        .addCase(getProductQuestion.fulfilled,(state,action)=>{            
             state.loading=false,
-            state.productQuestions=action.payload
+            state.productQuestions=action.payload.data,
+            state.totalQuestions=action.payload.totalCount
         })
         .addCase(getProductQuestion.rejected,(state,action)=>{
             state.loading=false,

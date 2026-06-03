@@ -10,8 +10,8 @@ sellerRouter.put("/test/rtr",(req,res)=>{
 })
 sellerRouter.get("/getSellerProductsQuestion",authMiddleware,roleCheckMiddleware("seller"),getSellerProductsQuestion)
 sellerRouter.get("/getAllSellerCustomers",authMiddleware,roleCheckMiddleware("seller"),getAllSellerCustomers)
-sellerRouter.get("/getSeller",authMiddleware,roleCheckMiddleware("seller"),getSeller)
-sellerRouter.post("/updateSellerStatus",authMiddleware,roleCheckMiddleware("admin"),updateSellerStatus)
+sellerRouter.get("/getSeller",authMiddleware,roleCheckMiddleware("seller","admin"),getSeller)
+sellerRouter.post("/updateSellerStatus",authMiddleware,roleCheckMiddleware("admin","seller"),updateSellerStatus)
 sellerRouter.get("/getAllSellers",authMiddleware,roleCheckMiddleware("admin"),getAllSellers)
 sellerRouter.get("/getSellerDetailForAdmin",authMiddleware,roleCheckMiddleware("admin"),getSellerDetailForAdmin)
 export { sellerRouter };

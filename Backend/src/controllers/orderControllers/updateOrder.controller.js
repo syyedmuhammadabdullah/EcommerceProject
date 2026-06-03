@@ -6,7 +6,8 @@ import {
   SellerTransactionModel,
   SellerWalletModel,io,
   NotificationModel,
-  ProductModel
+  ProductModel,
+  SellerModel
 } from "../../index.js";
 
 export const updateOrderController = asyncHandler(async (req, res) => {
@@ -55,6 +56,7 @@ export const updateOrderController = asyncHandler(async (req, res) => {
         status: "completed"
       });
     }
+    await SellerModel.findByIdAndUpdate(order.sellerId,{ $inc: { "performanceMetrics.totalSales": order.totalPrice } });
 
     order.commissionAmount = commission;
     order.paymentStatus = "completed";

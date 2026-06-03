@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, getBalance, getTransactions, Input, requestWithdraw, socket,updateTransactionStatus } from '../index'
 import { BankOutlined } from '@ant-design/icons'
 import { useDispatch,useSelector } from 'react-redux'
-import {  useNavigate } from 'react-router-dom'
+import {  Link, useNavigate } from 'react-router-dom'
 
 const WithdrawPage = () => {
 
@@ -59,9 +59,11 @@ const WithdrawPage = () => {
 
             </div>
 
-            <div className="withdraw-list py-p-md px-p-lg xl:px-xxl">
-                <div className="title mb-lg">
+            <div className="withdraw-list  py-p-md px-p-lg xl:px-xxl">
+                <div className="title mb-lg flex justify-between items-center">
                     <h5>Withdraw History</h5>
+                    <Link to="/transactions/withdrawal" className='text-md text-primary-base text-primary'>View All</Link>
+                    
                 </div>
 
             <div className="data bg-white border border-border-primary rounded-md w-full grid overflow-scroll no-scrollbar">

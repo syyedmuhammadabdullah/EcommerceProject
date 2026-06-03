@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { OrderModel, SellerWalletModel, SellerModel, rangeFormat,apiError,apiResponse,asyncHandler,orginizeChart } from "../../index.js";
+import { OrderModel, SellerWalletModel, rangeFormat,apiError,apiResponse,asyncHandler,orginizeChart } from "../../index.js";
 
 export const getSellerDetailForAdmin =asyncHandler( async (req, res) => {
 
@@ -17,13 +17,7 @@ export const getSellerDetailForAdmin =asyncHandler( async (req, res) => {
     return res.status(400).json({ message: "Seller id is required" });
   }
 
-  const seller = await SellerModel.findById(sellerId).select(
-    "storeDetails.storeName businessEmail accountStatus.status accountStatus.createdAt"
-  );
 
-  if (!seller) {
-    return res.status(404).json({ message: "Seller not found" });
-  }
   
   const { startDate, groupFormat } = rangeFormat(req.query.range);
   const orderAgg = await OrderModel.aggregate([
@@ -106,7 +100,6 @@ export const getSellerDetailForAdmin =asyncHandler( async (req, res) => {
       {
         chart: orginizeChart(orderAgg[0].chartStats, req.query.range,startDate),
         wallet,
-          seller,
 
     stats: {
       totalOrders: stats.totalOrders,

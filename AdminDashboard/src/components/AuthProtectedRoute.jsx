@@ -9,8 +9,10 @@ const { isAuthenticated, loading } = useSelector(state => state.admin);
     return <div>Loading...</div>;
   }
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+      return <Navigate to="/login" replace />;
+
   }
+
 //   3️⃣ Sab OK
   return <Outlet />;
 }

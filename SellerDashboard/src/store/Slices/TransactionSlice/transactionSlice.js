@@ -2,11 +2,13 @@ import {createSlice} from "@reduxjs/toolkit";
 import getBalance from "./getBalance.js";
 import getTransactions from "./getTransaction.js";
 import requestWithdraw from "./requestWithdraw.js";
-
+import getAllTransactions from "./getAllTranscations.js";
 const initialState = {
     walletBalance: 0,
     transactions: {},
     totalWithdrawnTransactions: 0,
+    allTransactions: [],
+    allTransactionsTotal: 0,
     loading: false,
     error: null,
 };
@@ -58,6 +60,18 @@ const transactionSlice = createSlice({
                 state.transactions.withdrawn = [action.payload, ...state.transactions.withdrawn];
             })
             .addCase(requestWithdraw.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+            .addCase(getAllTransactions.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            }).addCase(getAllTransactions.fulfilled, (state, action) => {
+                state.loading = false;
+                state.allTransactions = action.payload.data;
+                state.allTransactionsTotal = action.payload.totalCount;
+            })
+            .addCase(getAllTransactions.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });

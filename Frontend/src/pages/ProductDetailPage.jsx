@@ -17,6 +17,7 @@ import {
   getProductQuestion,
   getProductReviews,
   removeItemFromWishlist,
+  Pagnination,
 } from "../index";
 import {  useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,16 +29,28 @@ const ProductDetailPage = () => {
   const navigate=useNavigate()
   const { user,isAuthenticated } = useSelector((state) => state.auth);
   const { product } = useSelector((state) => state.product);
-  const { productQuestions } = useSelector((state) => state.productQuestions);
+  const { productQuestions,totalQuestions } = useSelector((state) => state.productQuestions);
   const { productReviews } = useSelector((state) => state.productReviews);
   const {wishlist}=useSelector(state=>state.wishlist)
   const [question, setQuestion] = React.useState("");
   const [quantity,setQuantity]=React.useState(1)
   const [selectedImage,setSelectedImage]=useState("")
+  const [currentReviewPage,setCurrentReviewPage]=useState(1);
+  const [currentQuestionPage,setCurrentQuestionPage]=useState(1);
+
+  const handleQuestionPageChange=(page)=>{
+    setCurrentQuestionPage(page)
+    dispatch(getProductQuestion({productId,page,limit:5}))
+  }
+
+  const handlePageChange=(page)=>{
+    setCurrentReviewPage(page)
+    dispatch(getProductReviews({productId,page,limit:5}))
+  }
   useEffect(() => {
     dispatch(getProductDetails(productId));
-    dispatch(getProductQuestion(productId));
-    dispatch(getProductReviews(productId));    
+    dispatch(getProductQuestion({productId}));
+    dispatch(getProductReviews({productId}));    
   
   }, []);
   useEffect(() => {
@@ -46,9 +59,7 @@ const ProductDetailPage = () => {
     }
     
   }, [product]);
-  useEffect(() => {
-    console.log("wishlist",wishlist);
-  }, [wishlist]);
+
   const handleAddToCart = () => {
     if (!isAuthenticated) {
       localStorage.setItem("pendingProduct", JSON.stringify(product));
@@ -363,7 +374,7 @@ const ProductDetailPage = () => {
             </div>
 
             <div className="comments border-border-secondary grid gap-xl">
-              {productReviews.length > 0 ? productReviews[0]?.reviews?.map((review,i) => (
+              {productReviews?.length > 0 ? productReviews[0]?.reviews?.map((review,i) => (
                 <div key={i} className="reviews grid gap-xs p-md shadow-secondary">
                   <div className="rating_date flex justify-between">
                     <div className="userRating">
@@ -397,10 +408,7 @@ const ProductDetailPage = () => {
             </div>
 
             <div className="pagination flex gap-md justify-end">
-              <div className="page">1</div>
-              <div className="page">1</div>
-              <div className="page">1</div>
-              <div className="page">1</div>
+            <Pagnination totalItems={product?.ratingCount} limit={5} currentPage={currentReviewPage} onPageChange={handlePageChange} />
             </div>
           </div>
 
@@ -471,10 +479,7 @@ const ProductDetailPage = () => {
             </div>
 
             <div className="pagination flex gap-md justify-end">
-              <div className="page">1</div>
-              <div className="page">1</div>
-              <div className="page">1</div>
-              <div className="page">1</div>
+            <Pagnination totalItems={totalQuestions} limit={5} currentPage={currentQuestionPage} onPageChange={handleQuestionPageChange} />
             </div>
           </div>
         </div>

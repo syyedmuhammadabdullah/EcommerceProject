@@ -16,7 +16,7 @@ const ProductQuestionsPage = () => {
     const [totalPages, setTotalPages] = useState(1);
     const handleFilterChange = (filter) => {
         if (filter!==selectedFilter) {
-            dispatch(getProductsQuestion({filter}));
+            dispatch(getProductsQuestion({filter,search:debouncedSearch,page:currentPage,limit:5}));
         }
         setSelectedFilter(filter);
     };

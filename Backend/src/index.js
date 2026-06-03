@@ -156,7 +156,7 @@ import { requestWithdraw } from "./controllers/sellerTransactionControllers/requ
 import { updateWithdrawRequest } from "./controllers/sellerTransactionControllers/updateWithdrawRequest.controller.js"
 import { getSellerWithdrawHistory } from "./controllers/sellerTransactionControllers/getSellerWithdrawHistory.controller.js"
 import { getPendingWithdrawalRequest } from "./controllers/sellerTransactionControllers/getPendingWithdrawalRequest.controller.js"
-
+import { getAllTransactionController } from "./controllers/sellerTransactionControllers/gelAllTransaction.controller.js"
 //Notification Controllers
 import { getNotifications, getNotificationCount } from "./controllers/NotificationControllers/getNotifications.controller.js";
 import { markNotificationAsRead } from "./controllers/NotificationControllers/markNotificationAsRead.controller.js";
@@ -317,7 +317,7 @@ export {
 }; // End of Product Question Controller Exports
 
 //Seller Transaction Controller Exports
-export { getSellerWithdrawHistory, getPendingWithdrawalRequest, getSellerTransaction, updateWithdrawRequest, getSellerBalance, requestWithdraw };
+export { getSellerWithdrawHistory,getAllTransactionController, getPendingWithdrawalRequest, getSellerTransaction, updateWithdrawRequest, getSellerBalance, requestWithdraw };
 
 //End of Controller Exports
 

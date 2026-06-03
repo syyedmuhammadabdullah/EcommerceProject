@@ -1,8 +1,8 @@
 import React, { useEffect,useState } from 'react'
-import { MailOutlined, PhoneOutlined, SearchOutlined } from '@ant-design/icons'
+import { CloseOutlined,ProductFilled,MoneyCollectFilled,StarFilled,CheckOutlined, PhoneOutlined, SearchOutlined } from '@ant-design/icons'
 import { Button, Input,getAllCustomers,useDebouncedHook,getAllSellers, SelectMenu,updateSellerStatus, Pagination } from '../index'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate,Link, } from 'react-router-dom'
 const SellerPage = () => {
   const dispatch=useDispatch()
   const {loading, error, sellers, totalSellers } = useSelector((state) => state.seller);
@@ -19,6 +19,8 @@ const SellerPage = () => {
      if (!sellers || sellers.length === 0 || debouncedSearch !== search) {
        dispatch(getAllSellers({search:debouncedSearch,page:1,limit:10}))
      }
+     console.log(sellers);
+     
   },[debouncedSearch,search]);
 
   const handleKeyDown = (e) => {    
@@ -60,34 +62,46 @@ const handlePageChange = (page) => {
 <div className="searchCustomers mb-lg">
   <Input value={search} onChange={(e)=>setSearch(e.target.value)}  placeholder='Search Customer' icon={<SearchOutlined onKeyDown={handleKeyDown}  className='cursor-pointer'/>} />
 </div>
-<div className="data bg-white w-full border border-border-primary grid overflow-scroll no-scrollbar ">
-      <div className="head h-[54px] grid grid-cols-[48px_minmax(389px,1fr)_minmax(150px,1fr)_minmax(137px,1fr)_minmax(137px,1fr)_minmax(137px,1fr)_minmax(170px,1fr)]  items-center bg-[#00000005]">
+<div className="data w-full grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-lg">
 
-    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >No:</div>
-    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >Seller Name</div>
-    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >View Products</div>
-    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >View Orders</div>
-    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >View Details</div>
-    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >Status</div>
-    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >Actions</div>
 
-</div>
+
 
  {sellers?.map((seller,index)=>(
-  <div key={seller?._id} className="body h-[54px] grid grid-cols-[48px_minmax(389px,1fr)_minmax(150px,1fr)_minmax(137px,1fr)_minmax(137px,1fr)_minmax(137px,1fr)_minmax(170px,1fr)] items-center bg-[#00000005]">
-    
-     <div className="border pl-[10px] flex items-center border-border-primary h-full"  >{index+1}</div>
-    <div className="border pl-[10px] flex items-center border-border-primary h-full"  > {seller?.storeDetails?.storeName}</div>
-    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >  <Button onClick={()=>navigate(`/products/seller/?sellerId=${seller?._id}&storeName=${seller?.storeDetails?.storeName}`)} children="View Products" className='text-left  rounded-sm px-p-md py-p-xxs hover:bg-primary-hover   bg-primary-base text-white text-text-secondary'/>
-</div>
-    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >  <Button onClick={()=>navigate(`/orders/seller/?sellerId=${seller?._id}&storeName=${seller?.storeDetails?.storeName}`)} children="View Orders" className='text-left px-p-md py-p-xxs rounded-sm hover:bg-primary-hover  bg-primary-base text-white text-text-secondary'/>
-</div>
-    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >  <Button onClick={()=>navigate(`/orders/seller/?sellerId=${seller?._id}&storeName=${seller?.storeDetails?.storeName}`)} children="View Details" className='text-left px-p-md py-p-xxs rounded-sm hover:bg-primary-hover  bg-primary-base text-white text-text-secondary'/>
-</div>
-    <div className="border pl-[10px] flex items-center border-border-primary h-full"  >{editId===seller._id? <SelectMenu defaultValue={seller.accountStatus.status} options={["active", "inactive", "suspended"]} onClick={(value)=>setStatus(value)}/>:  seller.accountStatus.status}</div>
-               <div className="action border pl-[10px] min-w-[170px] flex gap-sm items-center border-border-primary h-full" >{editId===seller._id? <Button children="Save" className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm text-white" onClick={()=>handleSave(seller._id)} />: <Button children="Edit" className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm text-white" onClick={()=>handleEdit(seller._id)} />} {editId===seller._id? <Button children="Cancel" className="bg-warning-base w-fit px-p-md py-p-xxs rounded-sm text-white" onClick={()=>handleCancel(seller._id)} />:<Button children="Delete" className="bg-warning-base w-fit px-p-md py-p-xxs rounded-sm text-white" onClick={()=>handleDelete(seller._id)} />}</div>
- 
-  </div>
+     <div className="totalSales border min-w-[300px] w-[350px] min-h-[500px] border-border-primary rounded-md  bg-white ">
+                    <div className="con  flex items-center flex-col gap-md p-lg">
+                    <div className="t-sale  flex justify-center items-center gap-lg">
+                      <img className='h-[100px] w-[100px] rounded-full' src={seller?.storeDetails?.storeLogo} alt="" />
+                      </div>
+                      <div className="details gap-xxs  flex flex-col items-center">
+
+                     <p className='text-md font-bold'>{seller?.storeDetails?.storeName}</p>
+                     <p className='text-md text-text-secondary'>{seller?.verification?.isVerified?"Verified":"Not Verified"}</p>
+                     <p className='text-md text-text-secondary'>Join Date: {new Date(seller?.accountStatus?.createdAt).toLocaleDateString()}</p>
+                      </div>
+                      <div className="card grid h-[100px] items-center justify-between w-full bg-primary-base text-white p-p-md grid-cols-3 gap-xl mt-lg">
+                        <div className="products">
+                        <p className='text-md'><ProductFilled /></p>
+                        <p className='text-md'>{seller.performanceMetrics.totalProducts}</p>
+
+                        </div>
+                        <div className="sales">
+                        <p className='text-md'><MoneyCollectFilled /></p>
+                        <p className='text-md '>{seller.performanceMetrics.totalSales}</p>
+
+                        </div>
+                        <div className="reviews">
+                        <p className='text-md '><StarFilled /></p>
+                        <p className='text-md '>{seller.performanceMetrics.reviewCount}</p>
+
+                        </div>
+                     </div>
+                      <div className="des">
+                        <p className='text-md text-text-secondary'>{seller?.storeDetails?.storeDescription?.slice(0,75)}{seller?.storeDetails?.storeDescription?.length > 75 ? '...' : '.'}</p>
+                      </div>
+                    </div>
+                    <div className="date h-[40px]  mt-xl flex px-lg items-center justify-center  border-t border-border-primary"><Link to={`/sellers/${seller._id}`}><p className='text-md'>View Details</p></Link></div>
+                </div>
 
 ))}
 

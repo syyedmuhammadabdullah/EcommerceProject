@@ -63,10 +63,10 @@ const DashboardPage = () => {
                 <div className="totalSales border border-border-primary rounded-md  h-[187px] bg-white ">
                     <div className="con h-[150px] flex flex-col gap-sm p-lg">
                     <div className="t-order text-text-description"><p>Total Sucessfull Orders</p></div>
-                    <div className="percent "><p className='text-xl font-bold'>{(orderstats?.totalDeliveredOrders/orderstats?.totalItems*100).toFixed(2)}%</p></div>
+                    <div className="percent "><p className='text-xl font-bold'>{(orderstats?.totalDeliveredOrders && orderstats?.totalItems ? (orderstats?.totalDeliveredOrders / orderstats?.totalItems * 100) : 0).toFixed(2)}%</p></div>
                     <div className="res">
                     <div className="bar max-w-[250px] h-[20px] bg-border-primary relative ">
-                      <div className={`range absolute left-0 top-0 bg-primary-base h-full `} style={{width:`${orderstats?.totalDeliveredOrders/orderstats?.totalItems*100}%`}}></div>
+                      <div className={`range absolute left-0 top-0 bg-primary-base h-full `} style={{width:`${orderstats?.totalDeliveredOrders && orderstats?.totalItems ? (orderstats?.totalDeliveredOrders / orderstats?.totalItems * 100) : 0}%`}}></div>
                     </div>
                     </div>
                     </div>
@@ -77,7 +77,7 @@ const DashboardPage = () => {
             <div className="chart max-w-full  h-content p-lg my-lg rounded-md border border-border-primary bg-white">
                 <div className="title flex justify-between  w-full">
                     <div className="heading">
-                        <h4>Chart</h4>
+                        <h4>Revenue Chart</h4>
                     </div>
                     <div className="filter flex flex-wrap justify-between">
           <div className="options rounded-md flex-wrap border-[#00000026] overflow-scroll no-scrollbar flex w-fit">

@@ -3,15 +3,13 @@ import axios from "axios";
 
 const updateSellerStatus = createAsyncThunk(
     "seller/updateSellerStatus",
-    async ({ sellerId, accountStatus, verificationStatus, rejectionReason }, { rejectWithValue }) => {
+    async ({ sellerId, accountStatus }, { rejectWithValue }) => {
         
         try {
             const { data } = await axios.post(
                 `http://localhost:3001/api/v1/sellers/updateSellerStatus`,
                 {
                     accountStatus,
-                    verificationStatus,
-                    rejectionReason,
                     sellerId,
                 },
                 {

@@ -80,7 +80,7 @@ const getProductReview=asyncHandler(async(req,res)=>{
                 }
             }
         }
-    ])
+    ]);
     res.status(200).json(new apiResponse(200,"Product reviews fetched successfully",productReviews))
 })
 export {getProductReview}

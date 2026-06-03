@@ -4,7 +4,7 @@ const initialState = {
     loading: false,
     error: null,
     userProductReviews: [],
-    productReviews: []
+    productReviews: [],
 }
 const productReviewSlice = createSlice({
     name: "productReview",

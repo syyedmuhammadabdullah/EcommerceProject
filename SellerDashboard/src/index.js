@@ -37,6 +37,8 @@ import CouponPage from "./pages/CouponPage";
 import ProfilePage from "./pages/ProfilePage";
 import CreateCouponPage from "./pages/CreateCouponPage";
 import CreateProductPage from "./pages/CreateProductPage";
+import TranscationPage from "./pages/TranscationPage";
+import VerificationPage from "./pages/VerificationPage";
 //layouts
 import MainLayout from "./layouts/MainLayout";
 //hooks
@@ -72,6 +74,7 @@ import loginSeller from "./store/Slices/SellerSlice/loginSeller";
 import updateSeller from "./store/Slices/SellerSlice/updateSeller";
 import getSeller from "./store/Slices/SellerSlice/getSeller";
 import logoutSeller from "./store/Slices/SellerSlice/logoutSeller";
+import updateSellerStatus from "./store/Slices/SellerSlice/updateSellerStatus";
 //customer Slice
 import customerReducer from "./store/Slices/CustomerSlice/CustomerSlice";
 import getAllSellerCustomers from "./store/Slices/CustomerSlice/getAllSellerCustomers";
@@ -89,7 +92,7 @@ import getTransactions from "./store/Slices/TransactionSlice/getTransaction";
 import requestWithdraw from "./store/Slices/TransactionSlice/requestWithdraw";
 import updateItemStatus from "./store/Slices/orderSlice/updateItemStatus";
 import { updateTransactionStatus } from "./store/Slices/TransactionSlice/transactionSlice";
-
+import getAllTransactions from "./store/Slices/TransactionSlice/getAllTranscations";
 //Notification Slice
 import notificationReducer from "./store/Slices/NotificationSlice/NotificationSlice";
 import getNotifications from "./store/Slices/NotificationSlice/getNotifications";
@@ -116,6 +119,8 @@ export {
   logoutSeller,
   getTransactions,
   getAllSellerCustomers,
+  getAllTransactions,
+  updateSellerStatus,
   orderReducer,
   updateTransactionStatus,
   transationReducer,
@@ -146,9 +151,11 @@ export {
   Divider,
   OrderHistoryPage,
   CreateProductPage,
+  VerificationPage,
   WithdrawPage,
   WalletPage,
   DashboardPage,
+  TranscationPage,
   ProductQuestionsPage,
   CouponPage,
   CustomersPage,

@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import {
   OrderHistoryPage,
+  TranscationPage,
   ProductsPage,
   LoginPage,
   RegisterPage,
@@ -21,6 +22,7 @@ useDebouncedAPI,
 getNotificationCount,
 addNotification,
   socket,
+  VerificationPage,
 } from "./index";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthProtectedRoute from "./components/AuthProtectedRoute";
@@ -71,6 +73,7 @@ const router = createBrowserRouter([
       
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
+      { path: "verify", element: <VerificationPage /> }
     ],
   },
  // 🔐 Login required (settings allowed)
@@ -80,7 +83,8 @@ const router = createBrowserRouter([
       {
         element: <MainLayout />,
         children: [
-        { path: "settings", element: <ProfilePage />,}
+        { path: "settings", element: <ProfilePage />},
+        { path: "verify", element: <VerificationPage /> }
         ],
       },
     ],
@@ -107,6 +111,7 @@ const router = createBrowserRouter([
           { path: "edit-coupon/:id", element: <CreateCouponPage /> },
           { path: "new-product", element: <CreateProductPage /> },
           { path: "edit-product/:id", element: <CreateProductPage /> },
+          { path: "transactions/:type", element: <TranscationPage /> },
         ],
       },
     ],

@@ -1,6 +1,6 @@
 import React,{useEffect, useRef,useState} from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Input,updateSeller,getSeller } from '../index'
+import { Button, Input,updateSeller,getSeller, updateSellerStatus } from '../index'
 import { CloudUploadOutlined, EyeOutlined, UploadOutlined } from '@ant-design/icons';
 import { useDispatch,useSelector } from 'react-redux';
 import { TailSpin } from 'react-loader-spinner';
@@ -185,6 +185,12 @@ const handleBannerUpload = (e) => {
         dispatch(updateSeller({ formData, sellerId: seller._id }));
       };
       
+    const handleMarkAsActive=()=>{
+        dispatch(updateSellerStatus({sellerId:seller._id,accountStatus:"active"}))
+    }
+    const handleMarkAsInActive=()=>{
+        dispatch(updateSellerStatus({sellerId:seller._id,accountStatus:"inactive"}))
+    }
 
     return (
         <section className="flex justify-center ">
@@ -238,7 +244,7 @@ const handleBannerUpload = (e) => {
     </div>
 
     {seller?.storeDetails?.storeLogo || profileImage? 
-            <div className="bannerImg relative h-[100px] w-[100px] rounded-full col-span-full" >
+            <div className="bannerImg relative h-[100px] w-[100px] rounded-full " >
                 <h5>Store Logo</h5>
                 <img  className="w-full h-full object-cover" src={profileImage ?URL.createObjectURL(profileImage) : seller?.storeDetails?.storeLogo} alt="" />
                 <div onClick={handleProfileImageChange} onMouseEnter={()=>{setHoverProfile(true)}} onMouseLeave={()=>{setHoverProfile(false)}} className="change cursor-pointer absolute h-full w-full top-0 p-sm flex justify-center items-center ">
@@ -248,7 +254,7 @@ const handleBannerUpload = (e) => {
                 <Input type="file" className="hidden" divClassName="hidden" onChange={handleProfileUpload} ref={profileInputRef}/>
                 
                 </div>:
-                <div className="banner flex flex-col gap-xs col-span-full" >
+                <div className="banner flex flex-col gap-xs" >
 
 <div className="name">
     <h5>Store Logo</h5>
@@ -267,13 +273,20 @@ const handleBannerUpload = (e) => {
 </div>}
 
 
+    <div className="mark as">
+        <label htmlFor="storeName">Mark As</label>
+        {seller?.accountStatus.status ==="active" ? 
+        <Button onClick={handleMarkAsInActive} className='w-full mt-2 bg-warning-base text-white py-p-xs rounded-md px-p-md' children={"InActive"} />
+       : <Button onClick={handleMarkAsActive} className='w-full mt-2 bg-primary-base text-white py-p-xs rounded-md px-p-md' children={"Active"} />
+        }
+       </div>
     <div className="storeName">
         <label htmlFor="storeName">Store Name</label>
         <Input value={sellerForm.storeName} onChange={(e)=>handleInputChange(e)} label="Store Name" divClassName='mt-xs' placeholder="Store Name" name="storeName" id="storeName"/>
     </div>
     <div className="storeDescription ">
         <label htmlFor="storeDescription">Store Description</label>
-        <Input value={sellerForm.storeDescription} onChange={(e)=>handleInputChange(e)} type="textarea" label="Store Description" divClassName='mt-xs' placeholder="Store Description" name="storeDescription" id="storeDescription"/>
+        <Input value={sellerForm.storeDescription} onChange={(e)=>handleInputChange(e)} className="outline-none w-full h-full" type="textarea" label="Store Description" divClassName='mt-xs ' placeholder="Store Description" name="storeDescription" id="storeDescription"/>
     </div>
    
 </div>

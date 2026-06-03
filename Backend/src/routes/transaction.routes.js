@@ -1,16 +1,22 @@
 import { Router } from "express";
-import { getSellerTransaction,getSellerBalance, authMiddleware, roleCheckMiddleware, requestWithdraw, updateWithdrawRequest, getSellerWithdrawHistory, getPendingWithdrawalRequest } from "../index.js";
+import { getSellerTransaction,getSellerBalance, authMiddleware, roleCheckMiddleware, requestWithdraw, updateWithdrawRequest, getSellerWithdrawHistory, getPendingWithdrawalRequest, getAllTransactionController } from "../index.js";
 const transactionRouter = Router();
 
 transactionRouter.get("/getTransactions",
     authMiddleware,
-    roleCheckMiddleware("seller"),
+    roleCheckMiddleware("seller", "admin"),
     getSellerTransaction
+);
+
+transactionRouter.get("/getAllTransactions",
+    authMiddleware,
+    roleCheckMiddleware("seller", "admin"),
+    getAllTransactionController
 );
 
 transactionRouter.get("/balance",
     authMiddleware,
-    roleCheckMiddleware("seller"),
+    roleCheckMiddleware("seller", "admin"),
     getSellerBalance
 );
 

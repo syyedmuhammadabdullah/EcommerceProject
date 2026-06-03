@@ -59,26 +59,37 @@ const updateSellerDetails=asyncHandler(async(req,res)=>{
             
         }
     }
- 
-    const updatedSeller=await SellerModel.findByIdAndUpdate(sellerId,form,{new:true});
-    if (!updatedSeller) {
-        throw new apiError(404, "Seller not found");
-    }
+    
+const seller = await SellerModel.findById(sellerId);
+if (!seller) throw new apiError(404, "Seller not found");
 
-    if(!updatedSeller.verification.isVerified){        
+ const hasChanges =
+  sellerForm.businessName !== seller.businessName ||
+  sellerForm.registrationNumber !== seller.registrationNumber ||
+  sellerForm.taxId !== seller.taxId ||
+  sellerForm.businessEmail !== seller.businessEmail ||
+  sellerForm.cnic !== seller.cnic;
+
+  if (hasChanges) {
+  seller.verification.status = "underReview";
+}
+ Object.assign(seller, form);
+await seller.save();
+
+    if(seller.verification.status !=="verified"){        
         const admins=await UserModel.find({role:"admin"});
     
     const adminNotifications=await Promise.all(admins.map(async(admin)=> (
         await NotificationModel.create({
         type:"seller",
-        message:`${updatedSeller?.storeDetails?.storeName} has updated their details and is pending verification.`,
+        message:`${seller?.storeDetails?.storeName} has updated their details and is pending verification.`,
         redirect:true,
         recipientModel:"Admin",
         recipient:admin?._id,
         title:"Pending Verification",
         data:{
-            sellerId:updatedSeller._id,
-            storeName:updatedSeller?.storeDetails?.storeName
+            sellerId:seller._id,
+            storeName:seller?.storeDetails?.storeName
         }
     })
 
@@ -90,7 +101,7 @@ const updateSellerDetails=asyncHandler(async(req,res)=>{
         
     })
     }
-    res.status(200).json(new apiResponse(200,"Seller details updated",updatedSeller));
+    res.status(200).json(new apiResponse(200,"Seller details updated",seller));
 });
 
 export {updateSellerDetails};

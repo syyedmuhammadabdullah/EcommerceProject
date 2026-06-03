@@ -9,7 +9,6 @@ import { useSelector,useDispatch } from 'react-redux';
 const HeaderNavbar = () => {
   const [search, setsearch] = useState("")
   const [notificationOpen, setNotificationOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
   const {unreadCount} = useSelector((state) => state.notifications);
   const {seller} = useSelector((state) => state.seller);
   return (
@@ -29,15 +28,12 @@ const HeaderNavbar = () => {
    
       
        <Button children={<BellOutlined className='text-lg'/>} className='relative' onClick={() => setNotificationOpen(!notificationOpen)}/>
-    {unreadCount !== null && unreadCount > 0 &&  <div className='count absolute top-0 right-[80px] text-white h-3 w-3'><span className='bg-red-400 text-md  px-sm  flex items-center justify-center rounded-lg'>{ unreadCount }</span></div>}
-      <Button children={<UserOutlined className='text-lg' />} className="text-text-default" onClick={() => setProfileOpen(!profileOpen)}/>
-       
+    {unreadCount !== null && unreadCount > 0 &&  <div onClick={()=>setNotificationOpen((prev)=>!prev)} className='select-none  count absolute top-0 right-[33px] text-white h-3 w-3'><span className='bg-red-400 cusror-pointer text-md  px-sm  flex items-center justify-center rounded-lg'>{ unreadCount }</span></div>}
         
       </div>
     </div>
       </section>
       {notificationOpen && <Notification/>}
-      {profileOpen && <ProfileMenu/>}
       </>
   )
 }

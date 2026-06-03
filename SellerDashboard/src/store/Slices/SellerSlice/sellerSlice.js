@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {createSeller,loginSeller,logoutSeller, updateSeller,getSeller} from "../../../index"
+import {createSeller,loginSeller,logoutSeller,updateSellerStatus, updateSeller,getSeller} from "../../../index"
 const initialState = {
     loading: true,
     error: null,
@@ -62,6 +62,18 @@ const sellerSlice = createSlice({
                 state.isAuthenticated = true;
             })
             .addCase(updateSeller.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+            .addCase(updateSellerStatus.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateSellerStatus.fulfilled, (state, action) => {
+                state.loading = false;
+                state.seller = action.payload;
+            })
+            .addCase(updateSellerStatus.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             })

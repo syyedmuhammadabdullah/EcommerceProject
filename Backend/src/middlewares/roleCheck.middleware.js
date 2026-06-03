@@ -6,7 +6,7 @@ const roleCheckMiddleware =(...roles)=> asyncHandler(async (req,_, next) => {
     if (!roles.includes(role)) {        
         throw new apiError(401, "UnAuthorized request");
     }
-  
+  req.role=role;
 
     next();
 });

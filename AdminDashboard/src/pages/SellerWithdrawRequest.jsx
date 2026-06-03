@@ -89,7 +89,7 @@ const handleCancel=()=>{
          <div className="Amount border text-text-secondary gap-xs pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >
           RS  {item.amount}
           </div>
-                      <div className="status border pl-[10px] min-w-[179px] flex items-center border-border-primary h-full" >{editId===item._id? <SelectMenu defaultValue={item.status} options={["completed", "pending", "rejected"]} onClick={(value)=>setStatus(value)}/>:  item.status}</div>
+                      <div className="status border pl-[10px] min-w-[179px] flex items-center border-border-primary h-full" >{editId===item._id? <SelectMenu defaultValue={item.status} options={["completed", "pending", "cancelled"]} onClick={(value)=>setStatus(value)}/>:  item.status}</div>
 
          <div className="date border text-text-secondary pl-[10px] min-w-[137px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >{<p>
   {new Date(item.createdAt)?.toLocaleString("en-PK", {

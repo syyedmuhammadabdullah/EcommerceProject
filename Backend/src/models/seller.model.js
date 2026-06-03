@@ -49,9 +49,11 @@ const SellerSchema = new Schema({
         storeLogoPublicId: { type: String, default: "" },
       },
       verification: {
-        isVerified: { type: Boolean, default: false },
+        status: { type: String, default: "pending", enum: ["pending", "verified","underReview", "rejected"] },
         verificationDate: { type: Date, default: null },
         verificationDocuments: [{ type: String }],
+        rejectionReason: { type: String, default: null },
+        submissionDate: { type: Date, default: null },
       },
       performanceMetrics: {
         totalProducts: { type: Number, default: 0 },
@@ -62,8 +64,8 @@ const SellerSchema = new Schema({
       accountStatus: {
         status: {
           type: String,
-          enum: ["active", "inactive","pending","reviewing","suspended"],
-          default: "pending",
+          enum: ["active", "inactive","reviewing","suspended"],
+          default: "inactive",
         },
         createdAt: { type: Date, default: Date.now },
         updatedAt: { type: Date, default: Date.now },

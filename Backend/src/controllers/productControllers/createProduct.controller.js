@@ -1,4 +1,4 @@
-import { apiError, apiResponse, asyncHandler, ProductModel, uploadOnCloudinary, deleteOnCloudinary,transformAttributes, NotificationModel, io } from "../../index.js";
+import { apiError, apiResponse, asyncHandler, ProductModel, uploadOnCloudinary, deleteOnCloudinary,transformAttributes, NotificationModel, io, SellerModel } from "../../index.js";
 
 const createProduct = asyncHandler(async (req, res) => {
     const images = req.files;
@@ -25,7 +25,6 @@ const createProduct = asyncHandler(async (req, res) => {
            
         }
                 const product = await ProductModel.create(productData).catch( async (error)=>{
-            console.error("Error creating product:", error);
             const pendingPromises = uploadedImages?.map(image => deleteOnCloudinary(image.public_id));
            const deletedImages= await Promise.all(pendingPromises);
             if (!deletedImages) {
@@ -42,6 +41,7 @@ const createProduct = asyncHandler(async (req, res) => {
                     redirect:true,
                     message: `A new product has been created: ${product.name}`
                 });
+                await SellerModel.findByIdAndUpdate(req.seller.sellerId,{ $inc: { "performanceMetrics.totalProducts": 1 } });
                 io.to(req.seller.sellerId.toString()).emit("notification", notification);
         res.status(200).json(new apiResponse(200, "Product created successfully", product));
     });

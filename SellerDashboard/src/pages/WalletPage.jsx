@@ -79,8 +79,10 @@ const WalletPage = () => {
 
            <div className="withdrawalHistory border border-border-primary rounded-md bg-white ">
 
-            <div className="withdraw border-b border-border-primary py-p-md px-p-lg">
+            <div className="withdraw flex justify-between items-center border-b border-border-primary py-p-md px-p-lg">
             <p className='text-lg'>Sales History</p>
+            <Link to="/transactions/order_payment" className='text-md text-primary-base text-primary'>View All</Link>
+
             </div>
             <div className="withdraw-list py-p-md px-p-md">
 
@@ -120,8 +122,9 @@ const WalletPage = () => {
            </div>
 
            <div className="refundedHistory border border-border-primary rounded-md bg-white">
-           <div className="refund border-b border-border-primary py-p-md px-p-lg">
+           <div className="refund border-b flex justify-between items-center  border-border-primary py-p-md px-p-lg">
             <p className='text-lg'>Refund History</p>
+            <Link to="/transactions/refund" className='text-md text-primary-base text-primary'>View All</Link>
             </div>
             <div className="refund-list py-p-md px-p-md">
 

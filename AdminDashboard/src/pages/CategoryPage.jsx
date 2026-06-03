@@ -30,19 +30,17 @@ const CreateCategory = ({handleCategoryCancel}) => {
     </div>
   )
 }
-const CreateSubCategory = ({ handleSubCategoryCancel }) => {
+const CreateSubCategory = ({ handleSubCategoryCancel, }) => {
   const dispatch = useDispatch();
 
   const { mainCategories } = useSelector((state) => state.category);
   const [subCategory, setSubCategory] = useState("");
   const [parentCategory, setParentCategory] = useState("");
-
+ 
 useEffect(() => {
-  if (!mainCategories || mainCategories.length === 0) {
-    
-    dispatch(getMainCategories());
-  }
-}, []);
+  if (mainCategories.length > 0) return;
+  dispatch(getMainCategories({}));
+}, [dispatch])
 
 
   const handleCreate = () => {
@@ -146,9 +144,6 @@ useEffect(() => {
     case "main":search===debouncedSearch&& dispatch(getMainCategories(payload)); break;
     case "submain": search===debouncedSearch&& dispatch(getSubCategories(payload)); break;
   }
-  
-  console.log(subCategories);
-// search===debouncedSearch&& dispatch(getMainCategories(payload));
 }, [mode, debouncedSearch,search, dispatch]);
 
 
@@ -213,7 +208,7 @@ const gridTemplate = columns[mode]
 const dataSource = (() => {
   switch (mode) {
     case "main":      
-      return mainCategories; ;
+      return mainCategories;
 
     case "submain":    
       return subCategories ; // Redux slice for seller
@@ -225,7 +220,7 @@ const dataSource = (() => {
 return (
     <section className="flex justify-center relative">
       {isCreate && mode === "main" && <CreateCategory handleCategoryCancel={handleCategoryCancel}/>}
-      {isCreate && mode === "submain" && <CreateSubCategory handleSubCategoryCancel={handleCategoryCancel}/>}
+      {isCreate && mode === "submain" && <CreateSubCategory mainCategories={dataSource} handleSubCategoryCancel={handleCategoryCancel}/>}
       <div className="container max-w-screen-xl  lg:gap-xxl  grid gap-xl px-p-md lg:p-p-xxl">
         <div className="top-menu flex justify-between items-center">
         <div className="title ">

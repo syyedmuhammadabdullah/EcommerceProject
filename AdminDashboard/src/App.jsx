@@ -101,7 +101,7 @@ const router = createBrowserRouter([
           { path: "edit-product/:id", element: <CreateProductPage /> },
           {path:"/orders/customer",element:<OrderHistoryPage/>},
           {path:"/orders/seller",element:<OrderHistoryPage/>},
-          {path:"/seller/details/:id",element:<SellerDetailPage/>},
+          {path:"/sellers/:id",element:<SellerDetailPage/>},
           {path:"/products/seller",element:<ProductsPage/>},
           {path:"/categories/main",element:<CategoryPage/>},
           {path:"/categories/submain",element:<CategoryPage/>},

@@ -13,6 +13,7 @@ import AddressForm from "./components/AddressFrom";
 import BillingFormCard from "./components/BillingFormCard";
 import TrackOrder from "./components/TrackOrder";
 import CopyToClipboard from "./components/CopyToClipBoard";
+import Pagnination from "./components/Pagination";
 //Home Components
 import PromoSectionOne from "./components/Home/PromoSectionOne";
 import PopularProducts from "./components/Home/PopularProducts";
@@ -151,6 +152,7 @@ export {
   BillingFormCard,
   TrackOrder,
   CopyToClipboard,
+  Pagnination,
   // Home Components
   PromoSectionOne,
   PopularProducts,

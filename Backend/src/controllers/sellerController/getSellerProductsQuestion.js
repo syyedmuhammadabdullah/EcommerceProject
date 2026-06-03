@@ -76,7 +76,7 @@ const getSellerProductsQuestion = asyncHandler(async (req, res) => {
 
     { $sort: { createdAt: -1 } }
   ]);
-  const totalQuestions = await ProductQuestionModel.countDocuments();
+  const totalQuestions = await ProductQuestionModel.countDocuments(query);
 
   res.status(200).json(
     new apiResponse(200, "Product questions found successfully", productQuestions,totalQuestions)

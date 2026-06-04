@@ -140,6 +140,7 @@ import { getSellerDetails } from "./controllers/sellerController/getSellerDetail
 import { updateSellerStatus } from "./controllers/sellerController/updateSellerStatus.controller.js"
 import { getSellerAllOrders } from "./controllers/orderControllers/getSellelrAllOrders.controller.js";
 import { getSellerDetailForAdmin } from "./controllers/sellerController/getSellerDetailForAdmin.controller.js";
+import { appealSellerSuspension } from "./controllers/sellerController/appealSellerSuspension.controller.js";
 //Admin Controllers
 import { loginAdmin } from "./controllers/adminContollers/loginAdmin.controller.js";
 import { getAdmin } from "./controllers/adminContollers/getAdmin.controller.js";
@@ -246,7 +247,7 @@ export {
 }; // End of User Controller Exports
 
 // Seller Controller Exports
-export { createSeller, getSellerDetailForAdmin, getAllSellers, getSellerDetails, updateSellerStatus, loginSeller, updateSellerDetails, getSellerProductsQuestion, getSeller }; // End of Seller Controller Exports
+export {appealSellerSuspension, createSeller, getSellerDetailForAdmin, getAllSellers, getSellerDetails, updateSellerStatus, loginSeller, updateSellerDetails, getSellerProductsQuestion, getSeller }; // End of Seller Controller Exports
 
 //Admin Controller Exports
 export { loginAdmin, getAdmin, createAdmin };

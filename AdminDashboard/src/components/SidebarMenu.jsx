@@ -43,7 +43,6 @@ const handleLogout = () => {
       {name:"Sub Categories",icon:<ApartmentOutlined/>,link:"/categories/submain"},
       {name:"Seller Withdrawals",icon:<DollarOutlined/>,link:"/seller-withdraw-requests"},
       {name:"Withdrawals",icon:<DollarOutlined/>,link:"/withdrawals"},
-      {name:"Coupons",icon:<GiftOutlined/>,link:"/coupons"},
       {name:"Wallet",icon:<WalletOutlined/>,link:"/wallet"},
       {name:"Settings",icon:<SettingOutlined/>,link:"/settings"},
       {name:"Logout",icon:<LogoutOutlined/>,link:"", btn:handleLogout},

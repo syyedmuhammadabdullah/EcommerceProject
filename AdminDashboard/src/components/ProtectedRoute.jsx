@@ -8,9 +8,6 @@ const ProtectedRoute = () => {
   
 
   // 1️⃣ Not logged in
-  if (loading) {
-    return <div>Loading...</div>;
-  }
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }

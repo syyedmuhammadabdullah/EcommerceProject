@@ -13,7 +13,7 @@ const loginSeller = createAsyncThunk(
                 }
             );
             
-            return data;
+            return data.data;
         } catch (error) {
             return rejectWithValue(error);
         }

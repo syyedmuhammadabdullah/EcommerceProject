@@ -28,18 +28,23 @@ import { useDispatch,useSelector} from "react-redux";
 import { useEffect } from "react";
 import { initializeSocketListeners } from "./socket/socketListeners";
 import {socket} from "./socket/socket";
+import FullPageLoader from "./pages/FullPageLoader";
 function App() {
   const dispatch = useDispatch();
-  const { isAuthenticated, admin, } = useSelector((state) => state.admin);
+  const { isAuthenticated, admin,loading } = useSelector((state) => state.admin);
   const {unreadCount} = useSelector(state => state.notifications);
 
   useEffect(() => {
+    if (isAuthenticated) return;
     dispatch(getAdmin());
   }, []);
 
 
+
   useEffect(() => {
   if (!isAuthenticated) return;
+  console.log("user authenticated",isAuthenticated);
+  
   socket.connect();
   socket.on("connect", () => {
   socket.emit("joinRoom",admin._id );    
@@ -64,6 +69,9 @@ useEffect(()=>{
       socket.off();
    }
 },[])
+  if (loading) {
+  return <FullPageLoader />;
+}
 
 
 const router = createBrowserRouter([

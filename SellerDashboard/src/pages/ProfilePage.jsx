@@ -275,7 +275,7 @@ const handleBannerUpload = (e) => {
 
     <div className="mark as">
         <label htmlFor="storeName">Mark As</label>
-        {seller?.accountStatus.status ==="active" ? 
+        {seller?.accountStatus?.status ==="active" ? 
         <Button onClick={handleMarkAsInActive} className='w-full mt-2 bg-warning-base text-white py-p-xs rounded-md px-p-md' children={"InActive"} />
        : <Button onClick={handleMarkAsActive} className='w-full mt-2 bg-primary-base text-white py-p-xs rounded-md px-p-md' children={"Active"} />
         }

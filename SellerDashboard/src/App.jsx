@@ -4,6 +4,7 @@ import {
   TranscationPage,
   ProductsPage,
   LoginPage,
+  SuspendPage,
   RegisterPage,
   MainLayout,
   ProductQuestionsPage,
@@ -23,6 +24,7 @@ getNotificationCount,
 addNotification,
   socket,
   VerificationPage,
+  getSeller
 } from "./index";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthProtectedRoute from "./components/AuthProtectedRoute";
@@ -30,10 +32,20 @@ import {  useDispatch, useSelector} from "react-redux";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { initializeSocketListeners } from "./socket/socketListeners";
+import FullPageLoader from "./pages/FullPageLoader";
 function App() {
   const { isAuthenticated,seller,loading } = useSelector(state => state.seller);
   const {unreadCount} = useSelector(state => state.notifications);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(isAuthenticated)return;
+    
+    dispatch(getSeller());
+  }, []);
+
+ 
+  
   useEffect(() => {
   if (!isAuthenticated) return;
   socket.connect();
@@ -65,9 +77,15 @@ useEffect(()=>{
    }
 
 },[])
+
+ if (loading) {
+   return <FullPageLoader />
+  }
 const router = createBrowserRouter([
+
   // 🔓 Public
   {
+
     element: <MainLayout />,
     children: [
       
@@ -84,7 +102,8 @@ const router = createBrowserRouter([
         element: <MainLayout />,
         children: [
         { path: "settings", element: <ProfilePage />},
-        { path: "verify", element: <VerificationPage /> }
+        { path: "verify", element: <VerificationPage /> },
+             { path: "suspend", element: <SuspendPage /> },
         ],
       },
     ],
@@ -112,6 +131,7 @@ const router = createBrowserRouter([
           { path: "new-product", element: <CreateProductPage /> },
           { path: "edit-product/:id", element: <CreateProductPage /> },
           { path: "transactions/:type", element: <TranscationPage /> },
+     
         ],
       },
     ],

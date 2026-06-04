@@ -49,7 +49,7 @@ const loginSeller = asyncHandler(async (req, res) => {
     res.status(200)
     .cookie("accessToken", accessToken, { options, maxAge: 24 * 60 * 60 * 1000 })
     .cookie("refreshToken", refreshToken, { options, maxAge: 10 * 24 * 60 * 60 * 1000 })
-    .json(new apiResponse(200, "seller logged in successfully", loggedInSeller));    
+    .json(new apiResponse(200, "seller logged in successfully", loggedInSeller.sellerId));    
 });
 
 export { loginSeller };

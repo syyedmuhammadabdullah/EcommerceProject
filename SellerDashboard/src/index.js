@@ -39,6 +39,9 @@ import CreateCouponPage from "./pages/CreateCouponPage";
 import CreateProductPage from "./pages/CreateProductPage";
 import TranscationPage from "./pages/TranscationPage";
 import VerificationPage from "./pages/VerificationPage";
+import FullPageLoader from "./pages/FullPageLoader";
+import SuspendPage from "./pages/SuspendPage";
+
 //layouts
 import MainLayout from "./layouts/MainLayout";
 //hooks
@@ -74,6 +77,7 @@ import loginSeller from "./store/Slices/SellerSlice/loginSeller";
 import updateSeller from "./store/Slices/SellerSlice/updateSeller";
 import getSeller from "./store/Slices/SellerSlice/getSeller";
 import logoutSeller from "./store/Slices/SellerSlice/logoutSeller";
+import { appealSellerSuspension } from "./store/Slices/SellerSlice/appealSellerSuspension";
 import updateSellerStatus from "./store/Slices/SellerSlice/updateSellerStatus";
 //customer Slice
 import customerReducer from "./store/Slices/CustomerSlice/CustomerSlice";
@@ -122,6 +126,7 @@ export {
   getAllTransactions,
   updateSellerStatus,
   orderReducer,
+  appealSellerSuspension,
   updateTransactionStatus,
   transationReducer,
   getSellerOrdersDetail,
@@ -156,6 +161,8 @@ export {
   WalletPage,
   DashboardPage,
   TranscationPage,
+  SuspendPage,
+  FullPageLoader,
   ProductQuestionsPage,
   CouponPage,
   CustomersPage,

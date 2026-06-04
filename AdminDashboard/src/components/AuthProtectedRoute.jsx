@@ -5,11 +5,10 @@ const AuthProtectedRoute = () => {
 const { isAuthenticated, loading } = useSelector(state => state.admin);
 
   // 1️⃣ Not logged in
-  if (loading) {
-    return <div>Loading...</div>;
-  }
   if (!isAuthenticated) {
-      return <Navigate to="/login" replace />;
+    console.log(isAuthenticated);
+    
+      // return <Navigate to="/login" replace />;
 
   }
 

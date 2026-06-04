@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {createAdmin,loginAdmin,logoutAdmin, updateAdmin,getAdmin} from "../../../index"
 const initialState = {
-    loading: false,
+    loading: true,
     error: null,
     admin: {},
     isAuthenticated: false,
@@ -18,9 +18,9 @@ const adminSlice = createSlice({
                 state.error = null;
             })
             .addCase(getAdmin.fulfilled, (state, action) => {
-                state.loading = false;
                 state.admin = action.payload;
                 state.isAuthenticated = true;
+                state.loading = false;
             })
             .addCase(getAdmin.rejected, (state, action) => {
                 state.loading = false;

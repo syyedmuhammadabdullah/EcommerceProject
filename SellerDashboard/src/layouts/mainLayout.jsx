@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom'
 import SidebarMenu from '../components/SidebarMenu'
 import HeaderNavbar from '../components/HeaderNavbar'
 const mainLayout = () => {
+  
 
   return (
     <>
@@ -14,7 +15,7 @@ const mainLayout = () => {
       </div>
       <div className="content w-screen min-h-screen bg-background-layout overflow-y-auto">
       <HeaderNavbar />
-    <Outlet/>
+     <Outlet/>
 
       </div>
      </div>

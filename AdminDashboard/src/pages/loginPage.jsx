@@ -26,7 +26,6 @@ const LoginPage = () => {
     (state) => state.admin
   );
 useEffect(() => {
-console.log(admin);
 if( isAuthenticated) {
 navigate("/dashboard");}
 }, [isAuthenticated]);

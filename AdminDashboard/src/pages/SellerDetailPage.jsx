@@ -264,7 +264,7 @@ const DetailField = ({ label, value, className = "" }) => (
             </div>
           </div>
          < div className="actions flex items-center gap-lg">
-         {sellerForm.accountStatus==="suspended"&&
+         {sellerForm.accountStatus==="suspended" || sellerForm.accountStatus==="reviewing"&&
           <Button className="bg-green-500 text-white px-4 py-2 rounded-md" onClick={()=>handleAccountApprove(sellerForm.sellerId)}>Approve Seller</Button>
          }
           {sellerForm.accountStatus!=="suspended" && sellerForm.verificationStatus!=="underReview"&&

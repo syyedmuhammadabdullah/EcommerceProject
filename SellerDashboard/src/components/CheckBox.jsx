@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const CheckBox = ({
   children = "",
@@ -8,6 +8,8 @@ const CheckBox = ({
   id = "checkbox",
   className=""
 }) => {
+  useEffect(() => {console.log(isChecked);
+  }, [isChecked]);
   return (
     <div className={`checkBox flex items-center gap-1 ${className}`}>
       <input

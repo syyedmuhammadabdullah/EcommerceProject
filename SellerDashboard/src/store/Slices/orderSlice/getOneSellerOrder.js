@@ -4,9 +4,7 @@ import axios from "axios";
 
 const getOneSellerOrder=createAsyncThunk(
     "order/getOneSellerOrder",
-    async(orderId,{rejectWithValue})=>{
-            console.log("orderId",orderId);
-        
+    async(orderId,{rejectWithValue})=>{        
         try {
             const {data}=await axios.get("http://localhost:3001/api/v1/orders/getOneSellerOrder",{
                 withCredentials:true,

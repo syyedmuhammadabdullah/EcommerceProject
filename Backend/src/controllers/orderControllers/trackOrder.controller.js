@@ -45,7 +45,6 @@ const trackOrder = asyncHandler(async (req, res) => {
       userId,
       productId: { $in: productIds }
     }).select("productId rating comment");
-console.log("reviews",reviews);
 
     // 🔥 Map for fast lookup
     const reviewMap = {};

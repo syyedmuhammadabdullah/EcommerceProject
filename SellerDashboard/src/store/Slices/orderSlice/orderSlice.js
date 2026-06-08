@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {getSellerOrders,updateItemStatus,getOneSellerOrder,getSellerOrdersDetail} from "../../../index"
-import updateOderStatus from "./updateOderStatus";
+import {getSellerOrders,processRefund,getOneSellerOrder,getSellerOrdersDetail,reviewProducts,updateShippingStatus,packProduct, handleRefundStatus} from "../../../index"
 const initialState = {
     loading: false,
     error: null,
@@ -63,29 +62,65 @@ const orderSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         })
-        .addCase(updateOderStatus.pending, (state) => {
+        .addCase(reviewProducts.pending, (state) => {
             state.loading = true;
             state.error = null;
         })
-        .addCase(updateOderStatus.fulfilled, (state, action) => {
+        .addCase(reviewProducts.fulfilled, (state, action) => {
             state.loading = false;
             state.order = action.payload;
         })
-        .addCase(updateOderStatus.rejected, (state, action) => {
+        .addCase(reviewProducts.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
         })
-        .addCase(updateItemStatus.pending, (state) => {
+        .addCase(updateShippingStatus.pending, (state) => {
             state.loading = true;
             state.error = null;
         })
-        .addCase(updateItemStatus.fulfilled, (state, action) => {
+        .addCase(updateShippingStatus.fulfilled, (state, action) => {
             state.loading = false;
             state.order = action.payload;
         })
-        .addCase(updateItemStatus.rejected, (state, action) => {
+        .addCase(updateShippingStatus.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
+        })
+        .addCase(packProduct.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(packProduct.fulfilled, (state, action) => {
+            state.loading = false;
+            state.order = action.payload;
+        })
+        .addCase(packProduct.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        })
+        .addCase(handleRefundStatus.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(handleRefundStatus.fulfilled, (state, action) => {
+            state.loading = false;
+            state.order = action.payload;
+        })
+        .addCase(handleRefundStatus.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        })
+        .addCase(processRefund.pending,(state)=>{
+            state.loading=true,
+            state.error=null    
+        })
+        .addCase(processRefund.fulfilled,(state,action)=>{
+            state.loading=false,
+            state.order=action?.payload
+        })
+        .addCase(processRefund.rejected,(state,action)=>{
+            state.loading=false,
+            state.error=action.error.message
         })
     }
 

@@ -1,9 +1,10 @@
 import {createSlice} from "@reduxjs/toolkit"
-import {createOrder,getOrders,trackOrder,deliveredOrder,updateItemStatus,updateOderStatus} from "../../../index"
+import {createOrder,getOrders,requestOrderRefund,cancelProducts,cancelOrderRefund,trackOrder,deliveredOrder,updateItemStatus,updateOderStatus, requestRefund} from "../../../index"
 const initialState={
     loading:false,
     error:null,
     orders:[],
+    totalOrders:0,
     trackedOrder:null,
     deliveredOrder:[],
     latestOrder:null
@@ -37,7 +38,8 @@ const orderSlice=createSlice({
         })
         .addCase(getOrders.fulfilled,(state,action)=>{
             state.loading=false,
-            state.orders=action.payload
+            state.orders=action.payload.data
+            state.totalOrders=action.payload.totalCount
         })
         .addCase(getOrders.rejected,(state,action)=>{
             state.loading=false,
@@ -91,6 +93,55 @@ const orderSlice=createSlice({
             state.loading=false,
             state.error=action.error.message
         })
+        .addCase(requestOrderRefund.pending,(state)=>{
+            state.loading=true,
+            state.error=null    
+        })
+        .addCase(requestOrderRefund.fulfilled,(state,action)=>{
+            state.loading=false,
+            state.trackedOrder=action?.payload
+        })
+        .addCase(requestOrderRefund.rejected,(state,action)=>{
+            state.loading=false,
+            state.error=action.error.message
+        })
+        .addCase(cancelOrderRefund.pending,(state)=>{
+            state.loading=true,
+            state.error=null    
+        })
+        .addCase(cancelOrderRefund.fulfilled,(state,action)=>{
+            state.loading=false,
+            state.trackedOrder=action?.payload
+        })
+        .addCase(cancelOrderRefund.rejected,(state,action)=>{
+            state.loading=false,
+            state.error=action.error.message
+        })
+        .addCase(cancelProducts.pending,(state)=>{
+            state.loading=true,
+            state.error=null    
+        })
+        .addCase(cancelProducts.fulfilled,(state,action)=>{
+            state.loading=false,
+            state.trackedOrder=action?.payload
+        })
+        .addCase(cancelProducts.rejected,(state,action)=>{
+            state.loading=false,
+            state.error=action.error.message
+        })
+        .addCase(requestRefund.pending,(state)=>{
+            state.loading=true,
+            state.error=null    
+        })
+        .addCase(requestRefund.fulfilled,(state,action)=>{
+            state.loading=false,
+            state.trackedOrder=action?.payload
+        })
+        .addCase(requestRefund.rejected,(state,action)=>{
+            state.loading=false,
+            state.error=action.error.message
+        })
+        
     }
 })
 export const {clearOrders}=orderSlice.actions

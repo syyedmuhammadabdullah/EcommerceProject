@@ -18,6 +18,8 @@ const handleLogout = () => {
    const links = [
       {name:"Dashboard",icon:<DashboardOutlined/> ,link:"/dashboard"},
       {name:"Orders",icon:<DashboardOutlined/>,link:"/order-history"},
+      {name:"Shipable orders",icon:<DashboardOutlined/>,link:"/shipable-order"},
+      {name:"Refund Requests",icon:<DashboardOutlined/>,link:"/refund-requests"},
       {name:"Products",icon:<DashboardOutlined/>,link:"/products"},
       {name:"Customers",icon:<DashboardOutlined/>,link:"/customers"},
       {name:"Product questions",icon:<DashboardOutlined/>,link:"/product-questions"},

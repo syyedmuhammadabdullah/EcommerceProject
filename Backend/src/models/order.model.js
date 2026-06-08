@@ -126,13 +126,13 @@ const ProductSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'shipped', 'out for delivery', 'delivered', 'cancelled',"confirmed", 'rejected'],
+    enum: ['pending',"cancelled", "packed","accepted", 'rejected'],
     default: 'pending'
   },
   refundStatus: {
     type: String,
-    enum: ['pending', 'approved',"requested","cancelled","processing","refunded", 'rejected'],
-    default: 'pending'
+    enum: ['none', 'approved',"requested","cancelled","processing","refunded", 'rejected'],
+    default: 'none'
   },
   refundAmount: {
     type: Number,
@@ -165,7 +165,12 @@ const OrderSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'shipped', 'out for delivery', 'delivered', 'cancelled', 'processing',"confirmed",'rejected'],
+    enum: ['pending', 'cancelled','completed', 'processing','rejected'],
+    default: 'pending'
+  },
+  shipmentStatus: {
+    type: String,
+    enum: ['pending','packed', 'shipped', 'out for delivery', 'delivered'],
     default: 'pending'
   },
   statusHistory: [
@@ -177,11 +182,18 @@ const OrderSchema = new Schema({
         "confirmed",
         "processing",
         "shipped",
+        "refundRequested",
+        "refundApproved",
+        "refundRejected",
+        "refundProcessing",
+        "refundCancelled",
         "out for delivery",
+        "partially refunded",
         "delivered",
         "cancelled",
         "refunded",
         "rejected",
+        "packed",
         "requested",
         "approved",
       ],
@@ -195,7 +207,7 @@ const OrderSchema = new Schema({
 ],
      refundStatus: {
     type: String,
-    enum: ['pending', 'approved',"requested","cancelled","processing","refunded", 'rejected'],
+    enum: ['pending', 'approved',"requested","cancelled","processing","partially refunded","refunded", 'rejected'],
     default: 'pending'
   },
   paymentMethod: {
@@ -234,7 +246,7 @@ const OrderSchema = new Schema({
         },
         commissionPercentage: {
           type: Number,
-          default: 10
+          default: 1
         },
 
         

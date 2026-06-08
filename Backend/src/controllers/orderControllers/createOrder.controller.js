@@ -1,5 +1,5 @@
 import { asyncHandler, apiError, apiResponse, OrderModel, CartModel,io,NotificationModel, AddressModel, } from "../../index.js";
-import { customAlphabet } from "nanoid";
+
 
 const createOrder = asyncHandler(async (req, res) => {
 try{
@@ -19,8 +19,6 @@ try{
     throw new apiError(400, "All fields are required");
   }
 
-  // Generate order ID
-  const orderId = customAlphabet("1234567890", 6);
 
   const isBillingSameAsShipping = JSON.stringify(shippingAddress) === JSON.stringify(billingAddress);
   let billAddress;
@@ -60,7 +58,6 @@ try{
         image: product.image,
         name: product.name
       })),
-      trackingNumber: orderId(),
       statusHistory: [
         {
           status: "pending",
@@ -132,7 +129,6 @@ try{
                   image: product.image,
                   name: product.name
                 })),
-                trackingNumber: orderId(),
                 statusHistory: [
                   {
                     status: "pending",

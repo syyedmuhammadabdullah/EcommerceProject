@@ -1,21 +1,29 @@
-import {apiError,apiResponse ,asyncHandler,OrderModel,io,NotificationModel,ProductModel} from "../../index.js";
+import {apiError,apiResponse ,asyncHandler,OrderModel,io,NotificationModel,ProductModel, SellerTransactionModel, SellerWalletModel} from "../../index.js";
 
 const updateItemStatus = asyncHandler(async (req, res) => {
  console.log("update item status runs",req.body,req.params);
  
-    const { orderId, itemId } = req.params;
-  const { status } = req.body;
+    const { orderId } = req.params;
+  const { status,items } = req.body;
   
+  if (!orderId,status,items) {
+    throw new apiError(400, "All fields are required");
+  }
+
   const order = await OrderModel.findById(orderId);
   if (!order) throw new apiError(404, "Order not found");
   
-  const item = order.products.find(i => i.productId.toString() === itemId);
-  console.log(item,itemId);
-  if (!item) throw new apiError(404, "Item not found");
-
-  if (item.status === status) {
-    throw new apiError(400, "Item status already updated");
+ order.products = order.products.map(item => {
+  const selectedSet = new Set(items);
+  if (selectedSet.has(item.productId.toString())) {
+    return {
+      ...item,
+      status// ya "rejected", jo bhi chaho
+    };
   }
+  return item;
+});
+ 
 
   // ✅ ROLE BASED AUTH
   const allowedTransitions = {
@@ -34,7 +42,6 @@ const updateItemStatus = asyncHandler(async (req, res) => {
     const product = await ProductModel.findById(item.productId);
 
     if (!product || product.currentStock < item.quantity) {
-      console.log(product,item.quantity);
       
       throw new apiError(400, "Insufficient stock");
     }
@@ -70,16 +77,6 @@ const updateItemStatus = asyncHandler(async (req, res) => {
     }
      await product.save();
   }
-
-  // ✅ UPDATE STATUS
-  if (status==="requested") {
-    item.refundStatus="requested";
-  }else if(order.status==="delivered" && status==="cancelled"){
-    item.refundStatus="cancelled";
-  }else{
-    item.status = status;
-  }
-
   // ✅ TOTAL RECALC
   order.totalAmount = order.products.reduce((acc, curr) => {
     if (curr.status !== "rejected") {
@@ -90,9 +87,19 @@ const updateItemStatus = asyncHandler(async (req, res) => {
 
   // ✅ OPTIONAL REFUND TRACK
   if (status === "rejected" &&order.paymentStatus === "completed") {
-    
-    item.refundedAmount += item.price * item.quantity;
-    order.totalAmount -= item.price * item.quantity;
+  const amount=order.products.reduce((acc, curr) => {
+    if (curr.status === "rejected") {
+      return acc + curr.price * curr.quantity;
+    }
+  })
+    await SellerTransactionModel.create({
+      walletId: order.walletId,
+      sellerId: order.sellerId,
+      amount: amount,
+      type: "refund",
+      status: "completed",
+      createdAt: Date.now(),
+    })
   }
 
   await order.save();

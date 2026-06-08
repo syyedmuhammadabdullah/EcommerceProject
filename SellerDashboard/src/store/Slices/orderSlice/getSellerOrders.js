@@ -4,13 +4,15 @@ import axios from "axios";
 
 const getSellerOrders = createAsyncThunk(
     "order/getSellerOrders",
-    async ({filter=null,search="",page=1,limit=10}= {}, { rejectWithValue }) => {
+    async ({filter=null,shipmentStatus=null,refundStatus=null,search="",page=1,limit=10}= {}, { rejectWithValue }) => {
         
     const filterData={
         filter,
         search,
         page,
-        limit
+        limit,
+        refundStatus,
+        shipmentStatus
     }
         try {
             const { data } = await axios.get(

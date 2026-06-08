@@ -11,7 +11,6 @@ import axios from "axios";
                 params: { type,page,limit,filter },
                 withCredentials: true,
             });
-            console.log(response);
             
             return response.data;
         }

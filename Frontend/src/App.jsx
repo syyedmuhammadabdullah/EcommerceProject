@@ -28,7 +28,6 @@ import {
   getUserCart,
   getWishlist,
   OrderDetailPage,
-  getOrders,
   MyReviewPage,
   deliveredOrder,
   getUserProductReview,
@@ -48,7 +47,6 @@ useEffect(()=>{
  dispatch(getAllAddress())
   dispatch(getUserCart({userId:user?._id}))
   dispatch(getWishlist())
-  dispatch(getOrders())
   dispatch(deliveredOrder())
   dispatch(getUserProductReview())
   dispatch(getAllCategories())

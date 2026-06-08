@@ -1,48 +1,37 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector,useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom';
-import { Button,getOneSellerOrder,SelectMenu,updateOrderStatus,updateItemStatus, Input, CheckBox,packProduct, reviewProducts } from '../index.js';
+import { Button,getOneSellerOrder,processRefund,handleRefundStatus,SelectMenu,updateOrderStatus,updateItemStatus, Input, CheckBox,updateShippingStatus } from '../index.js';
 import { CloseCircleOutlined } from '@ant-design/icons';
-const OrderDetailPage = () => {
+const UpdateRefundStatusPage = () => {
     const dispatch = useDispatch();
     const {loading,error,order}=useSelector(state=>state.order)
-    const {orderId}=useParams();
-    const [orderStatus, setOrderStatus] = useState(order?.orderStatus);
-    const [editMode, setEditMode] = useState(false);
-   const [selectedItems, setSelectedItems] = useState([]);
-    const [itemId, setItemId] = useState("");
-    const [refundStatus, setRefundStatus] = useState(order?.refundStatus);
-    
-    const grid=order.status==="pending"?"48px minmax(389px, 1fr) minmax(137px, 1fr) minmax(137px, 1fr) minmax(137px, 1fr) minmax(111px, 1fr) minmax(111px, 1fr) minmax(220px, 1fr)":"48px minmax(389px, 1fr) minmax(137px, 1fr) minmax(137px, 1fr) minmax(137px, 1fr) minmax(111px, 1fr)";
+    const [refundItems,setRefundItems]=useState([]);
+    const {orderId}=useParams();    
+    const grid=order.refundStatus==="requested"?"48px minmax(389px, 1fr) minmax(137px, 1fr) minmax(137px, 1fr) minmax(137px, 1fr) minmax(150px, 1fr) minmax(111px, 1fr)":
+    "48px minmax(389px, 1fr) minmax(137px, 1fr) minmax(137px, 1fr) minmax(137px, 1fr) minmax(111px, 1fr)";
 
-    useEffect(() => {
-        console.log(selectedItems);
-        
-    },[selectedItems,setSelectedItems])
     useEffect(() => {
         dispatch(getOneSellerOrder(orderId))
     }, [orderId,dispatch]);
 
-    const handleSelectItem = (itemId) => {
-        if (selectedItems.includes(itemId)) {
-            setSelectedItems(selectedItems.filter((id) => id !== itemId));
-        } else {
-            setSelectedItems([...selectedItems, itemId]);
+   const handleAcceptRefund=()=>{
+       dispatch(handleRefundStatus({orderId,refundStatus:"approved",items:refundItems}))
+   }
+
+   const handleRejectRefund=()=>{
+       dispatch(handleRefundStatus({orderId,refundStatus:"rejected",items:refundItems}))
+   }
+   const handleMarkAsRefunded=()=>{
+       dispatch(processRefund(orderId))
+   }
+    const handleRefundItemChange=(itemId)=>{
+        if(refundItems.includes(itemId)){
+            setRefundItems(refundItems.filter((id)=>id!==itemId))
+        }else{
+            setRefundItems([...refundItems,itemId])
         }
     }
-    
-    const handleAcceptItems= () => {
-        dispatch(reviewProducts({orderId,items:selectedItems,action:"accepted"}))
-        setSelectedItems([]);
-    }
-    const handleDeclineItems= () => {
-        dispatch(reviewProducts({orderId,items:selectedItems,action:"rejected"}))
-        setSelectedItems([]);
-    }
-    const handlePackOrder=()=>{
-        dispatch(packProduct({orderId}))
-    }
-
 
   return (
     <section className='flex justify-center'>
@@ -51,7 +40,12 @@ const OrderDetailPage = () => {
          <div className="heading"><h3>Order Detail</h3> </div>
 
          <div className="btns">
-            {order.status==="processing"&& <Button children='Mark As Pack' className='bg-primary-base px-xxl py-xs rounded-md text-white' onClick={handlePackOrder}/>}
+          {order.refundStatus==="requested"&&
+          <div className="flex gap-xs">
+          <Button children={`Accept Refund ${refundItems.length}`} className='bg-primary-base px-xxl py-xs rounded-md text-white' onClick={handleAcceptRefund}/>
+          <Button children={`Reject Refund ${refundItems.length}`} className='bg-warning-base px-xxl py-xs rounded-md text-white' onClick={handleRejectRefund}/>
+          </div>}
+          {order.refundStatus==="processing"&& <Button children="Mark as Refunded" className='bg-primary-base px-xxl py-xs rounded-md text-white' onClick={handleMarkAsRefunded}/>}
             </div>            
         </div>
 
@@ -88,6 +82,10 @@ const OrderDetailPage = () => {
             <div className="orderStatus flex gap-xs ">
                 <p>Fullfillment Status:</p>
                 <p>{order?.shipmentStatus}</p>
+            </div>
+            <div className="orderStatus flex gap-xs ">
+                <p>Refund Status:</p>
+                <p>{order?.refundStatus}</p>
             </div>
 
         <div className="paymentStatus flex gap-xs">
@@ -264,9 +262,8 @@ const OrderDetailPage = () => {
            <div className="stock border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Quantity</div>
            <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Price</div>
            <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Total</div>
-           <div className="action relative border pl-[10px] min-w-[111px] flex items-center border-[#0000000f]  h-full" >Status</div>
-         {order.status==="pending"&&  <div className="action relative border pl-[10px] min-w-[111px] flex items-center border-[#0000000f]  h-full" >Select</div> }
-           {order.status==="pending"&&<div className="action relative border pl-[10px] min-w-[220px] flex items-center border-[#0000000f]  h-full" ><Button onClick={handleAcceptItems} children={`Accept ${selectedItems?.length}`} className="bg-primary-base mr-xs w-fit px-p-md py-p-xxs rounded-sm text-white" /> <Button onClick={handleDeclineItems} children={`Decline ${selectedItems?.length}`} className="bg-warning-base w-fit px-p-md py-p-xxs rounded-sm text-white" /> </div> }
+           <div className="action relative border pl-[10px] min-w-[111px] flex items-center border-[#0000000f]  h-full" >Refund Status</div>
+           {order.refundStatus==="requested"&&<div className="action relative border pl-[10px] min-w-[111px] flex items-center border-[#0000000f]  h-full" >Select</div>}
           </div>
          {order?.products?.map((product,index)=>(
             <div key={product.productId} style={{gridTemplateColumns:grid}} className="body grid  items-center  h-[72px]  ">
@@ -283,8 +280,11 @@ const OrderDetailPage = () => {
              <div className="stock border pl-[10px] min-w-[137px] flex flex-col gap-xs justify-center border-[#0000000f] h-full" >{product.quantity}</div>
              <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{product.priceAtPurchase}</div>
              <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >{product.priceAtPurchase*product.quantity}</div>
-             <div className="action relative border pl-[10px] min-w-[111px] flex items-center border-[#0000000f] h-full" >{product.status}</div>
-             {product.status==="pending" &&<div className="action relative border pl-[10px] min-w-[111px] flex items-center border-[#0000000f] h-full" ><CheckBox className='outline-none' id={product.productId} isChecked={selectedItems?.includes(product.productId)} onChange={()=>handleSelectItem(product.productId)} /></div>}
+             <div className="action relative border pl-[10px] min-w-[111px] flex items-center border-[#0000000f] h-full" >{product.refundStatus}</div>
+            
+             {order.refundStatus==="requested"&&<div className="action relative border pl-[10px] min-w-[111px] flex items-center border-[#0000000f]  h-full" >
+               {product.status!=="rejected"&&product.status!=="cancelled" && <CheckBox className='outline-none' id={product.productId} onChange={()=>{handleRefundItemChange(product.productId);}}isChecked={refundItems.includes(product.productId)} />}
+                </div>}
                
             </div>
          ))}
@@ -305,4 +305,4 @@ const OrderDetailPage = () => {
   )
 }
 
-export default OrderDetailPage
+export default UpdateRefundStatusPage

@@ -5,11 +5,11 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Button,getSellerOrders,Pagination,useDebouncedHook } from "../index";
 import { useSelector,useDispatch } from "react-redux";
 
-const OrderHistoryPage = () => {
+const ShipableOrderPage = () => {
   const { orders,totalOrders,loading, } = useSelector((state) => state.order);
   const dispatch = useDispatch();
   const [selectedFilter, setSelectedFilter] =useState("all");
-  const filters = ["All", "Processing", "Pending", "Cancelled", "Completed"];
+  const filters = ["All","Packed", "Shipped" ,"Out for Delivery","Delivered"];
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebouncedHook(search,500);
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,20 +18,18 @@ const OrderHistoryPage = () => {
 useEffect(() => {
   // ✅ agar data already loaded hai → skip
 
-  
-
   dispatch(
     getSellerOrders({
       search: debouncedSearch || undefined,
       page: currentPage,
-      filter:selectedFilter
+      shipmentStatus:selectedFilter
     })
   );
 
 }, [debouncedSearch]);
   const handleFilterChange = (filter) => {
    if (filter!==selectedFilter) {
-     dispatch(getSellerOrders({filter}));
+     dispatch(getSellerOrders({shipmentStatus:filter,search:debouncedSearch,page:currentPage,limit:10}));
    }
     setSelectedFilter(filter);
     
@@ -39,7 +37,7 @@ useEffect(() => {
 
   const handleKeyDown = (e) => {    
     if (e.key === 'Enter') {
-      dispatch(getSellerOrders({debouncedSearch}));
+      dispatch(getSellerOrders({debouncedSearch,shipmentStatus:selectedFilter}));
     }
   };
 
@@ -52,6 +50,7 @@ if (page > totalPages) return;
     getSellerOrders({
       search: debouncedSearch || undefined,
       page,
+      shipmentStatus:selectedFilter
     })
   );
 
@@ -89,7 +88,7 @@ if (page > totalPages) return;
            <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >Total Amount</div>
            <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >Commission</div>
            <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >Net Earning</div>
-           <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >Order Status</div>
+           <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >Shipment Status</div>
            <div className="action border pl-[10px] min-w-[140px] flex items-center border-border-primary h-full" >Action</div>
           </div>
          {orders?.map((order,index)=>(
@@ -102,9 +101,9 @@ if (page > totalPages) return;
              <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >Rs {order?.totalPrice}</div>
              <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >Rs {order.commissionAmount||0}</div>
              <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >Rs {order.totalPrice-order.commissionAmount||order.totalPrice}</div>
-             <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >{order.status}</div>
+             <div className="price border pl-[10px] min-w-[137px] flex items-center border-border-primary h-full" >{order.shipmentStatus}</div>
              <div className="action border pl-[10px] min-w-[140px] flex items-center border-border-primary h-full" >
-             <Link to={`/order-details/${order._id}`}>
+             <Link to={`/shipment/${order._id}`}>
                 <Button
                   children="View Order"
                   className="option hover:bg-primary-hover rounded-md text-center bg-primary-base text-white  border-border-primary border px-p-md py-p-xxs" />
@@ -124,4 +123,4 @@ if (page > totalPages) return;
   );
 };
 
-export default OrderHistoryPage;
+export default ShipableOrderPage;

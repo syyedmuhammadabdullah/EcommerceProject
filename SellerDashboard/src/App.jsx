@@ -3,7 +3,10 @@ import {
   OrderHistoryPage,
   TranscationPage,
   ProductsPage,
+  ShipableOrderPage,
+  ShipmentPage,
   LoginPage,
+  RefundOrderPage,
   SuspendPage,
   RegisterPage,
   MainLayout,
@@ -24,7 +27,8 @@ getNotificationCount,
 addNotification,
   socket,
   VerificationPage,
-  getSeller
+  getSeller,
+  UpdateRefundStatusPage
 } from "./index";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthProtectedRoute from "./components/AuthProtectedRoute";
@@ -120,6 +124,10 @@ const router = createBrowserRouter([
           { path: "products", element: <ProductsPage /> },
           { path: "order-history", element: <OrderHistoryPage /> },
           { path: "order-details/:orderId", element: <OrderDetailPage /> },
+          {path:"shipment/:orderId",element:<ShipmentPage/>},
+          { path: "refund-requests", element: <RefundOrderPage /> },
+          {path:"updaterefundstatus/:orderId",element:<UpdateRefundStatusPage/>},
+          { path: "shipable-order", element: <ShipableOrderPage /> },
           { path: "order-invoice/:orderId", element: <OrderInvoicePage /> },
           { path: "product-questions", element: <ProductQuestionsPage /> },
           { path: "customers", element: <CustomersPage /> },

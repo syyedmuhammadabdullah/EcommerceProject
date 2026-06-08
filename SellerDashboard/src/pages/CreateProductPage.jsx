@@ -67,8 +67,6 @@ const handleInputChange = (e) => {
       // Create a new File instance with the modified name
       const modifiedFile = new File([file], "mainImage", { type: file.type });
       // Update the images state with the new file
-      console.log("mainImage",modifiedFile);
-      
         setProductImage(modifiedFile);
     }
     }
@@ -327,7 +325,8 @@ const handleInputChange = (e) => {
 
 
 
-<div className="update col-span-full ml-auto">
+<div className="update col-span-full ml-auto flex gap-md">
+  <Button onClick={()=>navigate("/products")}  children="cancel" className='w-full  bg-red-500 text-white py-p-xs rounded-md px-p-md' />
     {id? < Button onClick={handleUpdateProduct}  children="update" className='w-full bg-primary-base text-white py-p-xs rounded-md px-p-md' /> :
 <Button onClick={handleSubmit}  children="create" className='w-full bg-primary-base text-white py-p-xs rounded-md px-p-md' />}
     

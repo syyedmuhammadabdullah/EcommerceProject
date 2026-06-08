@@ -1,11 +1,20 @@
 import { Router } from "express";
-import { authMiddleware,updateItemStatus, createOrder,getSellerOrdersDetail,getCustomerOrders, getOrders,trackOrder,deliveredOrder,getSellerAllOrders, roleCheckMiddleware,getSellerOrders, getOneSellerOrder, updateOrderController, getAllOrders } from "../index.js";
+import { authMiddleware,handleRefundStatus,cancelOrderRefund,processRefund,requestOrderRefund,updateItemStatus,cancelProducts,reviewProducts,updateShippingStatus,packProducts, createOrder,getSellerOrdersDetail,getCustomerOrders, getOrders,trackOrder,deliveredOrder,getSellerAllOrders, roleCheckMiddleware,getSellerOrders, getOneSellerOrder, updateOrderController, getAllOrders, requestRefund } from "../index.js";
 
 const orderRouter = Router();
 
 orderRouter.get("/getOrders", authMiddleware,roleCheckMiddleware("user"), getOrders);
 orderRouter.get("/trackOrder", authMiddleware,roleCheckMiddleware("user"), trackOrder);	
 orderRouter.post("/createOrder",authMiddleware,roleCheckMiddleware("user"),createOrder);
+orderRouter.post("/requestOrderRefund",authMiddleware,roleCheckMiddleware("user"),requestOrderRefund);
+orderRouter.post("/cancelOrderRefund",authMiddleware,roleCheckMiddleware("user"),handleRefundStatus);
+orderRouter.post("/handleRefundStatus",authMiddleware,roleCheckMiddleware("seller"),handleRefundStatus);
+orderRouter.post("/processRefund",authMiddleware,roleCheckMiddleware("seller"),processRefund);
+orderRouter.post("/cancelProducts",authMiddleware,roleCheckMiddleware("user"),cancelProducts);
+orderRouter.post("/requestRefund",authMiddleware,roleCheckMiddleware("user"),requestRefund);
+orderRouter.post("/reviewProducts",authMiddleware,roleCheckMiddleware("seller"),reviewProducts);
+orderRouter.post("/updateShippingStatus",authMiddleware,roleCheckMiddleware("seller"),updateShippingStatus);
+orderRouter.post("/packProducts",authMiddleware,roleCheckMiddleware("seller"),packProducts);
 orderRouter.post("/updateOrder/:orderId",authMiddleware,roleCheckMiddleware("seller","user","admin"),updateOrderController);
 orderRouter.post("/deliveredOrder",authMiddleware,roleCheckMiddleware("user"),deliveredOrder)
 orderRouter.get("/getSellerOrders",authMiddleware,roleCheckMiddleware("seller"),getSellerOrders)

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import {Button,trackOrder,updateItemStatus,updateOderStatus} from "../index"
+import {Button,trackOrder,updateItemStatus,updateOderStatus,cancelProducts, CheckBox, requestRefund} from "../index"
 import ReviewComponent from '../components/ReviewComponent'
 import OrderItemActions from '../components/OrderItemActions'
 
@@ -12,11 +12,13 @@ const OrderDetailPage = () => {
     const {trackedOrder,error}=useSelector(state=>state.order)
     const [formattedDate,setFormattedDate]=useState("loading...")
     const [isReview,setIsReview]=useState('')
+    const [items,setItems]=useState([]);
+    const [refundItems,setRefundItems]=useState([]);
     const [selectedReview, setSelectedReview] = useState(null);
     const {orderId}=useParams();
     const dispatch=useDispatch()
 
-    const isDelivered = trackedOrder?.status === "delivered";
+    const isDelivered = trackedOrder?.shipmentStatus === "delivered";
 const isPending = trackedOrder?.status === "pending";
 const isCancelled = trackedOrder?.status === "cancelled";
 const isRefundPending = trackedOrder?.refundStatus === "pending";
@@ -24,13 +26,12 @@ const gridCols = isDelivered
   ? "grid-cols-[40px_1fr_132px_132px_132px_132px]"
   : "grid-cols-[40px_1fr_132px_132px_132px]";
 const canCancelOrder = isPending;
-const canReview = isDelivered || trackedOrder?.status === "refunded";
+const canReview = isDelivered || trackedOrder?.refundStatus === "refunded";
 
 
 
     useEffect(()=>{
         if(trackedOrder?._id===orderId) return;
-
 
         dispatch(trackOrder({orderId}))
     },[orderId,dispatch])
@@ -53,15 +54,19 @@ const canReview = isDelivered || trackedOrder?.status === "refunded";
 
         const handleCancelOrder=()=>{
             // Implement cancel order functionality here
-            dispatch(updateOderStatus({orderId,status:"cancelled"}))
+            dispatch(cancelProducts({orderId,items}));
+            setItems([]);
         console.log("cancel called");
         }
         
-        const handleProductCancel=(itemId)=>{
-            // Implement cancel order functionality here
-            dispatch(updateItemStatus({orderId,itemId,status:"cancelled"}))
-        console.log("cancel called");
-        }
+
+      const handleProductCancel = (itemId) => {
+  if (items?.includes(itemId)) {
+    setItems((prev) => prev.filter((id) => id !== itemId));
+  } else {
+    setItems((prev) => [...prev, itemId]);
+  }
+};
         const handleReview=(product)=>{
             setSelectedReview(product)
             // setIsReview(productId)
@@ -69,14 +74,20 @@ const canReview = isDelivered || trackedOrder?.status === "refunded";
             console.log("review called for product id ",product);
         }
 
+
         const handleRefund=()=>{
             // Implement cancel order functionality here
-            dispatch(updateOderStatus({orderId,refundStatus:"requested"}))
+            dispatch(requestRefund({orderId,items:refundItems}));
         console.log("refund called");
         }
         const handleItemRefund=(itemId)=>{
             // Implement cancel order functionality here
-            dispatch(updateItemStatus({orderId,itemId,status:"requested"}))
+            if (refundItems.includes(itemId)) {
+                setRefundItems((prev) => prev.filter((id) => id !== itemId));
+            }else{
+                setRefundItems((prev) => [...prev, itemId]);
+            }
+
         console.log("refund called for item id ",itemId);
         }
     return (
@@ -84,8 +95,8 @@ const canReview = isDelivered || trackedOrder?.status === "refunded";
         <div className="container flex flex-col gap-xxl py-p-xxl px-p-xl sm:p-xxl">
             <div className="content flex justify-between items-center">
                 <h3>Order Detail</h3>
-                {(isDelivered && isRefundPending)?<Button children='Request Refund' onClick={handleRefund} className='bg-warning-base text-white py-xs rounded-md px-xxl'/>:isRefundPending ?"": "Refund Status: "+trackedOrder?.refundStatus}
-            {!isDelivered&& (isCancelled?"Canceled":<Button disabled={!isPending} onClick={handleCancelOrder} children="Cancel" className={`text-white rounded-md py-xs px-xxl bg-warning-base ${!isPending && "cursor-not-allowed"}`}></Button>)}
+                {(isDelivered && isRefundPending)?<Button children={`Request Refund ${refundItems?.length}`} onClick={handleRefund} className='bg-warning-base text-white py-xs rounded-md px-xxl'/>:isRefundPending ?"": "Refund Status: "+trackedOrder?.refundStatus}
+            {canCancelOrder&& (isCancelled?"Canceled":<Button disabled={!isPending} onClick={handleCancelOrder} children={`Cancel ${items?.length}`} className={`text-white rounded-md py-xs px-xxl bg-warning-base ${!isPending && "cursor-not-allowed"}`}></Button>)}
                 {/* <Link to="/user-account/order-history" className='text-primary-base'>Back to orders</Link> */}
             </div>
 
@@ -98,8 +109,16 @@ const canReview = isDelivered || trackedOrder?.status === "refunded";
             </div>
 
                 <div className="orderStatus flex gap-xs ">
-                    <p>Fullfillment Status:</p>
+                    <p>Order Status:</p>
                     <p>{trackedOrder?.status}</p>
+                </div>
+                <div className="orderStatus flex gap-xs ">
+                    <p>Shipment Status:</p>
+                    <p>{trackedOrder?.shipmentStatus}</p>
+                </div>
+                <div className="orderStatus flex gap-xs ">
+                    <p>Refund Status:</p>
+                    <p>{trackedOrder?.refundStatus}</p>
                 </div>
 
             <div className="paymentStatus flex gap-xs">
@@ -266,7 +285,7 @@ const canReview = isDelivered || trackedOrder?.status === "refunded";
             const isReviewed = product.isReviewed;
             const showReviewBtn = canReview && !isReviewed;
             const showEditReview = isReviewed && isDelivered;
-            const isProductRefundPending = product.refundStatus === "pending";
+            const isProductRefundPending = product.refundStatus === "none";
 
           return  <React.Fragment key={product.productId}>
 
@@ -281,15 +300,15 @@ const canReview = isDelivered || trackedOrder?.status === "refunded";
         <div className="amount  py-sm px-xs">{product.quantity}</div>
     
        <div className="details py-sm px-xs text-primary-base">
-        <OrderItemActions product={product} order={trackedOrder} onReview={handleReview} onCancel={handleProductCancel}/>
+        <OrderItemActions items={items} product={product} order={trackedOrder} onReview={handleReview} onCancel={handleProductCancel}/>
 
 </div>    
         {(isDelivered && isRefundPending) ? <div className="refund py-sm px-xs text-primary-base">
-        {isProductRefundPending && <Button children="Request Refund" onClick={() => handleItemRefund(product.productId)} className={`text-white rounded-md py-xxs px-xs bg-warning-base`}>
-    </Button>}
+       
+       {product.status==="cancelled"||product.status!=="rejected"&&<CheckBox id={product.productId} isChecked={refundItems?.includes(product.productId)}  onChange={() => handleItemRefund(product.productId)} /> }
       {!isProductRefundPending && <p>{product.refundStatus}</p>}
-        </div>:isDelivered ?<div className="refund py-sm px-xs text-primary-base">
-       {trackedOrder?.refundStatus}  </div>:""
+        </div>:isDelivered&&<div className="refund py-sm px-xs text-primary-base">{product.refundStatus}</div>
+        
         }
 
             </React.Fragment>

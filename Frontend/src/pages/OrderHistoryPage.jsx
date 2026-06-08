@@ -1,13 +1,23 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import { Link } from 'react-router-dom'
 import { SearchOutlined } from '@ant-design/icons'
-import {Button,CopyToClipboard,Input } from "../index";
-import { useSelector } from 'react-redux';
+import {Button,CopyToClipboard,Input, Pagnination,getOrders } from "../index";
+import { useDispatch, useSelector } from 'react-redux';
 
 const OrderHistoryPage = () => {
- const { orders } = useSelector((state) => state.order);
+ const { orders, loading, error, totalOrders } = useSelector((state) => state.order);
+const [currentPage, setCurrentPage] = useState(1);
+const dispatch = useDispatch();
 
-  
+useEffect(() => {
+    dispatch(getOrders({ page: currentPage, limit: 5 }));
+  }, [dispatch, currentPage]);
+
+const handlePageChange=(page)=>{
+    if (currentPage===page)return;
+    setCurrentPage(page);
+    dispatch(getOrders({page,limit:5}))
+}
   return (
     <section className='flex justify-center '>
 
@@ -75,12 +85,12 @@ const OrderHistoryPage = () => {
                            
         
         
-        
                             </div>
                         </div>
                     ))
                 }
 
+              <Pagnination totalItems={totalOrders} currentPage={currentPage} limit={5} onPageChange={handlePageChange} />
              
 
 

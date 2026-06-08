@@ -4,11 +4,12 @@ import axios from "axios";
 
 const updateItemStatus = createAsyncThunk(
     "order/updateItemStatus",
-    async ({orderId,itemId,status},{rejectWithValue})=>{
+    async ({orderId,items,status},{rejectWithValue})=>{
         try {
-            console.log(orderId,itemId,status);
+            console.log(orderId,items,status);
             
-            const {data}=await axios.post(`http://localhost:3001/api/v1/orders/updateItemStatus/${orderId}/${itemId}`,{
+            const {data}=await axios.post(`http://localhost:3001/api/v1/orders/updateItemStatus/${orderId}`,{
+                items,
                 status
             },
             {

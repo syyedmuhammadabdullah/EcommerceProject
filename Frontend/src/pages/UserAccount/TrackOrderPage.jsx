@@ -18,6 +18,9 @@ const TrackOrderPage = () => {
     const statusMap = {
   pending: "Your order is pending",
   rejected: "Your order has been rejected",
+  refundRequested: "Refund has been requested",
+  refundProcessing:"Your refund is approved and is being processed",
+  partiallyRefunded: "Your order has been partially refunded",
   refunded: "Your order has been refunded",
   cancelled: "Your order has been cancelled",
   confirmed: "Your order has been confirmed",

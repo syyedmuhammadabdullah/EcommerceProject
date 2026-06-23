@@ -9,7 +9,7 @@ const OrderHistoryPage = () => {
   const { orders,totalOrders,loading, } = useSelector((state) => state.order);
   const dispatch = useDispatch();
   const [selectedFilter, setSelectedFilter] =useState("all");
-  const filters = ["All", "Processing", "Pending", "Cancelled", "Completed"];
+  const filters = ["All", "Pending", "Processing", "Cancelled", "Completed"];
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebouncedHook(search,500);
   const [currentPage, setCurrentPage] = useState(1);

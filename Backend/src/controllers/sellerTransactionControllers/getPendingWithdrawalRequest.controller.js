@@ -1,13 +1,13 @@
-import {apiError, apiResponse, asyncHandler, SellerTransactionModel} from "../../index.js";
+import {apiError, apiResponse, asyncHandler, SellerTransactionModel,SellerWithdrawalModel} from "../../index.js";
 
 const getPendingWithdrawalRequest = asyncHandler(async (req, res) => {
-    const {page=1,limit=10,search=""}=req.query
- 
+    const {search=""}=req.query
+    const limit=parseInt(req.query.limit) || 10;
+    const page=parseInt(req.query.page) || 1;
     
-        const pendingWithdrawals = await SellerTransactionModel.aggregate([
+        const pendingWithdrawals = await SellerWithdrawalModel.aggregate([
             {
                 $match: {
-                    type: "withdrawal",
                     status:"pending",
                 },
             },
@@ -32,18 +32,17 @@ const getPendingWithdrawalRequest = asyncHandler(async (req, res) => {
                     _id: 1,
                     amount: 1,
                     status: 1,
-                    type: 1,
                     createdAt: 1,
                     updatedAt: 1,
                     "sellerId.storeDetails.storeName":1
                 },
             },
-            // {
-            //     $skip: (page - 1) * limit,
-            // },
-            // {
-            //     $limit: limit,
-            // },
+            {
+                $skip: (page - 1) * limit,
+            },
+            {
+                $limit: limit,
+            },
         ])
         res.status(200).json(new apiResponse(200, "Pending withdrawals found successfully", pendingWithdrawals));
     });

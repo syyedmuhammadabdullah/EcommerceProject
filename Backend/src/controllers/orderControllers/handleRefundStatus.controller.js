@@ -41,6 +41,7 @@ if (refundStatus === "approved") {
             return {
                 ...item,
                 refundStatus: "approved",
+                refundAmount: item.priceAtPurchase * item.quantity
             };
         }
 
@@ -82,6 +83,7 @@ else if (refundStatus === "rejected") {
             return {
                 ...item,
                 refundStatus: "approved",
+                refundAmount: item.priceAtPurchase * item.quantity
             };
         }
         return item;

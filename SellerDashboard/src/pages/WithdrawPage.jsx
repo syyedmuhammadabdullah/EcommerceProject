@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, getBalance, getTransactions, Input, requestWithdraw, socket,updateTransactionStatus } from '../index'
+import { Button, getBalance, getTransactions, Input, requestWithdraw, socket,updateTransactionStatus,getSellerWithdrawal } from '../index'
 import { BankOutlined } from '@ant-design/icons'
 import { useDispatch,useSelector } from 'react-redux'
 import {  Link, useNavigate } from 'react-router-dom'
@@ -10,16 +10,23 @@ const WithdrawPage = () => {
     const [withdrawAmount,setWithdrawAmount]=useState();
     const dispatch=useDispatch()
     const navigate=useNavigate();
-     const {transactions,walletBalance,loading,error}=useSelector((state)=>state.transaction)
+     const {withdrawanTranscations,walletBalance,loading,error}=useSelector((state)=>state.transaction)
      const {seller}=useSelector((state)=>state.seller)
     useEffect(() => {
         if (!walletBalance) {
             dispatch(getBalance());
         }
-            dispatch(getTransactions());
+            dispatch(getSellerWithdrawal({}));
        
        
     }, [])
+
+    const handleBankLink=()=>{
+        //stripe link account page
+        navigate("/link-bank");
+    }
+
+
 
   return (
     <section className='flex justify-center'>
@@ -75,7 +82,7 @@ const WithdrawPage = () => {
        <div className="stock border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Status</div>
       </div>
    {
-       transactions?.withdrawn?.map((item)=>(
+       withdrawanTranscations?.map((item)=>(
          <div key={item._id} className="body grid grid-cols-[137px_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)] items-center  h-[72px]  ">
         <div className="id border text-text-secondary pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >{item._id.slice(0,8)}</div>
          <div className="Amount border text-text-secondary gap-xs pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >
@@ -116,7 +123,7 @@ const WithdrawPage = () => {
                    </div>
                 
                 <div className="btn">
-                    <Button onClick={() =>{ navigate('/settings')}} children={`${ !seller?.bankDetails?.bankName  ? 'Setup' : 'Change'}`} className='bg-primary-base p-p-sm text-white rounded-md'/>
+                    <Button onClick={handleBankLink} children={`${ !seller?.stripeAccountId  ? 'Link Account' : 'Linked'}`} className='bg-primary-base p-p-sm text-white rounded-md'/>
                 </div>
             </div>
 

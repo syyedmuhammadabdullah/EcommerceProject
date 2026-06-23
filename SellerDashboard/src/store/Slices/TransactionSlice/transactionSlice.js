@@ -3,9 +3,11 @@ import getBalance from "./getBalance.js";
 import getTransactions from "./getTransaction.js";
 import requestWithdraw from "./requestWithdraw.js";
 import getAllTransactions from "./getAllTranscations.js";
+import getSellerWithdrawal from "./getSellerWithdrawal.js";
 const initialState = {
     walletBalance: 0,
     transactions: {},
+    withdrawanTranscations:[],
     totalWithdrawnTransactions: 0,
     allTransactions: [],
     allTransactionsTotal: 0,
@@ -45,7 +47,6 @@ const transactionSlice = createSlice({
             .addCase(getTransactions.fulfilled, (state, action) => {
                 state.loading = false;
                 state.transactions = action.payload;
-                state.totalWithdrawnTransactions = action.payload.withdrawn?.length || 0;
             })
             .addCase(getTransactions.rejected, (state, action) => {
                 state.loading = false;
@@ -57,7 +58,7 @@ const transactionSlice = createSlice({
             })
             .addCase(requestWithdraw.fulfilled, (state, action) => {
                 state.loading = false;
-                state.transactions.withdrawn = [action.payload, ...state.transactions.withdrawn];
+                state.withdrawanTranscations = [action.payload, ...state.withdrawanTranscations];
             })
             .addCase(requestWithdraw.rejected, (state, action) => {
                 state.loading = false;
@@ -72,6 +73,18 @@ const transactionSlice = createSlice({
                 state.allTransactionsTotal = action.payload.totalCount;
             })
             .addCase(getAllTransactions.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+            .addCase(getSellerWithdrawal.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            }).addCase(getSellerWithdrawal.fulfilled, (state, action) => {
+                state.loading = false;
+                state.withdrawanTranscations = action.payload.data;
+                state.totalWithdrawnTransactions = action.payload.totalCount;
+            })
+            .addCase(getSellerWithdrawal.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });

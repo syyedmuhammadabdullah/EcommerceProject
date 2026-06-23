@@ -156,6 +156,9 @@ const OrderSchema = new Schema({
   totalPrice: {
     type: Number,
   },
+  refundAmount: {
+    type: Number
+  },
   totalItems: {
     type: Number
   },
@@ -221,6 +224,9 @@ const OrderSchema = new Schema({
     default: 'pending'
   },
   estimatedDeliveryDate: {
+          type: Date
+        },
+        deliveredAt: {
           type: Date
         },
         trackingNumber: {

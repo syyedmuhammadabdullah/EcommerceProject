@@ -18,7 +18,7 @@ const requestOrderRefund = asyncHandler(async (req, res) => {
     }
     updateProductsStatus(order,items,null,"requested");
 
-    order.refundStatus = "refundRequested";
+    order.refundStatus = "requested";
     order.statusHistory.push({
         status: "refundRequested",
         date: new Date(),

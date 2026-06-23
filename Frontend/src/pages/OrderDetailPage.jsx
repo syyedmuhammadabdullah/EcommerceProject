@@ -21,7 +21,9 @@ const OrderDetailPage = () => {
     const isDelivered = trackedOrder?.shipmentStatus === "delivered";
 const isPending = trackedOrder?.status === "pending";
 const isCancelled = trackedOrder?.status === "cancelled";
-const isRefundPending = trackedOrder?.refundStatus === "pending";
+const isRefundPending =
+  Date.now() < new Date(trackedOrder?.deliveredAt).getTime() + (7 * 24 * 60 * 60 * 1000);
+
 const gridCols = isDelivered
   ? "grid-cols-[40px_1fr_132px_132px_132px_132px]"
   : "grid-cols-[40px_1fr_132px_132px_132px]";
@@ -38,8 +40,7 @@ const canReview = isDelivered || trackedOrder?.refundStatus === "refunded";
 
     useEffect(() => {
         if (trackedOrder?.createdAt) { // Check if createdAt exists
-            console.log(trackedOrder);
-            
+        
           const createdAt = new Date(trackedOrder.createdAt);
           if (!isNaN(createdAt)) { // Ensure the date is valid
             const formattedDate = new Intl.DateTimeFormat('en-US', {
@@ -54,6 +55,7 @@ const canReview = isDelivered || trackedOrder?.refundStatus === "refunded";
 
         const handleCancelOrder=()=>{
             // Implement cancel order functionality here
+            if(items.length===0)return;
             dispatch(cancelProducts({orderId,items}));
             setItems([]);
         console.log("cancel called");
@@ -77,6 +79,7 @@ const canReview = isDelivered || trackedOrder?.refundStatus === "refunded";
 
         const handleRefund=()=>{
             // Implement cancel order functionality here
+            if(items.length===0)return;
             dispatch(requestRefund({orderId,items:refundItems}));
         console.log("refund called");
         }

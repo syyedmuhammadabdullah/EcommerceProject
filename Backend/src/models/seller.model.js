@@ -40,6 +40,10 @@ const SellerSchema = new Schema({
         accountNumber: { type: String, default: null,  },
         iban: { type: String, default: null },
       },
+      stripeAccountId:{
+        type:String,
+        default:null
+      },
       storeDetails: {
         storeName: { type: String, default: "",  },
         storeDescription: { type: String, default: "" },
@@ -74,6 +78,7 @@ const SellerSchema = new Schema({
         createdAt: { type: Date, default: Date.now },
         updatedAt: { type: Date, default: Date.now },
       },
+    
       termsAgreed: {
         type: Boolean,
         default: false,
@@ -81,8 +86,8 @@ const SellerSchema = new Schema({
       advancedFeatures: {
         preferredPaymentMethod: {
           type: String,
-          enum: ["bank", "paypal", "stripe"],
-          default: null,
+          enum: ["bank_transfer", "paypal", "jazzcash", "easypaisa"],
+          default: "bank_transfer",
         },
         deliveryOptions: [{ type: String }],
         subscriptionPlan: {

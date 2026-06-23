@@ -1,4 +1,4 @@
-import {asyncHandler,apiError,apiResponse,OrderModel, io, NotificationModel} from "../../index.js";
+import {asyncHandler,apiError,apiResponse,OrderModel, io, NotificationModel, SellerWalletModel, SellerTransactionModel} from "../../index.js";
 
 const processRefund=asyncHandler(async(req,res)=>{
      const {orderId}=req.body;
@@ -8,29 +8,41 @@ const processRefund=asyncHandler(async(req,res)=>{
      }
 
      
-const approvedCount = order.products.filter(
+const approvedItems = order.products.filter(
     item => item.refundStatus === "approved"
-).length;
+);
 
 const rejectedCount = order.products.filter(
     item => item.refundStatus === "rejected"
 ).length;
 
-if (approvedCount > 0 && rejectedCount > 0) {
+if (approvedItems > 0 && rejectedCount > 0) {
     order.refundStatus ="partially refunded";
     order.statusHistory.push({
         status: "partially refunded",
         date: new Date(),
     })
 }
-else if (approvedCount > 0 && rejectedCount === 0) {
+else if (approvedItems > 0 && rejectedCount === 0) {
     order.refundStatus = "refunded";
     order.statusHistory.push({
         status: "refunded",
         date: new Date(),
     })
 }
-
+const SellerWallet= await SellerWalletModel.findOneAndUpdate(
+    { sellerId: order.sellerId },
+    { $inc: { balance: -order.refundAmount } },
+    { new: true }
+)
+ await SellerTransactionModel.create({
+    walletId: SellerWallet._id,
+    sellerId: order.sellerId,
+    orderId: order._id,
+    amount: order.refundAmount,
+    type: "refund",
+    status: "completed"
+  });
           await order.save();
           res.status(200).json(new apiResponse(200,"Order updated successfully",order));
         

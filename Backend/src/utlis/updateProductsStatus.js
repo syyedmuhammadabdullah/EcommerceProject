@@ -7,7 +7,7 @@ function updateProductsStatus(order,items,status,refundStatus) {
                
   ...item,
   ...(status && { status }),
-  ...(refundStatus && { refundStatus })
+  ...(refundStatus && { refundStatus }),
 }
             
         }

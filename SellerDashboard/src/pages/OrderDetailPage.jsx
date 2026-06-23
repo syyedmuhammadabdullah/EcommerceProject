@@ -13,7 +13,7 @@ const OrderDetailPage = () => {
     const [itemId, setItemId] = useState("");
     const [refundStatus, setRefundStatus] = useState(order?.refundStatus);
     
-    const grid=order.status==="pending"?"48px minmax(389px, 1fr) minmax(137px, 1fr) minmax(137px, 1fr) minmax(137px, 1fr) minmax(111px, 1fr) minmax(111px, 1fr) minmax(220px, 1fr)":"48px minmax(389px, 1fr) minmax(137px, 1fr) minmax(137px, 1fr) minmax(137px, 1fr) minmax(111px, 1fr)";
+    const grid=order.status==="pending"?"48px minmax(389px, 1fr) minmax(137px, 1fr) minmax(137px, 1fr) minmax(137px, 1fr) minmax(111px, 1fr) minmax(111px, 1fr)":"48px minmax(389px, 1fr) minmax(137px, 1fr) minmax(137px, 1fr) minmax(137px, 1fr) minmax(111px, 1fr)";
 
     useEffect(() => {
         console.log(selectedItems);
@@ -32,10 +32,12 @@ const OrderDetailPage = () => {
     }
     
     const handleAcceptItems= () => {
+        if(selectedItems.length===0) return;
         dispatch(reviewProducts({orderId,items:selectedItems,action:"accepted"}))
         setSelectedItems([]);
     }
     const handleDeclineItems= () => {
+        if(selectedItems.length===0) return;
         dispatch(reviewProducts({orderId,items:selectedItems,action:"rejected"}))
         setSelectedItems([]);
     }
@@ -51,6 +53,7 @@ const OrderDetailPage = () => {
          <div className="heading"><h3>Order Detail</h3> </div>
 
          <div className="btns">
+             {order.status==="pending"&&<><Button onClick={handleAcceptItems} children={`Accept ${selectedItems?.length}`} className="bg-primary-base mr-xs w-fit px-p-md py-p-xxs rounded-sm text-white" /> <Button onClick={handleDeclineItems} children={`Decline ${selectedItems?.length}`} className="bg-warning-base w-fit px-p-md py-p-xxs rounded-sm text-white" /></> }
             {order.status==="processing"&& <Button children='Mark As Pack' className='bg-primary-base px-xxl py-xs rounded-md text-white' onClick={handlePackOrder}/>}
             </div>            
         </div>
@@ -266,7 +269,7 @@ const OrderDetailPage = () => {
            <div className="price border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Total</div>
            <div className="action relative border pl-[10px] min-w-[111px] flex items-center border-[#0000000f]  h-full" >Status</div>
          {order.status==="pending"&&  <div className="action relative border pl-[10px] min-w-[111px] flex items-center border-[#0000000f]  h-full" >Select</div> }
-           {order.status==="pending"&&<div className="action relative border pl-[10px] min-w-[220px] flex items-center border-[#0000000f]  h-full" ><Button onClick={handleAcceptItems} children={`Accept ${selectedItems?.length}`} className="bg-primary-base mr-xs w-fit px-p-md py-p-xxs rounded-sm text-white" /> <Button onClick={handleDeclineItems} children={`Decline ${selectedItems?.length}`} className="bg-warning-base w-fit px-p-md py-p-xxs rounded-sm text-white" /> </div> }
+          
           </div>
          {order?.products?.map((product,index)=>(
             <div key={product.productId} style={{gridTemplateColumns:grid}} className="body grid  items-center  h-[72px]  ">

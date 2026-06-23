@@ -26,6 +26,8 @@ const updateShippingStatus=asyncHandler(async(req,res)=>{
     if (statusFlow[order.shipmentStatus] !== shippingStatus) {
         throw new apiError(400, "Invalid order transition");
     }
+  
+
     order.shipmentStatus=shippingStatus;
     order.statusHistory.push({
         status:shippingStatus,
@@ -62,6 +64,7 @@ const existingPayment = await SellerTransactionModel.findOne({
         type: "order_payment",
         status: "completed"
       });
+      order.deliveredAt=new Date();
     }
 
     await SellerModel.findByIdAndUpdate(order.sellerId,{ $inc: { "performanceMetrics.totalSales": order.totalPrice } });

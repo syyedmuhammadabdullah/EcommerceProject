@@ -1,32 +1,54 @@
 import {useEffect,useState} from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from 'react-router-dom';
-import {Button, getAllTransactions, Pagination,} from "../index.js";
+import {Button, getAllTransactions,getSellerWithdrawal, Pagination,} from "../index.js";
 
 const TranscationPage = () => {
   const { type } = useParams();
   const dispatch = useDispatch();
-  const { allTransactions, allTransactionsTotal } = useSelector((state) => state.transaction);
+  const { allTransactions, allTransactionsTotal,withdrawanTranscations,totalWithdrawnTransactions } = useSelector((state) => state.transaction);
   const [currentPage, setCurrentPage] = useState(1);
    const [selectedFilter, setSelectedFilter] =useState("all");
-    const filters = ["All", "Pending", "Completed", "Cancelled"];
+    const filters = ["All", "Pending", "Approved", "Rejected"];
   useEffect(() => {
-    dispatch(getAllTransactions({ type, page: currentPage }));
+    if (type==="withdrawal") {
+      dispatch(getSellerWithdrawal({page:currentPage,lmit:20,filter:selectedFilter}))
+    }else{
+      dispatch(getAllTransactions({ type, page: currentPage }));
+    }
   }, [dispatch, type, currentPage]);
   useEffect(() => {
-  }, [allTransactions, allTransactionsTotal]);
+    console.log(withdrawanTranscations);
+    
+  }, [allTransactions, allTransactionsTotal,withdrawanTranscations]);
   const name=type==="withdrawal"?"Withdraw":type==="refund"?"Refund":"Sales"
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    dispatch(getAllTransactions({ type, page,filter }));
+    if (type==="withdrawal") {
+      dispatch(getSellerWithdrawal({page,limit:20,filter:selectedFilter}))
+    }else{
+      dispatch(getAllTransactions({ type, page,filter }));
+    }
+
   };
     const handleFilterChange = (filter) => {
-     if (filter!==selectedFilter) {
+     if (filter!==selectedFilter&&type!=="withdrawal") {
        dispatch(getAllTransactions({ type, page: currentPage, filter }));
+     }else{
+      dispatch(getSellerWithdrawal({page:currentPage,filter,limit:20}))
      }
       setSelectedFilter(filter);
       
+    }
+    let source;
+    switch(type){
+      case "withdrawal":
+      source=  withdrawanTranscations
+        break;
+      default:
+       source= allTransactions
+        break;
     }
 
   return (
@@ -57,7 +79,7 @@ const TranscationPage = () => {
        <div className="stock border pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >Status</div>
       </div>
    {
-       allTransactions?.map((item)=>(
+      source&& source?.map((item)=>(
          <div key={item._id} className="body grid grid-cols-[137px_minmax(137px,_1fr)_minmax(137px,_1fr)_minmax(137px,_1fr)] items-center  h-[72px]  ">
         <div className="id border text-text-secondary pl-[10px] w-[137px] flex items-center border-[#0000000f] h-full" >{item._id.slice(0,8)}</div>
          <div className="Amount border text-text-secondary gap-xs pl-[10px] min-w-[137px] flex items-center border-[#0000000f] h-full" >
@@ -78,7 +100,7 @@ const TranscationPage = () => {
 
             </div>
      <div className="pagination flex gap-xs mt-md justify-center items-center py-p-md border-t border-border-primary">
-          <Pagination currentPage={currentPage} totalItems={allTransactionsTotal} limit={20} onPageChange={handlePageChange} />
+          <Pagination currentPage={currentPage} totalItems={type==="withdrawal"?totalWithdrawnTransactions:allTransactionsTotal} limit={20} onPageChange={handlePageChange} />
         </div>
         </div>
        </section>

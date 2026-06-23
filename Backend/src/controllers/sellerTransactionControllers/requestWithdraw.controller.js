@@ -1,21 +1,15 @@
-import {apiError,apiResponse,asyncHandler,SellerWalletModel,SellerTransactionModel, NotificationModel,UserModel, io} from '../../index.js'
+import {apiError,apiResponse,asyncHandler,SellerWithdrawalModel, NotificationModel,UserModel, io} from '../../index.js'
 
 export const requestWithdraw = asyncHandler(async (req, res) => {
     const { amount } = req.body;
     const sellerId = req.seller.sellerId;
-    const sellerWallet = await SellerWalletModel.findOne({ sellerId: sellerId });
-    if (!sellerWallet) {
-        throw new apiError(400, "Wallet not found");
-    }
-    if (amount > sellerWallet.balance) {
-        throw new apiError(400, "Insufficient balance");
-    }
-    const transaction = await SellerTransactionModel.create({
-        type: "withdrawal",
+ 
+ 
+    const transaction = await SellerWithdrawalModel.create({
         amount: amount,
-        walletId: sellerWallet._id,
         sellerId: sellerId,
         status: "pending",
+        method: "bank_transfer"
     });
     const admins = await UserModel.find({ role: "admin" });
     const notification=await NotificationModel.create({

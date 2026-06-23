@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const WithdrawalSchema = new mongoose.Schema({
-  seller: {
+  sellerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "SellerModel",
     required: true,
@@ -25,10 +25,9 @@ const WithdrawalSchema = new mongoose.Schema({
     ref: "SellerTransactionModel", // Reference to transaction record
     default: null,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+
+},{
+    timestamps:true
 });
 
 export const SellerWithdrawalModel = mongoose.model("SellerWithdrawalModel", WithdrawalSchema);

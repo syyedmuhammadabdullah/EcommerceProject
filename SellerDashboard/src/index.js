@@ -45,6 +45,7 @@ import ShipableOrderPage from "./pages/ShipableOrderPage";
 import ShipmentPage from "./pages/ShipmentPage";
 import RefundOrderPage from "./pages/RefundOrderPage";
 import UpdateRefundStatusPage from "./pages/updateRefundStatusPage";
+import LinkBankPage from "./pages/LinkBankPage";
 
 //layouts
 import MainLayout from "./layouts/MainLayout";
@@ -105,6 +106,7 @@ import requestWithdraw from "./store/Slices/TransactionSlice/requestWithdraw";
 import updateItemStatus from "./store/Slices/orderSlice/updateItemStatus";
 import { updateTransactionStatus } from "./store/Slices/TransactionSlice/transactionSlice";
 import getAllTransactions from "./store/Slices/TransactionSlice/getAllTranscations";
+import getSellerWithdrawal from "./store/Slices/TransactionSlice/getSellerWithdrawal";
 //Notification Slice
 import notificationReducer from "./store/Slices/NotificationSlice/NotificationSlice";
 import getNotifications from "./store/Slices/NotificationSlice/getNotifications";
@@ -157,6 +159,7 @@ export {
   getNotifications,
   getNotificationCount,
   addNotification,
+  getSellerWithdrawal,
   getSeller,
   markAllNotificationAsRead,
   markNotificationAsRead,
@@ -172,6 +175,7 @@ export {
   CreateProductPage,
   UpdateRefundStatusPage,
   VerificationPage,
+  LinkBankPage,
   WithdrawPage,
   ShipableOrderPage,
   ShipmentPage,

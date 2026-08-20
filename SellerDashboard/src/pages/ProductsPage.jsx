@@ -78,14 +78,14 @@ const handlePageChange = (page) => {
         <div className="content border border-border-primary bg-white  w-full overflow-scroll no-scrollbar">
 
        
-        <div className="data w-full grid overflow-scroll no-scrollbar">
-          <div className="head grid grid-cols-[48px_389px_389px_137px_179px_111px] h-[54px] items-center bg-border-primary">
+        <div className="data w-full grid overflow-scroll ">
+          <div className="head grid grid-cols-[48px_389px_389px_137px_179px_170px] h-[54px] items-center bg-border-primary">
            <div className="id border pl-[10px] w-[48px] flex items-center border-border-primary h-full" >ID</div>
            <div className="name border pl-[10px] w-[389px] flex items-center border-border-primary h-full" >Product Name</div>
            <div className="stock border pl-[10px] w-[389px] flex items-center border-border-primary h-full" >In Stock</div>
            <div className="price border pl-[10px] w-[137px] flex items-center border-border-primary h-full" >Price</div>
            <div className="price border pl-[10px] w-[179px] flex items-center border-border-primary h-full" >Status</div>
-           <div className="action border pl-[10px] w-[111px] flex items-center border-border-primary h-full" >Action</div>
+           <div className="action border pl-[10px] w-[170px] flex items-center border-border-primary h-full" >Action</div>
           </div>
           {
             products?.map((product,index)=>(
@@ -108,7 +108,7 @@ const handlePageChange = (page) => {
                </div>
                <div className="price border pl-[10px] w-[137px] flex items-center border-border-primary h-full" >{product.price}</div>
                <div className="price border pl-[10px] w-[179px] flex items-center border-border-primary h-full" >{product.status}</div>
-               <div className="action border pl-[10px] w-[111px] flex items-center border-border-primary h-full" ><span className="cursor-pointer" onClick={()=>handleEdit(product._id)}>Edit</span><span className="cursor-pointer" onClick={()=>handleDelete(product._id)} >Delete</span></div>
+               <div className="action border pl-[10px] w-[170px] flex items-center border-border-primary h-full" > <Button children="Edit" className="bg-primary-base w-fit px-p-md py-p-xxs rounded-sm text-white" onClick={()=>handleEdit(product._id)} /><Button children="Delete" className="bg-warning-base w-fit px-p-md py-p-xxs rounded-sm text-white ml-xs" onClick={()=>handleDelete(product._id)} /></div>
                  
               </div>
             ))

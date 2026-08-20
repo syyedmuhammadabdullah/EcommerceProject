@@ -23,15 +23,9 @@ onClick=()=>{}
     <div className="productContent  max-w-[200px]">
        <div className="rating flex gap-xxs">
         <div className="stars ">
-          <StarRating rating={rating}/>
-{/* 
-        <StarFilled className='text-yellow-300'/>
-        <StarFilled className='text-yellow-300'/>
-        <StarFilled className='text-yellow-300'/>
-        <StarFilled className='text-yellow-300'/>
-        <StarFilled className='text-yellow-300'/> */}
+          <StarRating rating={rating ? rating.toFixed(1) : '0.0'}/>
         </div>
-        <div className="total">{rating?rating:0}</div>
+        <div className="total">{rating ? rating.toFixed(1) : '0.0'}</div>
        </div>
        <div className="p-Name"><p>{name? name?.length> 70 ? name.slice(0,70)+"...":name:"Product Name tuyt hfhjfyj hjfyjr hjrfuyjruy hjfdyjreyu yhjdty"} </p></div>
 

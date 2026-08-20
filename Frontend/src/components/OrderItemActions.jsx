@@ -16,7 +16,7 @@ const OrderItemActions = ({ product, order, onReview, onCancel,items }) => {
     <div>
       {isPending &&product.status==="pending"?
         <CheckBox id={product.productId} isChecked={items?.includes(product.productId)}   onChange={() => onCancel(product.productId)}/>
-        :!isDelivered&& product.status
+        :!isDelivered&& product.status!=="cancelled"&&product.status
       }
 
       {canReview &&product.status!=="cancelled"&&product.status!=="rejected" && (
